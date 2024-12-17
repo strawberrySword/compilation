@@ -2,25 +2,26 @@
 /* IMPORT(S) */
 /*************/
 import java_cup.runtime.*;
+import java.io.*;
+import java.io.PrintWriter;
 import AST.*;
 
 parser code 
 {:
 	public Lexer lexer;
+	public PrintWriter writer;
 
-	public Parser(Lexer lexer)
+	public Parser(Lexer lexer, PrintWriter writer)
 	{
 		super(lexer);
 		this.lexer = lexer;
+		this.writer = writer;
 	}
 	public void report_error(String message, Object info)
 	{
-		System.out.print("ERROR >> ");		
-		System.out.print("[");
-		System.out.print(lexer.getLine());
-		System.out.print(":");
-		System.out.print(lexer.getCharPos());
-		System.out.print("] ");		
+		
+		writer.write("Error");
+		writer.close();
 		System.exit(0);
 	}
 :}
@@ -32,20 +33,6 @@ scan with
 {:
 	Symbol s;
 	s = lexer.next_token();
-	//System.out.print(s.sym);
-	System.out.print("[");
-	System.out.print(lexer.getLine());
-	System.out.print(":");
-	System.out.print(lexer.getCharPos());
-	System.out.print("] ");
-	System.out.print(TokenNames.terminalNames[s.sym]);
-	if (s.value != null)
-	{
-		System.out.print("( ");
-		System.out.print(s.value);
-		System.out.print(" )");
-	}
-	System.out.print("\n");
 	return s; 
 :};
 
@@ -66,56 +53,174 @@ terminal LBRACK;
 terminal RBRACK;
 terminal LBRACE;
 terminal RBRACE;
+terminal CLASS;
+terminal NIL;
+terminal ARRAY;
+terminal TYPE_INT;
+terminal TYPE_VOID;
+terminal EXTENDS;
+terminal RETURN;
+terminal NEW;
+terminal COMMA;
 terminal SEMICOLON;
 terminal ASSIGN;
+terminal LT;
+terminal GT;
+terminal TYPE_STRING;
 
 /*************/
 /* TERMINALS */
 /*************/
 terminal Integer INT;
 terminal String ID;
+terminal String STRING;
 
 /*****************/
 /* NON TERMINALS */
 /*****************/
-non terminal AST_EXP exp;
-non terminal AST_VAR var;
-non terminal AST_STMT stmt;
-non terminal AST_STMT_LIST stmtList;
+// non terminal AST_EXP exp;
+// non terminal AST_VAR var;
+// non terminal AST_STMT stmt;
+// non terminal AST_STMT_LIST stmtList;
+non terminal program;
+non terminal dec;
+non terminal type;
+non terminal varDec;
+non terminal funcDec;
+non terminal commaTypeIdStar;
+non terminal classDec;
+non terminal cField;
+non terminal cFieldPlus;
+non terminal arrayTypedef;
+non terminal exp;
+non terminal commaExpStar;
+non terminal var;
+non terminal stmt;
+non terminal stmtPlus;
+non terminal newExp;
+non terminal BINOP;
+non terminal commaExpPlus;
+non terminal commaTypeIdPlus;
+
 
 /***********************/
 /* OPERATOR PRECEDENCE */
 /***********************/
+precedence nonassoc ASSIGN;
+precedence left EQ;
+precedence left LT;
+precedence left GT;
 precedence left PLUS;
 precedence left MINUS;
 precedence left TIMES;
 precedence left DIVIDE;
+precedence nonassoc LBRACK;
+precedence nonassoc LBRACE;
+precedence left DOT;
 
 /************************/
 /* START WITH: stmtList */
 /************************/
-start with stmtList;
+start with program;
 
 /********************/
 /* DERIVATION RULES */
 /********************/
 
-stmtList	::=		stmt:s	stmtList:l		{: RESULT = new AST_STMT_LIST(s,l);    :}
-					| stmt:s				{: RESULT = new AST_STMT_LIST(s,null); :}
+program		::=		dec program
+					| dec
 					;
 
-var			::=		ID:name								{: RESULT = new AST_VAR_SIMPLE(name);       :}
-					| var:v DOT ID:fieldName			{: RESULT = new AST_VAR_FIELD(v,fieldName); :} 
-					| var:v LBRACK exp:e RBRACK			{: RESULT = new AST_VAR_SUBSCRIPT(v,e);     :} 
+dec			::=		varDec
+					| funcDec	
+					| classDec 
+					| arrayTypedef
+					;
+
+type		::= 	TYPE_INT | TYPE_STRING | TYPE_VOID | ID
+					;
+
+varDec 		::=		type ID ASSIGN exp SEMICOLON
+					| type ID SEMICOLON
+					| type ID ASSIGN newExp SEMICOLON
+					;
+
+funcDec		::= 	type ID LPAREN type ID commaTypeIdStar RPAREN LBRACE stmtPlus RBRACE
+					| type ID LPAREN RPAREN LBRACE stmtPlus RBRACE
+					;
+
+commaTypeIdPlus ::= COMMA type ID commaTypeIdPlus 
+					| COMMA type ID 
+					;
+
+commaTypeIdStar	::=	commaTypeIdPlus
+					| 
+					;
+
+classDec	::=		CLASS ID EXTENDS ID LBRACE cFieldPlus RBRACE
+					| CLASS ID LBRACE cFieldPlus RBRACE
+					;
+
+cField		::=		varDec 
+					| funcDec
+					;
+
+cFieldPlus	::=		cField cFieldPlus
+					| cField
+					;
+
+arrayTypedef	::=	ARRAY ID EQ type LBRACK RBRACK SEMICOLON
+					;
+
+exp			::=		var 
+					| LPAREN exp RPAREN
+					| exp BINOP exp
+					| var DOT ID LPAREN exp commaExpStar RPAREN
+					| var DOT ID LPAREN RPAREN
+					| ID LPAREN exp commaExpStar RPAREN
+					| ID LPAREN RPAREN
+					| MINUS INT | INT | NIL | STRING 
+					;
+
+commaExpPlus ::=	COMMA exp | COMMA exp commaExpPlus;
+
+commaExpStar ::= 	commaExpPlus
+					| 
+					;
+
+var			::=		ID 
+					| var DOT ID 
+					| var LBRACK exp RBRACK
 					;
 					
-stmt		::=		var:v ASSIGN exp:e SEMICOLON								{: RESULT = new AST_STMT_ASSIGN(v,e); :}
-					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(   cond,body); :}
-					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body); :}
+stmt		::=		varDec
+					| var ASSIGN exp SEMICOLON
+					| var ASSIGN newExp SEMICOLON
+					| RETURN exp SEMICOLON
+					| RETURN SEMICOLON
+					| IF LPAREN exp RPAREN LBRACE stmtPlus RBRACE
+					| WHILE LPAREN exp RPAREN LBRACE stmtPlus RBRACE
+					| var DOT ID LPAREN exp commaExpStar RPAREN SEMICOLON
+					| ID LPAREN exp commaExpStar RPAREN SEMICOLON
+					| var DOT ID LPAREN RPAREN SEMICOLON
+					| ID LPAREN RPAREN SEMICOLON
 					;
 
-exp			::=		INT:i								{: RESULT = new AST_EXP_INT(i);          :}
-					| var:v								{: RESULT = new AST_EXP_VAR(v);          :}
-					| exp:e1 PLUS  exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 0);:}
-					| exp:e1 MINUS exp:e2				{: RESULT = new AST_EXP_BINOP(e1, e2, 1);:}
+stmtPlus	::=		stmt	stmtPlus
+					| stmt
 					;
+
+newExp 		::= 	NEW type 
+					| NEW type LBRACK exp RBRACK 
+					;
+
+BINOP 		::= 	PLUS 
+					| MINUS 
+					| TIMES 
+					| DIVIDE 
+					| LT 
+					| GT 
+					| EQ 
+					;
+
+

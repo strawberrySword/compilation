@@ -28,7 +28,7 @@ public class Main
 			/* [2] Initialize a file writer */
 			/********************************/
 			file_writer = new PrintWriter(outputFilename);
-			
+
 			/******************************/
 			/* [3] Initialize a new lexer */
 			/******************************/
@@ -37,17 +37,18 @@ public class Main
 			/*******************************/
 			/* [4] Initialize a new parser */
 			/*******************************/
-			p = new Parser(l);
+			p = new Parser(l, file_writer);
 
 			/***********************************/
 			/* [5] 3 ... 2 ... 1 ... Parse !!! */
 			/***********************************/
 			AST = (AST_STMT_LIST) p.parse().value;
 			
+			file_writer.write("OK");
 			/*************************/
 			/* [6] Print the AST ... */
 			/*************************/
-			AST.PrintMe();
+			// AST.PrintMe();
 			
 			/*************************/
 			/* [7] Close output file */
@@ -57,7 +58,7 @@ public class Main
 			/*************************************/
 			/* [8] Finalize AST GRAPHIZ DOT file */
 			/*************************************/
-			AST_GRAPHVIZ.getInstance().finalizeFile();
+			// AST_GRAPHVIZ.getInstance().finalizeFile();
     	}
 			     
 		catch (Exception e)
