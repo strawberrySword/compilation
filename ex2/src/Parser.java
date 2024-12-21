@@ -356,7 +356,7 @@ public class Parser extends java_cup.runtime.lr_parser {
 	public void report_error(String message, Object info)
 	{
 		
-		writer.write("Error");
+		writer.write("Error("+lexer.getLine() + ")");
 		writer.close();
 		System.exit(0);
 	}
