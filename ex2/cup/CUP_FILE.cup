@@ -137,19 +137,19 @@ dec			::=		varDec:dec 			{:RESULT = new AST_DEC(dec):}
 					| arrayTypedef:dec	{:RESULT = new AST_DEC(dec):}
 					;
 
-type		::= 	TYPE_INT:t 		{:RESULT = new AST_TYPE(op):}
-					| TYPE_STRING:t {:RESULT = new AST_TYPE(op):}
-					| TYPE_VOID:t 	{:RESULT = new AST_TYPE(op):}
-					| ID:t			{:RESULT = new AST_TYPE(op):}
+type		::= 	TYPE_INT:t 		
+					| TYPE_STRING:t 
+					| TYPE_VOID:t 	
+					| ID:t			
 					;
 
-varDec 		::=		type:t ID:name ASSIGN exp:val SEMICOLON
-					| type:t ID:name SEMICOLON
-					| type:t ID:name ASSIGN newExp:val SEMICOLON
+varDec 		::=		type:t ID:name ASSIGN exp:val SEMICOLON 		{:RESULT = new AST_VAR_DEC(t,name,val,null):}
+					| type:t ID:name SEMICOLON						{:RESULT = new AST_VAR_DEC(t,name):}
+					| type:t ID:name ASSIGN newExp:val SEMICOLON	{:RESULT = new AST_VAR_DEC(t,name,null,val):}
 					;
 
-funcDec		::= 	type ID LPAREN type ID commaTypeIdStar RPAREN LBRACE stmtPlus RBRACE
-					| type ID LPAREN RPAREN LBRACE stmtPlus RBRACE
+funcDec		::= 	type:retType ID:funcName LPAREN type:type1 ID:arg1 commaTypeIdStar:args RPAREN LBRACE stmtPlus:statements RBRACE	{:RESULT = new AST_FUNC_DEC(retType, funcName, type1, arg1, args, statements):}
+					| type ID LPAREN RPAREN LBRACE stmtPlus RBRACE	{:RESULT = new AST_FUNC_DEC(retType, funcName, statements):}
 					;
 
 commaTypeIdPlus ::= COMMA type ID commaTypeIdPlus 
@@ -160,11 +160,11 @@ commaTypeIdStar	::=	commaTypeIdPlus
 					| 
 					;
 
-classDec	::=		CLASS ID EXTENDS ID LBRACE cFieldPlus RBRACE
-					| CLASS ID LBRACE cFieldPlus RBRACE
+classDec	::=		CLASS ID:cName EXTENDS ID:parentName LBRACE cFieldPlus:fields RBRACE	{:RESULT = new AST_CLASS_DEC(cName, parentName, fields):}
+					| CLASS ID:cName LBRACE cFieldPlus:fields RBRACE				{:RESULT = new AST_CLASS_DEC(cName, fields):}
 					;
 
-cField		::=		varDec 
+cField		::=		varDec {:RESULT = new AST_CLASS_FIELD():}
 					| funcDec
 					;
 
