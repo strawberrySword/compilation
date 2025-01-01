@@ -3,7 +3,9 @@ import TYPES.*;
 
 public class AST_TYPE extends AST_Node /*TODO: determine inheritance*/ {
 
-	public AST_TYPE(/*TODO*/) {
-	/*TODO: implement constructor(s?)*/
+	public String myType;
+
+	public AST_TYPE(String t) {
+		this.myType = t;
 	}
 }
