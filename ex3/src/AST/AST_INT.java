@@ -1,9 +1,11 @@
 package AST;
 import TYPES.*;
 
-public class AST_INT extends AST_Node /*TODO: determine inheritance*/ {
+public class AST_INT extends AST_EXP {
 
-	public AST_INT(/*TODO*/) {
-	/*TODO: implement constructor(s?)*/
+	public int val;
+
+	public AST_INT(int i) {
+		this.val = i;
 	}
 }
