@@ -182,7 +182,7 @@ exp			::=		var:v {:RESULT = v:}
 					| var:v DOT ID:fname LPAREN RPAREN {:RESULT = new AST_FUNC_CALL(v, fname);:}
 					| ID LPAREN exp:arg1 commaExpStar:args RPAREN {:RESULT = new AST_FUNC_CALL(null, fname, arg1, args);:}
 					| ID:fname LPAREN RPAREN {: RESULT = new AST_FUNC_CALL(null, fname);:}
-					| MINUS INT {: RESULT = new AST_INT(-i);:}
+					| MINUS INT:i {: RESULT = new AST_INT(-i);:}
 					| INT:i {: RESULT = new AST_INT(i);:}
 					| NIL {:RESULT = new AST_NIL():}
 					| STRING:s {:RESULT = new AST_STRING(s);:}
