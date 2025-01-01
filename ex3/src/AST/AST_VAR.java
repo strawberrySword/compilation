@@ -1,9 +1,7 @@
 package AST;
 import TYPES.*;
 
-public class AST_VAR extends AST_Node /*TODO: determine inheritance*/ {
+public abstract class AST_VAR extends AST_Node{
 
-	public AST_VAR(/*TODO*/) {
-	/*TODO: implement constructor(s?)*/
-	}
+	/* Abstract class to allow for polymorphism */
 }

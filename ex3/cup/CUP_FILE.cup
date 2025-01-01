@@ -196,9 +196,9 @@ commaExpStar ::= 	commaExpPlus:l {:RESULT = l;:}
 					|  {:RESULT = null;:}
 					;
 
-var			::=		ID:name 						{:	RESULT = new AST_VAR(name);:} 
-					| var:v DOT ID:fieldName		{:	RESULT = new AST_VAR(v, fieldName,null);:}	 
-					| var:v LBRACK exp:exp RBRACK	{:	RESULT = new AST_VAR(v,null, e);:}
+var			::=		ID:name 						{:	RESULT = new AST_VAR_SIMPLE(name);:} 
+					| var:v DOT ID:fieldName		{:	RESULT = new AST_VAR_FIELD(v, fieldName);:}	 
+					| var:v LBRACK exp:exp RBRACK	{:	RESULT = new AST_VAR_SUBSCRIPT(v, e);:}
 					;
 					
 stmt		::=		varDec:dec {:RESULT = dec:}
