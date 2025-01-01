@@ -1,9 +1,11 @@
 package AST;
 import TYPES.*;
 
-public class AST_STRING extends AST_Node /*TODO: determine inheritance*/ {
+public class AST_STRING extends AST_EXP {
 
-	public AST_STRING(/*TODO*/) {
-	/*TODO: implement constructor(s?)*/
+	public String val;
+
+	public AST_STRING(String s) {
+		this.val = s;
 	}
 }
