@@ -12,6 +12,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		this.retType = t;
 		this.fName = n;
 		this.body = b;
+		this.argList = null;
 	}
 	public AST_FUNC_DEC(AST_TYPE t, String n, AST_TYPE t1, String a1, AST_ARG_LIST args, STMT_LIST b) {
 		this.retType = t;
