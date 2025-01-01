@@ -188,7 +188,7 @@ exp			::=		var:v {:RESULT = v:}
 					| STRING:s {:RESULT = new AST_STRING(s);:}
 					;
 
-commaExpPlus ::=	COMMA exp {:RESULT = new AST_EXP_LIST(e,null);:} 
+commaExpPlus ::=	COMMA exp:e {:RESULT = new AST_EXP_LIST(e,null);:} 
 					| COMMA exp:e commaExpPlus:l {:RESULT = new AST_EXP_LIST(e,l);:}
 					;
 
