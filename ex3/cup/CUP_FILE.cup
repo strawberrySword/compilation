@@ -144,7 +144,7 @@ type		::= 	TYPE_INT		{: RESULT = new AST_TYPE("int");:}
 					;
 
 varDec 		::=		type:t ID:name ASSIGN exp:val SEMICOLON 		{:RESULT = new AST_VAR_DEC(t,name,val,null);:}
-					| type:t ID:name SEMICOLON						{:RESULT = new AST_VAR_DEC(t,name);:}
+					| type:t ID:name SEMICOLON						{:RESULT = new AST_VAR_DEC(t,name,null,null);:}
 					| type:t ID:name ASSIGN newExp:val SEMICOLON	{:RESULT = new AST_VAR_DEC(t,name,null,val);:}
 					;
 
