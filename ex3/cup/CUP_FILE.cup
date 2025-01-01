@@ -180,8 +180,8 @@ exp			::=		var:v {:RESULT = v:}
 					| exp:exp1 BINOP:op exp:exp2	 {:	RESULT = new AST_BINOP_EXP(exp1, op , exp2);:}
 					| var:v DOT ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN {:RESULT = new AST_FUNC_CALL(v, fname, arg1,args);:}
 					| var:v DOT ID:fname LPAREN RPAREN {:RESULT = new AST_FUNC_CALL(v, fname);:}
-					| ID LPAREN exp:arg1 commaExpStar:args RPAREN {:RESULT = new AST_FUNC_CALL(fname, arg1, args);:}
-					| ID:fname LPAREN RPAREN {: RESULT = new AST_FUNC_CALL(fname);:}
+					| ID LPAREN exp:arg1 commaExpStar:args RPAREN {:RESULT = new AST_FUNC_CALL(null, fname, arg1, args);:}
+					| ID:fname LPAREN RPAREN {: RESULT = new AST_FUNC_CALL(null, fname);:}
 					| MINUS INT {: RESULT = new AST_INT(-i);:}
 					| INT:i {: RESULT = new AST_INT(i);:}
 					| NIL {:RESULT = new AST_NIL():}
