@@ -161,7 +161,7 @@ commaTypeIdStar	::=	commaTypeIdPlus:l {:RESULT = l;:}
 					;
 
 classDec	::=		CLASS ID:cName EXTENDS ID:parentName LBRACE cFieldPlus:fields RBRACE	{:RESULT = new AST_CLASS_DEC(cName, parentName, fields);:}
-					| CLASS ID:cName LBRACE cFieldPlus:fields RBRACE				{:RESULT = new AST_CLASS_DEC(cName, fields);:}
+					| CLASS ID:cName LBRACE cFieldPlus:fields RBRACE				{:RESULT = new AST_CLASS_DEC(cName, null,fields);:}
 					;
 
 cField		::=		varDec:dec {:RESULT = dec;:}
