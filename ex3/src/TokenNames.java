@@ -6,46 +6,49 @@
 /** CUP generated class containing symbol constants. */
 public class TokenNames {
   /* terminals */
-  public static final int RBRACK = 17;
-  public static final int TIMES = 8;
-  public static final int LT = 3;
-  public static final int SEMICOLON = 21;
-  public static final int CLASS = 9;
-  public static final int PLUS = 6;
-  public static final int INT = 23;
-  public static final int RBRACE = 19;
-  public static final int RPAREN = 15;
-  public static final int WHILE = 11;
-  public static final int LBRACK = 16;
-  public static final int RETURN = 12;
+  public static final int TIMES = 7;
+  public static final int RBRACK = 13;
+  public static final int LT = 27;
+  public static final int TYPE_STRING = 29;
+  public static final int SEMICOLON = 25;
+  public static final int CLASS = 16;
+  public static final int PLUS = 5;
+  public static final int INT = 30;
+  public static final int RBRACE = 15;
+  public static final int RPAREN = 11;
+  public static final int WHILE = 8;
+  public static final int TYPE_INT = 19;
+  public static final int LBRACK = 12;
+  public static final int RETURN = 22;
   public static final int IF = 2;
-  public static final int LBRACE = 18;
-  public static final int LPAREN = 14;
-  public static final int ID = 22;
-  public static final int STRING = 24;
-  public static final int COMMA = 10;
+  public static final int GT = 28;
+  public static final int NIL = 17;
+  public static final int LPAREN = 10;
+  public static final int LBRACE = 14;
+  public static final int ID = 31;
+  public static final int STRING = 32;
+  public static final int COMMA = 24;
   public static final int EOF = 0;
-  public static final int DIVIDE = 13;
-  public static final int MINUS = 7;
+  public static final int DIVIDE = 9;
+  public static final int MINUS = 6;
   public static final int error = 1;
-  public static final int DOT = 5;
-  public static final int ASSIGN = 20;
-  public static final int EQ = 4;
-  public static final int UMINUS = 25;
+  public static final int DOT = 4;
+  public static final int ASSIGN = 26;
+  public static final int EQ = 3;
+  public static final int NEW = 23;
+  public static final int EXTENDS = 21;
+  public static final int ARRAY = 18;
+  public static final int TYPE_VOID = 20;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
   "IF",
-  "LT",
   "EQ",
   "DOT",
   "PLUS",
   "MINUS",
   "TIMES",
-  "CLASS",
-  "COMMA",
   "WHILE",
-  "RETURN",
   "DIVIDE",
   "LPAREN",
   "RPAREN",
@@ -53,12 +56,23 @@ public class TokenNames {
   "RBRACK",
   "LBRACE",
   "RBRACE",
-  "ASSIGN",
+  "CLASS",
+  "NIL",
+  "ARRAY",
+  "TYPE_INT",
+  "TYPE_VOID",
+  "EXTENDS",
+  "RETURN",
+  "NEW",
+  "COMMA",
   "SEMICOLON",
-  "ID",
+  "ASSIGN",
+  "LT",
+  "GT",
+  "TYPE_STRING",
   "INT",
-  "STRING",
-  "UMINUS"
+  "ID",
+  "STRING"
   };
 }
 

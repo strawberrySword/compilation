@@ -1,7 +1,6 @@
 package AST;
-import TYPES.*;
 
-public class AST_NEW_EXP extends AST_Node /*TODO: determine inheritance*/ {
+public class AST_NEW_EXP extends AST_EXP /*TODO: determine inheritance*/ {
 
 	public AST_TYPE type;
 	public AST_EXP len;

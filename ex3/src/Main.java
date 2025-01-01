@@ -48,11 +48,12 @@ public class Main
 			/* [6] Print the AST ... */
 			/*************************/
 			AST.PrintMe();
+			System.out.println("heyyyyy");
 
 			/**************************/
 			/* [7] Semant the AST ... */
 			/**************************/
-			AST.SemantMe();
+			// AST.SemantMe();
 			
 			/*************************/
 			/* [8] Close output file */

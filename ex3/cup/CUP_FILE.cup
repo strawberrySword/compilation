@@ -82,25 +82,26 @@ terminal String STRING;
 // non terminal AST_VAR var;
 // non terminal AST_STMT stmt;
 // non terminal AST_STMT_LIST stmtList;
-non terminal program;
-non terminal dec;
-non terminal type;
-non terminal varDec;
-non terminal funcDec;
-non terminal commaTypeIdStar;
-non terminal classDec;
-non terminal cField;
-non terminal cFieldPlus;
-non terminal arrayTypedef;
-non terminal exp;
-non terminal commaExpStar;
-non terminal var;
-non terminal stmt;
-non terminal stmtPlus;
-non terminal newExp;
-non terminal BINOP;
-non terminal commaExpPlus;
-non terminal commaTypeIdPlus;
+
+non terminal AST_DEC_LIST program;
+non terminal AST_DEC dec;
+non terminal AST_TYPE type;
+non terminal AST_VAR_DEC varDec;
+non terminal AST_FUNC_DEC funcDec;
+non terminal AST_ARG_LIST commaTypeIdStar;
+non terminal AST_CLASS_DEC classDec;
+non terminal AST_DEC cField;
+non terminal AST_CLASS_FIELD_LIST cFieldPlus;
+non terminal AST_DEC arrayTypedef;
+non terminal AST_EXP exp;
+non terminal AST_EXP_LIST commaExpStar;
+non terminal AST_VAR var;
+non terminal AST_STMT stmt;
+non terminal AST_STMT_LIST stmtPlus;
+non terminal AST_NEW_EXP newExp;
+non terminal String BINOP;
+non terminal AST_EXP_LIST commaExpPlus;
+non terminal AST_ARG_LIST commaTypeIdPlus;
 
 
 /***********************/
@@ -149,43 +150,43 @@ varDec 		::=		type:t ID:name ASSIGN exp:val SEMICOLON 		{:RESULT = new AST_VAR_D
 					;
 
 funcDec		::= 	type:retType ID:funcName LPAREN type:type1 ID:arg1 commaTypeIdStar:args RPAREN LBRACE stmtPlus:body RBRACE	{:RESULT = new AST_FUNC_DEC(retType, funcName, type1, arg1, args, body);:}
-					| type:retType ID:funcName LPAREN RPAREN LBRACE stmtPlus:body RBRACE	{:RESULT = new AST_FUNC_DEC(retType, funcName, body);:}
+					| type:retType ID:funcName LPAREN RPAREN LBRACE stmtPlus:body RBRACE										{:RESULT = new AST_FUNC_DEC(retType, funcName, body);:}
 					;
 
-commaTypeIdPlus ::= COMMA type:t ID:name commaTypeIdPlus:l {:RESULT = new AST_ARG_LIST(t,name,l);:}
-					| COMMA type:t ID:name {:RESULT = new AST_ARG_LIST(t,name,null);:}
+commaTypeIdPlus ::= COMMA type:t ID:name commaTypeIdPlus:l 	{:RESULT = new AST_ARG_LIST(t,name,l);:}
+					| COMMA type:t ID:name 					{:RESULT = new AST_ARG_LIST(t,name,null);:}
 					;
 
-commaTypeIdStar	::=	commaTypeIdPlus:l {:RESULT = l;:}
-					| {:RESULT = null;:}
+commaTypeIdStar	::=	commaTypeIdPlus:l 	{:RESULT = l;:}
+					| 					{:RESULT = null;:}
 					;
 
 classDec	::=		CLASS ID:cName EXTENDS ID:parentName LBRACE cFieldPlus:fields RBRACE	{:RESULT = new AST_CLASS_DEC(cName, parentName, fields);:}
-					| CLASS ID:cName LBRACE cFieldPlus:fields RBRACE				{:RESULT = new AST_CLASS_DEC(cName, null,fields);:}
+					| CLASS ID:cName LBRACE cFieldPlus:fields RBRACE						{:RESULT = new AST_CLASS_DEC(cName, null,fields);:}
 					;
 
-cField		::=		varDec:dec {:RESULT = dec;:}
-					| funcDec:dec {:RESULT = dec;:}
+cField		::=		varDec:dec 		{:RESULT = dec;:}
+					| funcDec:dec 	{:RESULT = dec;:}
 					;
 
-cFieldPlus	::=		cField:f cFieldPlus:l {:RESULT = new AST_CLASS_FIELD_LIST(f,l);:}
-					| cField:f {:RESULT = new AST_CLASS_FIELD_LIST(f, null);:}
+cFieldPlus	::=		cField:f cFieldPlus:l 	{:RESULT = new AST_CLASS_FIELD_LIST(f,l);:}
+					| cField:f 				{:RESULT = new AST_CLASS_FIELD_LIST(f, null);:}
 					;
 
 arrayTypedef	::=	ARRAY ID:arrayName EQ type:t LBRACK RBRACK SEMICOLON	{:RESULT = new AST_ARRAY_DEF(arrayName, t);:}
 					;
 
-exp			::=		var:v {:RESULT = v:}
-					| LPAREN exp:exp RPAREN {:RESULT = exp;:}
-					| exp:exp1 BINOP:op exp:exp2	 {:	RESULT = new AST_BINOP_EXP(exp1, op , exp2);:}
-					| var:v DOT ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN {:RESULT = new AST_FUNC_CALL(v, fname, arg1,args);:}
-					| var:v DOT ID:fname LPAREN RPAREN {:RESULT = new AST_FUNC_CALL(v, fname);:}
-					| ID LPAREN exp:arg1 commaExpStar:args RPAREN {:RESULT = new AST_FUNC_CALL(null, fname, arg1, args);:}
-					| ID:fname LPAREN RPAREN {: RESULT = new AST_FUNC_CALL(null, fname);:}
-					| MINUS INT:i {: RESULT = new AST_INT(-i);:}
-					| INT:i {: RESULT = new AST_INT(i);:}
-					| NIL {:RESULT = new AST_NIL():}
-					| STRING:s {:RESULT = new AST_STRING(s);:}
+exp			::=		var:v 															{:RESULT = v;:}
+					| LPAREN exp:exp RPAREN 										{:RESULT = exp;:}
+					| exp:exp1 BINOP:op exp:exp2	 								{:RESULT = new AST_BINOP_EXP(exp1, op , exp2);:}
+					| var:v DOT ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN 	{:RESULT = new AST_FUNC_CALL(v, fname, arg1,args);:}
+					| var:v DOT ID:fname LPAREN RPAREN 								{:RESULT = new AST_FUNC_CALL(v, fname);:}
+					| ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN 			{:RESULT = new AST_FUNC_CALL(null, fname, arg1, args);:}
+					| ID:fname LPAREN RPAREN 										{:RESULT = new AST_FUNC_CALL(null, fname);:}
+					| MINUS INT:i 													{:RESULT = new AST_INT(-i);:}
+					| INT:i 														{:RESULT = new AST_INT(i);:}
+					| NIL 															{:RESULT = new AST_NIL();:}
+					| STRING:s 														{:RESULT = new AST_STRING(s);:}
 					;
 
 commaExpPlus ::=	COMMA exp:e {:RESULT = new AST_EXP_LIST(e,null);:} 
@@ -196,37 +197,37 @@ commaExpStar ::= 	commaExpPlus:l {:RESULT = l;:}
 					|  {:RESULT = null;:}
 					;
 
-var			::=		ID:name 						{:	RESULT = new AST_VAR_SIMPLE(name);:} 
-					| var:v DOT ID:fieldName		{:	RESULT = new AST_VAR_FIELD(v, fieldName);:}	 
-					| var:v LBRACK exp:exp RBRACK	{:	RESULT = new AST_VAR_SUBSCRIPT(v, e);:}
+var			::=		ID:name 						{:RESULT = new AST_VAR_SIMPLE(name);:} 
+					| var:v DOT ID:fieldName		{:RESULT = new AST_VAR_FIELD(v, fieldName);:}	 
+					| var:v LBRACK exp:exp RBRACK	{:RESULT = new AST_VAR_SUBSCRIPT(v, exp);:}
 					;
 					
-stmt		::=		varDec:dec {:RESULT = dec:}
-					| var:v ASSIGN exp:e SEMICOLON					{:	RESULT = new AST_STMT_ASSIGN(v,e);:}
-					| var:v ASSIGN newExp:e SEMICOLON				{:	RESULT = new AST_STMT_ASSIGN(v,e);:}
-					| RETURN exp:e SEMICOLON						{:	RESULT = new AST_STMT_RETURN(e);:}
-					| RETURN SEMICOLON								{:	RESULT = new AST_STMT_RETURN(null);:}
-					| IF LPAREN exp:cond RPAREN LBRACE stmtPlus:body RBRACE		{:	RESULT = new AST_STMT_IF(cond, body);:}
-					| WHILE LPAREN exp:cond RPAREN LBRACE stmtPlus:body RBRACE	{:	RESULT = new AST_STMT_WHILE(cond, body);:}
-					| var:v DOT ID:func LPAREN exp:arg1 commaExpStar:args RPAREN SEMICOLON		{:	RESULT = new AST_STMT_FUNCTION_CALL(v, func, arg1, args);:}
-					| ID:func LPAREN exp:arg1 commaExpStar:args RPAREN SEMICOLON 	{:	RESULT = new AST_STMT_FUNCTION_CALL(func, arg1, args);:}
-					| var:v DOT ID:func LPAREN RPAREN SEMICOLON 	{:	RESULT = new AST_STMT_FUNCTION_CALL(v, func);:}
-					| ID:func LPAREN RPAREN SEMICOLON				{:	RESULT = new AST_STMT_FUNCTION_CALL(func);:}
+stmt		::=		varDec:dec 																	{:RESULT = dec;:}
+					| var:v ASSIGN exp:e SEMICOLON												{:RESULT = new AST_STMT_ASSIGN(v,e);:}
+					| var:v ASSIGN newExp:e SEMICOLON											{:RESULT = new AST_STMT_ASSIGN(v,e);:}
+					| RETURN exp:e SEMICOLON													{:RESULT = new AST_STMT_RETURN(e);:}
+					| RETURN SEMICOLON															{:RESULT = new AST_STMT_RETURN(null);:}
+					| IF LPAREN exp:cond RPAREN LBRACE stmtPlus:body RBRACE						{:RESULT = new AST_STMT_IF(cond, body);:}
+					| WHILE LPAREN exp:cond RPAREN LBRACE stmtPlus:body RBRACE					{:RESULT = new AST_STMT_WHILE(cond, body);:}
+					| var:v DOT ID:func LPAREN exp:arg1 commaExpStar:args RPAREN SEMICOLON		{:RESULT = new AST_STMT_FUNCTION_CALL(v, func, arg1, args);:}
+					| ID:func LPAREN exp:arg1 commaExpStar:args RPAREN SEMICOLON 				{:RESULT = new AST_STMT_FUNCTION_CALL(func, arg1, args);:}
+					| var:v DOT ID:func LPAREN RPAREN SEMICOLON 								{:RESULT = new AST_STMT_FUNCTION_CALL(v, func);:}
+					| ID:func LPAREN RPAREN SEMICOLON											{:RESULT = new AST_STMT_FUNCTION_CALL(func);:}
 					;
 
 stmtPlus	::=		stmt:s	stmtPlus:l 		{: 	RESULT = new AST_STMT_LIST(s,l); :}
-					| stmt:s 					{:	RESULT = new AST_STMT_LIST(s, null);:}
+					| stmt:s 				{:	RESULT = new AST_STMT_LIST(s, null);:}
 					;
 
-newExp 		::= 	NEW type:t {: RESULT = new AST_NEW_EXP(t, null);:}
-					| NEW type:t LBRACK exp:exp RBRACK {:RESULT = new AST_NEW_EXP(t, exp);:}
+newExp 		::= 	NEW type:t 							{: RESULT = new AST_NEW_EXP(t, null);:}
+					| NEW type:t LBRACK exp:exp RBRACK 	{:RESULT = new AST_NEW_EXP(t, exp);:}
 					;
 
-BINOP 		::= 	PLUS:op {:RESULT = "+";:}
+BINOP 		::= 	PLUS:op 	{:RESULT = "+";:}
 					| MINUS:op	{:RESULT = "-";:} 
 					| TIMES:op	{:RESULT = "*";:}
 					| DIVIDE:op	{:RESULT = "/";:}
-					| LT:op	{:RESULT = "<";:}
-					| GT:op	{:RESULT = ">";:}
-					| EQ:op	{:RESULT = "==";:}
+					| LT:op		{:RESULT = "<";:}
+					| GT:op		{:RESULT = ">";:}
+					| EQ:op		{:RESULT = "==";:}
 					;

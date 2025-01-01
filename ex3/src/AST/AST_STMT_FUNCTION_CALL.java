@@ -1,7 +1,6 @@
 package AST;
-import TYPES.*;
 
-public class AST_STMT_FUNCTION_CALL extends AST_Node /*TODO: determine inheritance*/ {
+public class AST_STMT_FUNCTION_CALL extends AST_STMT /*TODO: determine inheritance*/ {
 	AST_VAR var;
 	String funcName;
 	AST_EXP arg1;
