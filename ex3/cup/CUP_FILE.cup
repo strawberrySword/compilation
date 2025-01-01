@@ -218,7 +218,7 @@ stmtPlus	::=		stmt:s	stmtPlus:l 		{: 	RESULT = new AST_STMT_LIST(s,l); :}
 					| stmt:s 					{:	RESULT = new AST_STMT_LIST(s, null);:}
 					;
 
-newExp 		::= 	NEW type:t {: RESULT = new AST_NEW_EXP(t);:}
+newExp 		::= 	NEW type:t {: RESULT = new AST_NEW_EXP(t, null);:}
 					| NEW type:t LBRACK exp:exp RBRACK {:RESULT = new AST_NEW_EXP(t, exp);:}
 					;
 
