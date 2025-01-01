@@ -1,9 +1,11 @@
 package AST;
-import TYPES.*;
 
-public class AST_STMT_WHILE extends AST_Node /*TODO: determine inheritance*/ {
+public class AST_STMT_WHILE extends AST_STMT {
+	AST_EXP cond;
+	AST_STMT_LIST body;
 
-	public AST_STMT_WHILE(/*TODO*/) {
-	/*TODO: implement constructor(s?)*/
+	public AST_STMT_WHILE(AST_EXP cond, AST_STMT_LIST body) {
+		this.cond = cond;
+		this.body = body;
 	}
 }
