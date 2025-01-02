@@ -7,6 +7,8 @@ public class AST_VAR_FIELD extends AST_VAR {
 	public String fieldName;
 
 	public AST_VAR_FIELD(AST_VAR v, String f) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.var = v;
 		this.fieldName = f;
 	}

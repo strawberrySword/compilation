@@ -5,6 +5,8 @@ public class AST_STMT_RETURN extends AST_STMT {
 	AST_EXP retVal;
 
 	public AST_STMT_RETURN(AST_EXP retVal) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.retVal = retVal;
 	}
 

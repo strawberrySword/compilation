@@ -6,21 +6,29 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 	AST_EXP_LIST args;
 
 	public AST_STMT_FUNCTION_CALL(AST_VAR var, String funcName, AST_EXP arg1, AST_EXP_LIST args) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+
 		this.var = var;
 		this.funcName = funcName;
 		this.args = new AST_EXP_LIST(arg1, args);
 	}
 	public AST_STMT_FUNCTION_CALL(AST_VAR var, String funcName) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+
 		this.var = var;
 		this.funcName = funcName;
 		this.args = null;
 	}
 	public AST_STMT_FUNCTION_CALL(String funcName, AST_EXP arg1, AST_EXP_LIST args) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+
 		this.var = null;
 		this.funcName = funcName;
 		this.args = new AST_EXP_LIST(arg1, args);
 	}
 	public AST_STMT_FUNCTION_CALL(String funcName) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.var = null;
 		this.funcName = funcName;
 		this.args = null;

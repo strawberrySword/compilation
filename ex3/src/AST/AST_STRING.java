@@ -6,6 +6,8 @@ public class AST_STRING extends AST_EXP {
 	public String val;
 
 	public AST_STRING(String s) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.val = s;
 	}
 

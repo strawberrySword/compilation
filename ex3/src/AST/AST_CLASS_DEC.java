@@ -8,6 +8,8 @@ public class AST_CLASS_DEC extends AST_DEC {
 	public AST_CLASS_FIELD_LIST fields;
 
 	public AST_CLASS_DEC(String myName, String pName, AST_CLASS_FIELD_LIST f) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.cName = myName;
 		this.parentName = pName;
 		this.fields = f;

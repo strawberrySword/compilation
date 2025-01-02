@@ -9,6 +9,8 @@ public class AST_FUNC_CALL extends AST_EXP {
 
 	/* Call without args */
 	public AST_FUNC_CALL(AST_VAR v, String f) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+
 		this.var = v;
 		this.fName = f;
 		this.args =  null;
@@ -16,6 +18,8 @@ public class AST_FUNC_CALL extends AST_EXP {
 	
 	/* Call with args */
 	public AST_FUNC_CALL(AST_VAR v, String f, AST_EXP a1, AST_EXP_LIST l) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.var = v;
 		this.fName = f;
 		this.args = new AST_EXP_LIST(a1,l);
