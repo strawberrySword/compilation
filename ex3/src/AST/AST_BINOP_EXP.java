@@ -12,4 +12,16 @@ public class AST_BINOP_EXP extends AST_EXP {
 		this.right = r;
 		this.op = o;
 	}
+
+	public void PrintMe(){
+		System.out.format("BinopExp(%s)", this.op);
+
+		this.left.PrintMe();
+		this.right.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("BinopExp(%s)", this.op));
+
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.left.SerialNumber);
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.right.SerialNumber);
+	}
 }

@@ -1,9 +1,12 @@
 def main():
+    '''
     fnames = ['dec_list', 'var_dec', 'func_dec', 'class_dec', 'type', 'arg_list', 'class_field_list', \
               'array_def', 'binop_exp', 'func_call', 'int', 'string', 'nil', 'exp_list', 'var', \
                 'stmt_assign', 'stmt_return', 'stmt_if', 'stmt_while', 'stmt_function_call', \
                     'stmt_list', 'new_exp']
-    
+    '''
+    fnames = ['var_simple', 'var_field', 'var_subscript']
+
     for name in fnames:
         cname = 'AST_'+name.upper()
         constructorCode = f'public {cname}(/*TODO*/) {{\n\t/*TODO: implement constructor(s?)*/\n\t}}'

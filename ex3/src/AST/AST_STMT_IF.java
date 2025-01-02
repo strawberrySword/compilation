@@ -8,4 +8,16 @@ public class AST_STMT_IF extends AST_STMT {
 		this.cond = cond;
 		this.body = body;	
 	}
+
+	public void PrintMe(){
+		System.out.format("Stmt_if");
+
+		this.cond.PrintMe();
+		this.body.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Stmt_if"));
+	
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.cond.SerialNumber);
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.body.SerialNumber);
+	}
 }

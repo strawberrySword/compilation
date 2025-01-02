@@ -8,4 +8,10 @@ public class AST_TYPE extends AST_Node /*TODO: determine inheritance*/ {
 	public AST_TYPE(String t) {
 		this.myType = t;
 	}
+
+	public void PrintMe(){
+		System.out.format("Type(%s)", this.myType);
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Type(%s)", this.myType));
+	}
 }

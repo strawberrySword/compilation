@@ -10,4 +10,15 @@ public class AST_CLASS_FIELD_LIST extends AST_Node /*TODO: determine inheritance
 		this.value = d;
 		this.next = l;
 	}
+
+	public void PrintMe(){
+		System.out.format("CfieldList");
+
+		if(this.next != null) this.next.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("CfieldList"));
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.value.SerialNumber);
+
+		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
+	}
 }

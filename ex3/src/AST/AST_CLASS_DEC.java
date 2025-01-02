@@ -12,4 +12,14 @@ public class AST_CLASS_DEC extends AST_DEC {
 		this.parentName = pName;
 		this.fields = f;
 	}
+
+	public void PrintMe(){
+		System.out.format("ClassDec(%s, %s)", this.cName, this.parentName);
+
+		if(this.fields != null) this.fields.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("ClassDec(%s, %s)", this.cName, this.parentName));
+
+		if (this.fields != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.fields.SerialNumber);
+	}
 }

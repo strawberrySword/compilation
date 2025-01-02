@@ -10,4 +10,16 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR {
 		this.var = v;
 		this.exp = e;
 	}
+
+	public void PrintMe(){
+		System.out.format("Var_subscript");
+
+		if (this.var != null) this.var.PrintMe();
+		if (this.exp != null) this.exp.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Var_subscript"));
+	
+		if (this.var != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.var.SerialNumber);
+		if (this.exp != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.exp.SerialNumber);
+	}
 }

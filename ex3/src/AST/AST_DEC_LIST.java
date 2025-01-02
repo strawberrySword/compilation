@@ -9,4 +9,15 @@ public class AST_DEC_LIST extends AST_Node {
 		this.value = d;
 		this.next = l;
 	}
+
+	public void PrintMe(){
+		System.out.format("DecList");
+
+		if(this.next != null) this.next.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("DecList"));
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
+
+		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
+	}
 }

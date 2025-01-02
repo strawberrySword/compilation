@@ -10,4 +10,10 @@ public class AST_ARRAY_DEF extends AST_DEC {
 		this.arrName = s;
 		this.type = t;
 	}
+
+	public void PrintMe(){
+		System.out.format("ArrayDef(%s, %s)", this.type.myType, this.arrName);
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("ArgList(%s, %s)", this.type.myType, this.arrName));
+	}
 }

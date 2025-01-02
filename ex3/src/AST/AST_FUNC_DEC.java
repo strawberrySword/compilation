@@ -19,4 +19,16 @@ public class AST_FUNC_DEC extends AST_DEC {
 		this.body = b;
 		this.argList = new AST_ARG_LIST(t1,a1,args);		
 	}
+
+	public void PrintMe(){
+		System.out.format("FuncDec(%s, %s)", this.retType.myType, this.fName);
+
+		if(this.argList != null) this.argList.PrintMe();
+		if(this.body != null) this.body.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("FuncDec(%s, %s)", this.retType.myType, this.fName));
+		
+		if(this.argList != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.argList.SerialNumber);
+		if(this.body != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.body.SerialNumber);
+	}
 }

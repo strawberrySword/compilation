@@ -13,4 +13,16 @@ public class AST_VAR_DEC extends AST_DEC /*TODO: determine inheritance*/ {
 		this.exp = e;
 		this.newExp = ne;
 	}
+
+	public void PrintMe(){
+		System.out.format("VarDec(%s, %s)", this.type.myType, this.name);
+
+		if (this.exp != null) this.exp.PrintMe();
+		if (this.newExp != null) this.newExp.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("VarDec(%s, %s)", this.type.myType, this.name));
+	
+		if (this.exp != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.exp.SerialNumber);
+		if (this.newExp != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.newExp.SerialNumber);
+	}
 }
