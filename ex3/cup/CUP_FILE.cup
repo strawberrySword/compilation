@@ -99,9 +99,12 @@ non terminal AST_VAR var;
 non terminal AST_STMT stmt;
 non terminal AST_STMT_LIST stmtPlus;
 non terminal AST_NEW_EXP newExp;
-non terminal String BINOP;
 non terminal AST_EXP_LIST commaExpPlus;
 non terminal AST_ARG_LIST commaTypeIdPlus;
+non terminal AST_BINOP_EXP eqBinop;
+non terminal AST_BINOP_EXP ltGtBinop;
+non terminal AST_BINOP_EXP mulBinop;
+non terminal AST_BINOP_EXP addBinop;
 
 
 /***********************/
@@ -177,8 +180,8 @@ arrayTypedef	::=	ARRAY ID:arrayName EQ type:t LBRACK RBRACK SEMICOLON	{:RESULT =
 					;
 
 exp			::=		var:v 															{:RESULT = v;:}
-					| LPAREN exp:exp RPAREN 										{:RESULT = exp;:}
-					| exp:exp1 BINOP:op exp:exp2	 								{:RESULT = new AST_BINOP_EXP(exp1, op , exp2);:}
+					| LPAREN exp:exp RPAREN	 										{:RESULT = exp;:}
+					| eqBinop:e 													{:RESULT = e;:}
 					| var:v DOT ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN 	{:RESULT = new AST_FUNC_CALL(v, fname, arg1,args);:}
 					| var:v DOT ID:fname LPAREN RPAREN 								{:RESULT = new AST_FUNC_CALL(v, fname);:}
 					| ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN 			{:RESULT = new AST_FUNC_CALL(null, fname, arg1, args);:}
@@ -188,6 +191,25 @@ exp			::=		var:v 															{:RESULT = v;:}
 					| NIL 															{:RESULT = new AST_NIL();:}
 					| STRING:s 														{:RESULT = new AST_STRING(s);:}
 					;
+
+eqBinop		::= 	exp:e1 EQ exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"==",e2);:}
+					| ltGtBinop:e 													{:RESULT = e;:}
+					;
+
+ltGtBinop	::=		exp:e1 LT exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"<",e2);:}
+					| exp:e1 GT exp:e2												{:RESULT = new AST_BINOP_EXP(e1,">",e2);:}
+					| addBinop:e													{:RESULT = e;:}
+					;
+
+addBinop	::=		exp:e1 PLUS exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"+",e2);:}
+					| exp:e1 MINUS exp:e2											{:RESULT = new AST_BINOP_EXP(e1,"-",e2);:}
+					| mulBinop:e													{:RESULT = e;:}
+					;
+
+mulBinop	::=		exp:e1 TIMES exp:e2 											{:RESULT = new AST_BINOP_EXP(e1,"*",e2);:}
+					| exp:e1 DIVIDE exp:e2											{:RESULT = new AST_BINOP_EXP(e1,"/",e2);:}	
+					;
+
 
 commaExpPlus ::=	COMMA exp:e {:RESULT = new AST_EXP_LIST(e,null);:} 
 					| COMMA exp:e commaExpPlus:l {:RESULT = new AST_EXP_LIST(e,l);:}
@@ -221,13 +243,4 @@ stmtPlus	::=		stmt:s	stmtPlus:l 		{: 	RESULT = new AST_STMT_LIST(s,l); :}
 
 newExp 		::= 	NEW type:t 							{: RESULT = new AST_NEW_EXP(t, null);:}
 					| NEW type:t LBRACK exp:exp RBRACK 	{:RESULT = new AST_NEW_EXP(t, exp);:}
-					;
-
-BINOP 		::= 	PLUS:op 	{:RESULT = "+";:}
-					| MINUS:op	{:RESULT = "-";:} 
-					| TIMES:op	{:RESULT = "*";:}
-					| DIVIDE:op	{:RESULT = "/";:}
-					| LT:op		{:RESULT = "<";:}
-					| GT:op		{:RESULT = ">";:}
-					| EQ:op		{:RESULT = "==";:}
 					;
