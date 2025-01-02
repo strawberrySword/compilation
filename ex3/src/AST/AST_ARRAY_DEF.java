@@ -7,6 +7,8 @@ public class AST_ARRAY_DEF extends AST_DEC {
 	public AST_TYPE type;
 
 	public AST_ARRAY_DEF(String s, AST_TYPE t) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.arrName = s;
 		this.type = t;
 	}

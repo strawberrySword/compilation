@@ -6,6 +6,8 @@ public class AST_TYPE extends AST_Node /*TODO: determine inheritance*/ {
 	public String myType;
 
 	public AST_TYPE(String t) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.myType = t;
 	}
 
