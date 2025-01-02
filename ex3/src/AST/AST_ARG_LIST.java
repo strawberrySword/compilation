@@ -16,11 +16,11 @@ public class AST_ARG_LIST extends AST_Node /*TODO: determine inheritance*/ {
 	}
 
 	public void PrintMe(){
-		System.out.format("ArgList(%s, %s)", this.type.myType, this.name);
+		System.out.format("Arg(%s, %s)", this.type.myType, this.name);
 
 		if(this.next != null) this.next.PrintMe();
 
-		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("ArgList(%s, %s)", this.type.myType, this.name));
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Arg(%s, %s)", this.type.myType, this.name));
 
 		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
 	}
