@@ -18,6 +18,7 @@ public class AST_CLASS_FIELD_LIST extends AST_Node /*TODO: determine inheritance
 
 		if(this.next != null) this.next.PrintMe();
 
+		this.value.PrintMe();
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("CfieldList"));
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.value.SerialNumber);
 
