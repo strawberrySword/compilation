@@ -12,6 +12,6 @@ public class AST_INT extends AST_EXP {
 	public void PrintMe(){
 		System.out.format("Int(%d)", this.val);
 
-		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Int(%s)", v));
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Int(%s)", this.val));
 	}
 }
