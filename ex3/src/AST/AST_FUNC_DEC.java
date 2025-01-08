@@ -8,6 +8,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 	public String fName;
 	public AST_ARG_LIST argList;
 	public AST_STMT_LIST body;
+	public TYPE_CLASS myDad;
 
 	public AST_FUNC_DEC(AST_TYPE t, String n, AST_STMT_LIST b) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
@@ -38,52 +39,72 @@ public class AST_FUNC_DEC extends AST_DEC {
 		if(this.body != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.body.SerialNumber);
 	}
 
+	// called when a function is declared in global scope
 	public TYPE SemantMe(){
-		// name not taken
 		// the whole overriding thing
 
 		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
 
 		TYPE returnType = t.find(this.retType.myType);
-		TYPE_LIST argTypes = args_to_types(argList);
 		
-		// TODO: check for overloading. if other function with same name exists in a parent class it must have same argTypes
-		// travrse all classes, if parent class: traverse methods and look for the method with the same name.
 		TYPE prevDef = t.find(fName);
 
 		if (prevDef != null){
 			System.out.println("Semantic error: can't declare function with taken name");
 			System.exit(0);
 		}
+			
+		t.beginScope(false);
+
+		TYPE_LIST argTypes = this.argList.SemantMe();
+		TYPE_FUNCTION res = new TYPE_FUNCTION(returnType, fName, argTypes);
+		t.enter(fName, res); // for recursion
+		body.SemantMe();
+
+		t.endScope();
+		t.enter(fName, res); // for use of function
+		
+		this.myDad = null;
+		return res;
+	}
+
+	// called when method is declared within class
+	public TYPE SemantMe(TYPE_CLASS papa){
+		this.myDad = papa;
+
+		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
+
+		TYPE prevDef = t.findInScope(fName);
+		if (prevDef != null){ // this is double definition inside same scope (class or function)
+			System.out.println("Semantci error: double definition for "+fName);
+			System.exit(0);
+		}
+
+		TYPE returnType = t.find(this.retType.myType);
+		
+
+		t.beginScope(false);
+
+		TYPE_LIST argTypes = this.argList.SemantMe();
+
+		if (!(checkOverride(returnType, fName, argTypes, this.myDad))){
+			System.out.println("Semantic error: overloading is not allowed");
+			System.exit(0);
+		}
 
 		TYPE_FUNCTION res = new TYPE_FUNCTION(returnType, fName, argTypes);
-		t.enter(fName, res);
-		
-		
-		t.beginScope(false);
+		t.enter(fName, res); // for recursion
 		body.SemantMe();
+
 		t.endScope();
+		t.enter(fName, res); // for use of function
 		
 		return res;
 	}
-	
-	// also checks for void types
-	private TYPE_LIST args_to_types(AST_ARG_LIST a){
-		if (a == null){
-			return null;
-		}
 
-		TYPE type = SYMBOL_TABLE.getInstance().find(a.type.myType);
-		if (type == null){
-			System.out.println("Semantic error: undefined type");
-			System.exit(0);
-		}
-		if (type == TYPE_VOID.getInstance()){
-			System.out.println("Semantic error: type void not allowed as argument");
-			System.exit(0);
-		}
+	// this function assumes no other method of same name in current scope (checked in SemantMe)
+	private boolean checkOverride(TYPE ret, String name, TYPE_LIST args, TYPE_CLASS parent){
 
-
-		return new TYPE_LIST(type, args_to_types(a.next));
+		return false;
 	}
 }

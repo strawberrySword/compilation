@@ -21,13 +21,14 @@ public class AST_TYPE extends AST_Node {
 	}
 
 	public TYPE SemantMe(){
-		TYPE t= SYMBOL_TABLE.getInstance().find(this.myType);
-		if(t == null){
-			// TODO: print error to file
+		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
+
+		TYPE a = t.find(this.myType);
+		if(a == null){
+			System.out.println("Semantcic error: type "+myType+" does not exist");
 			System.exit(0);
-			return null;
 		}
 
-		return t;
+		return a;
 	}
 }
