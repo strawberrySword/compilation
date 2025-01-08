@@ -29,9 +29,19 @@ public class AST_ARG_LIST extends AST_Node {
 	}
 
 	public TYPE_LIST SemantMe(){
-		SYMBOL_TABLE.getInstance().enter(this.name, this.type.SemantMe());
+		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
+
+
+		if (t.findInScope(this.name)!= null){ // double argument definition "int f(int x,int x){}"
+			System.out.println("Semantic error: double definition of function argument "+this.name);
+			System.exit(0);
+		}
 		
-		if (this.next == null) return new TYPE_LIST(this.type.SemantMe(), null);
+		t.enter(this.name, this.type.SemantMe());
+		
+		if (this.next == null){
+			return new TYPE_LIST(this.type.SemantMe(), null);
+		}
 
 		return new TYPE_LIST(this.type.SemantMe(), this.next.SemantMe());
 	}
