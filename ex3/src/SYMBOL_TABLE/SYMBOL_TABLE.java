@@ -143,12 +143,14 @@ public class SYMBOL_TABLE
 	/* end scope = Keep popping elements out of the data structure,                 */
 	/* from most recent element entered, until a <NEW-SCOPE> element is encountered */
 	/********************************************************************************/
-	public void endScope(boolean classScope)
+	public void endScope()
 	{
 		/**************************************************************************/
 		/* Pop elements from the symbol table stack until a SCOPE-BOUNDARY is hit */		
 		/**************************************************************************/
-		this.classFlag = !classScope;
+		if (this.classFlag == true){ // if this was a class scope, close it
+			this.classFlag = false;
+		}
 
 		while (top.name != "SCOPE-BOUNDARY")
 		{
