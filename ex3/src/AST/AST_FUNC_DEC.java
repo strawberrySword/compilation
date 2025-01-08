@@ -1,4 +1,6 @@
 package AST;
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
 
 public class AST_FUNC_DEC extends AST_DEC {
 
@@ -34,5 +36,44 @@ public class AST_FUNC_DEC extends AST_DEC {
 		
 		if(this.argList != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.argList.SerialNumber);
 		if(this.body != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.body.SerialNumber);
+	}
+
+	public TYPE SemantMe(){
+		// name not taken
+		// the whole overriding thing
+
+		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
+
+		t.beginScope(false);
+		TYPE returnType = t.find(this.retType.myType);
+		TYPE_LIST argTypes = args_to_types(argList);
+		
+		t.enter(fName, new TYPE_FUNCTION(returnType, fName, argTypes));
+
+		body.SemantMe();
+		
+		t.endScope();
+		
+		return null;
+	}
+	
+	// also checks for void types
+	private TYPE_LIST args_to_types(AST_ARG_LIST a){
+		if (a == null){
+			return null;
+		}
+
+		TYPE type = SYMBOL_TABLE.getInstance().find(a.type.myType);
+		if (type == null){
+			System.out.println("Semantic error: undefined type");
+			System.exit(0);
+		}
+		if (type == TYPE_VOID.getInstance()){
+			System.out.println("Semantic error: type void not allowed as argument");
+			System.exit(0);
+		}
+
+
+		return new TYPE_LIST(type, args_to_types(a.next));
 	}
 }
