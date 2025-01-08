@@ -28,7 +28,7 @@ public abstract class TYPE
 		}
 
 		// Two class types
-
+		// TODO: if right is nil return true
 		if (this.name == other.name){ // two identical types
 			return true;
 		}
