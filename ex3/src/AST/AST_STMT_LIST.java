@@ -23,4 +23,14 @@ public class AST_STMT_LIST extends AST_Node /*TODO: determine inheritance*/ {
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.value.SerialNumber);
 		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
 	}
+
+	public TYPE SemantMe(){
+		value.SemantMe();
+
+		if (this.next != null){
+			next.SemantMe();
+		}
+		
+		return null;
+	}
 }
