@@ -21,12 +21,14 @@ public abstract class TYPE
 		if (!(this instanceof TYPE_CLASS) && !(other instanceof TYPE_CLASS)){ // two primitives
 			return this.name.equals(other.name);
 		}
+		if (this instanceof TYPE_NIL && other instanceof TYPE_CLASS){
+			return true;
+		}
 		if( (this instanceof TYPE_CLASS && !(other instanceof TYPE_CLASS)) || !(this instanceof TYPE_CLASS) && other instanceof TYPE_CLASS){ // one class one primitive
 			return false;
 		}
 
 		// Two class types
-		// TODO: if right is nil return true
 		if (this.name == other.name){ // two identical types
 			return true;
 		}

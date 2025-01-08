@@ -1,4 +1,5 @@
 package AST;
+import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
 public class AST_ARRAY_DEF extends AST_DEC {
@@ -17,5 +18,17 @@ public class AST_ARRAY_DEF extends AST_DEC {
 		System.out.format("ArrayDef(%s, %s)", this.type.myType, this.arrName);
 
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("ArgList(%s, %s)", this.type.myType, this.arrName));
+	}
+
+	public TYPE SemantMe(){
+		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
+
+		TYPE data_type = t.find(this.type.myType);
+		if (data_type == null){
+			System.out.println("Semantic error: array type undefined");
+			System.exit(0);
+		}
+
+		return new TYPE_ARRAY(arrName, data_type);
 	}
 }

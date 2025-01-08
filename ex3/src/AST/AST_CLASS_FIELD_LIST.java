@@ -1,7 +1,7 @@
 package AST;
 import TYPES.*;
 
-public class AST_CLASS_FIELD_LIST extends AST_Node /*TODO: determine inheritance*/ {
+public class AST_CLASS_FIELD_LIST extends AST_Node {
 
 	public AST_DEC value;
 	public AST_CLASS_FIELD_LIST next;
@@ -23,5 +23,18 @@ public class AST_CLASS_FIELD_LIST extends AST_Node /*TODO: determine inheritance
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.value.SerialNumber);
 
 		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
+	}
+
+	public TYPE SemantMe(){
+		TYPE h = this.value.SemantMe(); 
+		TYPE_LIST l;
+
+		if (this.next == null){
+			l = new TYPE_LIST(h, null);
+		}else{
+			l = new TYPE_LIST(h, (TYPE_LIST)this.next.SemantMe());
+		}
+
+		return l;
 	}
 }
