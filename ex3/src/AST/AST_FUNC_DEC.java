@@ -111,17 +111,15 @@ public class AST_FUNC_DEC extends AST_DEC {
 
 		TYPE otherFunc = parent.findField(name);
 		if (otherFunc != null && !(otherFunc instanceof TYPE_FUNCTION)){ // of course an error - overriding a variable with a function
-			System.out.println("Semantic error: overriding a class field with a method");
-			System.exit(0);
+			return false;
 		}
 
 		// otherFunc is a function or null and parent exists
-		if (otherFunc != null){ // if this is overriding, it's O.K
+		if (otherFunc != null){ // overriding is O.K
 			if (ret == ((TYPE_FUNCTION)otherFunc).returnType && name.equals(((TYPE_FUNCTION)otherFunc).name) && args.equals(((TYPE_FUNCTION)otherFunc).params)){
 				return true;
-			}else{ // Other function exists in parent class, which differs from current
-				System.out.println("Semantic error: overloading not allowed");
-				System.exit(0);
+			}else{ // Other function exists in parent class, which differs from current but matches name
+				return false;
 			}
 		}
 
