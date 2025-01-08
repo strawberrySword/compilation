@@ -17,7 +17,21 @@ public class TYPE_LIST extends TYPE
 		this.tail = tail;
 	}
 
-	public boolean compare(TYPE_LIST other){
-		return true;
+	public boolean equals(TYPE_LIST other){
+		if (this.head != other.head){ // type mismatch
+			return false;
+		}
+
+		if (this.tail == null){
+			if (other.tail == null){ // both lists end
+				return true;
+			}else{ // only this list ended
+				return false;
+			}
+		}else if (other.tail == null){ // only other list ended
+			return false;
+		}
+
+		return this.tail.equals(other.tail);
 	}
 }

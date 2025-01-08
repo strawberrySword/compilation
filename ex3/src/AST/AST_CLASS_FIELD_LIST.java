@@ -25,14 +25,20 @@ public class AST_CLASS_FIELD_LIST extends AST_Node {
 		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
 	}
 
-	public TYPE SemantMe(){
-		TYPE h = this.value.SemantMe(); 
+	public TYPE SemantMe(TYPE_CLASS father){
+		TYPE h;
+		if (this.value instanceof AST_FUNC_DEC){
+			h = ((AST_FUNC_DEC)this.value).SemantMe(father);
+		}else{
+			h = this.value.SemantMe(); 
+		}
+
 		TYPE_LIST l;
 
 		if (this.next == null){
 			l = new TYPE_LIST(h, null);
 		}else{
-			l = new TYPE_LIST(h, (TYPE_LIST)this.next.SemantMe());
+			l = new TYPE_LIST(h, (TYPE_LIST)this.next.SemantMe(father));
 		}
 
 		return l;
