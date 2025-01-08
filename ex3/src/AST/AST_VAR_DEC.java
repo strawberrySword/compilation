@@ -2,7 +2,7 @@ package AST;
 import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
-public class AST_VAR_DEC extends AST_DEC /*TODO: determine inheritance*/ {
+public class AST_VAR_DEC extends AST_DEC {
 	public AST_TYPE type;
 	public String name;
 	public AST_EXP exp;

@@ -3,7 +3,7 @@ package AST;
 import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
-public class AST_TYPE extends AST_Node /*TODO: determine inheritance*/ {
+public class AST_TYPE extends AST_Node {
 
 	public String myType;
 

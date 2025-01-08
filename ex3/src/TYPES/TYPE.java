@@ -1,7 +1,5 @@
 package TYPES;
 
-import SYMBOL_TABLE.SYMBOL_TABLE;
-
 public abstract class TYPE
 {
 	/******************************/

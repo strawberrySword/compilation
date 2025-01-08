@@ -1,7 +1,6 @@
 package AST;
-import TYPES.*;
 
-public class AST_EXP_LIST extends AST_Node /*TODO: determine inheritance*/ {
+public class AST_EXP_LIST extends AST_Node {
 
 	public AST_EXP value;
 	public AST_EXP_LIST next;

@@ -47,7 +47,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		TYPE returnType = t.find(this.retType.myType);
 		TYPE_LIST argTypes = args_to_types(argList);
 		
-		// TODOD: check for overloading. if other function with same name exists in a parent class it must have same argTypes
+		// TODO: check for overloading. if other function with same name exists in a parent class it must have same argTypes
 		TYPE prevDef = t.find(fName);
 
 		if (prevDef != null){

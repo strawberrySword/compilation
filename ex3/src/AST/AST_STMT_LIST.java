@@ -1,7 +1,7 @@
 package AST;
 import TYPES.*;
 
-public class AST_STMT_LIST extends AST_Node /*TODO: determine inheritance*/ {
+public class AST_STMT_LIST extends AST_Node {
 	public AST_STMT value;
 	public AST_STMT_LIST next;
 
