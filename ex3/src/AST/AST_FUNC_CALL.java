@@ -59,17 +59,22 @@ public class AST_FUNC_CALL extends AST_EXP {
 			System.exit(0);
 			return null;
 		}
-		function = (TYPE_FUNCTION)function;
 		// 2. make sure args match function signature
 		TYPE_LIST argsTypes = args.SemantMe();
 
-		argsTypes.compare()
+		if(!argsTypes.equals(((TYPE_FUNCTION)function).params)){
+			// args do not match function signature
+			// TODO report error to file: args do not match function signature
+			System.exit(0);
+			return null;
+		}
 		// 3. return function return type
 
-		if(retType == null){
+		if(((TYPE_FUNCTION)function).returnType == null){
 			// TODO report error
 			System.exit(0);
 			return null;
 		}
+		return ((TYPE_FUNCTION)function).returnType;
 	}
 }
