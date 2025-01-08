@@ -44,14 +44,22 @@ public class AST_FUNC_DEC extends AST_DEC {
 
 		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
 
-		t.beginScope(false);
 		TYPE returnType = t.find(this.retType.myType);
 		TYPE_LIST argTypes = args_to_types(argList);
 		
-		t.enter(fName, new TYPE_FUNCTION(returnType, fName, argTypes));
+		// TODOD: check for overloading. if other function with same name exists in a parent class it must have same argTypes
+		TYPE prevDef = t.find(fName);
 
-		body.SemantMe();
+		if (prevDef != null){
+			System.out.println("Semantic error: can't declare function with taken name");
+			System.exit(0);
+		}
+
+		t.enter(fName, new TYPE_FUNCTION(returnType, fName, argTypes));
 		
+		
+		t.beginScope(false);
+		body.SemantMe();
 		t.endScope();
 		
 		return null;
