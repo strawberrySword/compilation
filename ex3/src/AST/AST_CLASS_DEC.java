@@ -28,13 +28,22 @@ public class AST_CLASS_DEC extends AST_DEC {
 	}
 
 	public TYPE SemantMe(){
-		SYMBOL_TABLE.getInstance().beginScope();
+		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
+		
+		TYPE_CLASS father = (TYPE_CLASS)t.find(this.parentName);
+		
+		if (father == null && this.parentName != null){ // "class son extends father{}; class father{};"
+			System.out.println("Semantic error: parent class undefined");
+			System.exit(0);
+		}
+		
+		t.beginScope(true);
+		TYPE_LIST f = (TYPE_LIST)fields.SemantMe();
+		t.endScope();
 
-		TYPE_CLASS t = new TYPE_CLASS(null, cName, fields.SemantMe());
+		TYPE_CLASS c = new TYPE_CLASS(father, cName, f);
+		t.enter(cName, c);
 
-		SYMBOL_TABLE.getInstance().endScope();
-
-		SYMBOL_TABLE.getInstance().enter(cName,t);
-		return null;
+		return c;
 	}
 }
