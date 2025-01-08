@@ -1,4 +1,5 @@
 package AST;
+import SYMBOL_TABLE.*;
 import TYPES.*;
 
 public class AST_FUNC_CALL extends AST_EXP {
@@ -34,5 +35,39 @@ public class AST_FUNC_CALL extends AST_EXP {
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("FuncCall(%s)", this.fName));
 		if (this.var != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.var.SerialNumber);
 		if (this.args != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.args.SerialNumber);
+	}
+
+	public TYPE SemantMe(){
+		// 1. make sure function is defined and get its type
+		// TODO: funding the function should be scope sensetive maybe should change how we save function or write a method for it
+		// if(var != null){
+		// 	// TODO fimd how to get the function name correctly!!
+		// 	TYPE retType =  SYMBOL_TABLE.getInstance().find(var+"."+fName);
+		// }
+		TYPE function;
+		function = SYMBOL_TABLE.getInstance().find(fName);
+		if(var != null){
+			String varName = "";
+			TYPE varClass = SYMBOL_TABLE.getInstance().find(varName);
+		}
+
+		if(!(function instanceof TYPE_FUNCTION)){
+			// funcName is not a function
+			// TODO report error to file
+			System.exit(0);
+			return null;
+		}
+		function = (TYPE_FUNCTION)function;
+		// 2. make sure args match function signature
+		TYPE_LIST argsTypes = args.SemantMe();
+
+		argsTypes.compare()
+		// 3. return function return type
+
+		if(retType == null){
+			// TODO report error
+			System.exit(0);
+			return null;
+		}
 	}
 }

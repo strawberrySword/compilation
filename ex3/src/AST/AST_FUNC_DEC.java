@@ -65,6 +65,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		return null;
 	}
 	
+	// TODO move this to arg list
 	// also checks for void types
 	private TYPE_LIST args_to_types(AST_ARG_LIST a){
 		if (a == null){

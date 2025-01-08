@@ -16,4 +16,8 @@ public class TYPE_LIST extends TYPE
 		this.head = head;
 		this.tail = tail;
 	}
+
+	public boolean compare(TYPE_LIST other){
+		return true;
+	}
 }
