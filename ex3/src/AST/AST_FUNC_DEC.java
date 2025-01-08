@@ -48,6 +48,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		TYPE_LIST argTypes = args_to_types(argList);
 		
 		// TODO: check for overloading. if other function with same name exists in a parent class it must have same argTypes
+		// travrse all classes, if parent class: traverse methods and look for the method with the same name.
 		TYPE prevDef = t.find(fName);
 
 		if (prevDef != null){
@@ -55,14 +56,15 @@ public class AST_FUNC_DEC extends AST_DEC {
 			System.exit(0);
 		}
 
-		t.enter(fName, new TYPE_FUNCTION(returnType, fName, argTypes));
+		TYPE_FUNCTION res = new TYPE_FUNCTION(returnType, fName, argTypes);
+		t.enter(fName, res);
 		
 		
 		t.beginScope(false);
 		body.SemantMe();
 		t.endScope();
 		
-		return null;
+		return res;
 	}
 	
 	// also checks for void types
