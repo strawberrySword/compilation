@@ -30,18 +30,22 @@ public class AST_CLASS_DEC extends AST_DEC {
 	public TYPE SemantMe(){
 		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
 		
-		TYPE_CLASS father = (TYPE_CLASS)t.find(this.parentName);
+		TYPE father = t.find(this.parentName);
 		
 		if (father == null && this.parentName != null){ // "class son extends father{}; class father{};"
 			System.out.println("Semantic error: parent class undefined");
 			System.exit(0);
 		}
-		
+		if (father != null && !(father instanceof TYPE_CLASS)){
+			System.out.println("Semantic error: cannot extend non-class type");
+			System.exit(0);
+		}
+
 		t.beginScope(true);
 		TYPE_LIST f = (TYPE_LIST)fields.SemantMe();
 		t.endScope();
 
-		TYPE_CLASS c = new TYPE_CLASS(father, cName, f);
+		TYPE_CLASS c = new TYPE_CLASS((TYPE_CLASS)father, cName, f);
 		t.enter(cName, c);
 
 		return c;
