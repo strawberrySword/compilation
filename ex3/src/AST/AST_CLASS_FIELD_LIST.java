@@ -26,10 +26,6 @@ public class AST_CLASS_FIELD_LIST extends AST_Node {
 	}
 
 	public TYPE SemantMe(){
-		if (this == null){
-			return null;
-		}
-
 		TYPE h = this.value.SemantMe(); 
 		TYPE_LIST l;
 
