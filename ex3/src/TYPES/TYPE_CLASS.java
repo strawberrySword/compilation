@@ -23,4 +23,18 @@ public class TYPE_CLASS extends TYPE
 		this.father = father;
 		this.data_members = data_members;
 	}
+
+	public TYPE findField(String fieldName){
+		TYPE_LIST t = this.data_members;
+		while (t != null){
+			if (t.head.name.equals(fieldName)){
+				return t.head;
+			}
+			t = t.tail;
+		}
+		if (this.father != null){
+			return this.father.findField(fieldName);
+		}
+		return null;
+	}
 }

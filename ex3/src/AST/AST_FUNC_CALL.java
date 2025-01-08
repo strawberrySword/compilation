@@ -40,15 +40,17 @@ public class AST_FUNC_CALL extends AST_EXP {
 	public TYPE SemantMe(){
 		// 1. make sure function is defined and get its type
 		// TODO: funding the function should be scope sensetive maybe should change how we save function or write a method for it
-		// if(var != null){
-		// 	// TODO fimd how to get the function name correctly!!
-		// 	TYPE retType =  SYMBOL_TABLE.getInstance().find(var+"."+fName);
-		// }
 		TYPE function;
 		function = SYMBOL_TABLE.getInstance().find(fName);
 		if(var != null){
-			String varName = "";
-			TYPE varClass = SYMBOL_TABLE.getInstance().find(varName);
+			TYPE varClass = var.SemantMe();
+			if(!(varClass instanceof TYPE_CLASS)){
+				// var is not a class
+				// TODO report error to file
+				System.exit(0);
+				return null;
+			}
+			function = ((TYPE_CLASS)varClass).findField(fName);
 		}
 
 		if(!(function instanceof TYPE_FUNCTION)){

@@ -28,7 +28,8 @@ public class AST_ARRAY_DEF extends AST_DEC {
 			System.out.println("Semantic error: array type undefined");
 			System.exit(0);
 		}
-
-		return new TYPE_ARRAY(arrName, data_type);
+		TYPE_ARRAY arr = new TYPE_ARRAY(arrName, data_type);
+		t.enter(arrName, arr);
+		return arr;
 	}
 }
