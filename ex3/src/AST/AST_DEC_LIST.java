@@ -23,4 +23,14 @@ public class AST_DEC_LIST extends AST_Node {
 		
 		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
 	}
+
+	public TYPE SemantMe(){
+		this.value.SemantMe();
+
+		if(this.next != null){
+			this.next.SemantMe();
+		}
+
+		return null;
+	}
 }
