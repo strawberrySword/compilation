@@ -80,6 +80,6 @@ public class AST_VAR_DEC extends AST_DEC {
 		}
 
 		sTable.enter(this.name, tLeft);
-		return new TYPE_CLASS_VAR_DEC(tLeft, this.name);
+		return new TYPE_VAR_DEC(tLeft, this.name);
 	}
 }
