@@ -98,6 +98,18 @@ public class SYMBOL_TABLE
 		return null;
 	}
 
+	public TYPE findInScope(String name)
+	{
+		SYMBOL_TABLE_ENTRY e;
+
+		for(e = table[hash(name)]; e != null && e.type instanceof TYPE_FOR_SCOPE_BOUNDARIES; e = e.next){
+			if(name.equals((e.name)))
+			{
+				return e.type;
+			}
+		}
+	}
+
 	/***************************************************************************/
 	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/

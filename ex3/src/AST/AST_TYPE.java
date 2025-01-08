@@ -1,4 +1,6 @@
 package AST;
+
+import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
 public class AST_TYPE extends AST_Node /*TODO: determine inheritance*/ {
@@ -11,9 +13,21 @@ public class AST_TYPE extends AST_Node /*TODO: determine inheritance*/ {
 		this.myType = t;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("Type(%s)", this.myType);
 
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Type(%s)", this.myType));
+	}
+
+	public TYPE SemantMe(){
+		TYPE t= SYMBOL_TABLE.getInstance().find(this.myType);
+		if(t == null){
+			// TODO: print error to file
+			System.exit(0);
+			return null;
+		}
+
+		return t;
 	}
 }

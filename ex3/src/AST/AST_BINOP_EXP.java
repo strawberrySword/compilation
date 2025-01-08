@@ -1,4 +1,5 @@
 package AST;
+
 import TYPES.*;
 
 public class AST_BINOP_EXP extends AST_EXP {
@@ -15,6 +16,7 @@ public class AST_BINOP_EXP extends AST_EXP {
 		this.op = o;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("BinopExp(%s)", this.op);
 
@@ -25,5 +27,30 @@ public class AST_BINOP_EXP extends AST_EXP {
 
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.left.SerialNumber);
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.right.SerialNumber);
+	}
+
+    @Override
+	public TYPE SemantMe(){
+		TYPE rightType = this.right.SemantMe();
+		TYPE leftType = this.left.SemantMe();
+		if(!(rightType == leftType)){
+			// TODO report error and stop program!!
+			System.exit(0);
+			return null;
+		}
+		if(!(rightType == TYPE_INT.getInstance()) && !((rightType == TYPE_STRING.getInstance()) && this.op.equals("+"))){
+			// TODO report error and stop program!!
+			System.exit(0);
+			return null;
+		}
+		if(this.op.equals("/") && this.right instanceof AST_INT ){
+			if(((AST_INT)this.right).val == 0){
+				// TODO report error and stop program!!
+				System.exit(0);
+				return null;
+			}
+		}
+
+		return rightType;
 	}
 }

@@ -169,7 +169,7 @@ debug:
 	@echo "***********************************************************"
 	@echo "*                                                         *"
 	@echo "*                                                         *"
-	@echo "* [5] Create a JAR file from from *.class files + CUP JAR *"
+	@echo "* [5.1] Create a JAR file from from *.class files + CUP JAR *"
 	@echo "*                                                         *"
 	@echo "*                                                         *"
 	@echo "***********************************************************"
