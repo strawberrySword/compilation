@@ -74,7 +74,7 @@ public class AST_VAR_DEC extends AST_DEC /*TODO: determine inheritance*/ {
 			tRight = this.newExp.SemantMe(); // "Car x := new Car;"
 		}
 
-		if (!(tRight.inheritsFrom(tLeft))){ // Check inheritance
+		if (!(tRight.inheritsFrom(tLeft))){ // Check inheritance and type mismatch
 			System.out.println("Semantic error: assignment type mismatch");
 			System.exit(0);
 		}
