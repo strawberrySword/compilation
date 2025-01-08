@@ -103,8 +103,28 @@ public class AST_FUNC_DEC extends AST_DEC {
 	}
 
 	// this function assumes no other method of same name in current scope (checked in SemantMe)
+	// true is O.K (no other fields with same name in inheritence, except overrides), false is bad
 	private boolean checkOverride(TYPE ret, String name, TYPE_LIST args, TYPE_CLASS parent){
+		if (parent == null){
+			return true;
+		}
 
-		return false;
+		TYPE otherFunc = parent.findField(name);
+		if (otherFunc != null && !(otherFunc instanceof TYPE_FUNCTION)){ // of course an error - overriding a variable with a function
+			System.out.println("Semantic error: overriding a class field with a method");
+			System.exit(0);
+		}
+
+		// otherFunc is a function or null and parent exists
+		if (otherFunc != null){ // if this is overriding, it's O.K
+			if (ret == ((TYPE_FUNCTION)otherFunc).returnType && name.equals(((TYPE_FUNCTION)otherFunc).name) && args.equals(((TYPE_FUNCTION)otherFunc).params)){
+				return true;
+			}else{ // Other function exists in parent class, which differs from current
+				System.out.println("Semantic error: overloading not allowed");
+				System.exit(0);
+			}
+		}
+
+		return checkOverride(ret, name, args, parent.father);
 	}
 }
