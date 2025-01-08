@@ -28,6 +28,11 @@ public class AST_ARRAY_DEF extends AST_DEC {
 			System.out.println("Semantic error: array type undefined");
 			System.exit(0);
 		}
+		if (data_type.name.equals("void")){
+			System.out.println("Semantic error: array type cannot be void");
+			System.exit(0);
+		}
+		
 		TYPE_ARRAY arr = new TYPE_ARRAY(arrName, data_type);
 		t.enter(arrName, arr);
 		return arr;
