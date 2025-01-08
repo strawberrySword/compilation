@@ -26,7 +26,7 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_ENTRY[] table = new SYMBOL_TABLE_ENTRY[hashArraySize];
 	private SYMBOL_TABLE_ENTRY top;
 	private int top_index = 0;
-	private boolean classFlag = false;
+	private boolean classFlag = false; // classFlag is true when inside a class scope
 
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
@@ -128,7 +128,7 @@ public class SYMBOL_TABLE
 		/* a special TYPE_FOR_SCOPE_BOUNDARIES was developed for them. This     */
 		/* class only contain their type name which is the bottom sign: _|_     */
 		/************************************************************************/
-		this.classFlag = true;
+		this.classFlag = classScope;
 		enter(
 			"SCOPE-BOUNDARY",
 			new TYPE_FOR_SCOPE_BOUNDARIES("NONE"));
@@ -148,7 +148,7 @@ public class SYMBOL_TABLE
 		/**************************************************************************/
 		/* Pop elements from the symbol table stack until a SCOPE-BOUNDARY is hit */		
 		/**************************************************************************/
-		this.classFlag = false;
+		this.classFlag = !classScope;
 
 		while (top.name != "SCOPE-BOUNDARY")
 		{
