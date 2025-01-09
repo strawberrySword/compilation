@@ -40,6 +40,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 	}
 
 	// called when a function is declared in global scope
+	@Override
 	public TYPE SemantMe(){
 		// the whole overriding thing
 
@@ -63,7 +64,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		TYPE_LIST argTypes = this.argList.SemantMe();
 		TYPE_FUNCTION res = new TYPE_FUNCTION(returnType, fName, argTypes);
 		t.enter(fName, res); // for recursion
-		body.SemantMe();
+		body.SemantMe(fName, res);
 
 		t.endScope();
 		t.enter(fName, res); // for use of function
@@ -85,7 +86,13 @@ public class AST_FUNC_DEC extends AST_DEC {
 		}
 
 		TYPE returnType = t.find(this.retType.myType);
-		
+		if(returnType == null){
+			if(!this.retType.myType.equals("void")){
+				System.out.println("Semantic error: return type not found");
+				System.exit(0);
+			}
+			returnType = TYPE_VOID.getInstance();
+		}
 
 		t.beginScope("Function");
 
@@ -98,7 +105,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 
 		TYPE_FUNCTION res = new TYPE_FUNCTION(returnType, fName, argTypes);
 		t.enter(fName, res); // for recursion
-		body.SemantMe();
+		body.SemantMe(fName, res);
 
 		t.endScope();
 		t.enter(fName, res); // for use of function

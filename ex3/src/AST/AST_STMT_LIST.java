@@ -33,4 +33,18 @@ public class AST_STMT_LIST extends AST_Node {
 		
 		return null;
 	}
+	public TYPE SemantMe(String fName, TYPE t){
+		value.SemantMe();
+
+		if (this.next != null){
+			if(this.next.value instanceof AST_STMT_RETURN){
+				next.value.SemantMe(fName, t);
+			}
+			else{
+				next.SemantMe();
+			}
+		}
+		
+		return null;
+	}
 }

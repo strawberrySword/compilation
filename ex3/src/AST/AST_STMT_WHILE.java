@@ -35,7 +35,7 @@ public class AST_STMT_WHILE extends AST_STMT {
 			System.exit(0);
 			return null;
 		}
-		SYMBOL_TABLE.getInstance().beginScope(false);
+		SYMBOL_TABLE.getInstance().beginScope("Loop");
 		
 		body.SemantMe();
 	}
