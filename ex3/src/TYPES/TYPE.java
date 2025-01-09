@@ -18,27 +18,28 @@ public abstract class TYPE
 	public boolean isArray(){ return false;}
 
 	public boolean inheritsFrom(TYPE other){
-		if (!(this instanceof TYPE_CLASS) && !(other instanceof TYPE_CLASS)){ // two primitives
-			return this.name.equals(other.name);
-		}
-		if (this instanceof TYPE_NIL && other instanceof TYPE_CLASS){
-			return true;
-		}
-		if (this instanceof TYPE_NIL && other instanceof TYPE_ARRAY){
-			return true;
-		}
-		if( (this instanceof TYPE_CLASS && !(other instanceof TYPE_CLASS)) || !(this instanceof TYPE_CLASS) && other instanceof TYPE_CLASS){ // one class one primitive
-			return false;
+		if(this == other) return true; // two primitives
+
+		if (this instanceof TYPE_CLASS && !(other instanceof TYPE_CLASS)) return false;
+		if (!(this instanceof TYPE_CLASS) && other instanceof TYPE_CLASS) return false;
+
+		if (this instanceof TYPE_ARRAY && !(other instanceof TYPE_ARRAY)) return false;
+		if (!(this instanceof TYPE_ARRAY) && other instanceof TYPE_ARRAY) return false;
+		
+		
+		if (this instanceof TYPE_CLASS thisClass){ // two class types
+			if (this.name.equals(other.name)) return true;
+
+			if (thisClass.father == null) return false;
+
+			return thisClass.father.inheritsFrom(other);
 		}
 
-		// Two class types
-		if (this.name == other.name){ // two identical types
-			return true;
-		}
-		if (((TYPE_CLASS)this).father == null){ // types not equal and this doesn't inherit from anything
-			return false;
+		if (this instanceof TYPE_ARRAY thisArray){ // two array typs
+			return thisArray.dataType.name.equals(((TYPE_ARRAY)other).dataType.name);
 		}
 
-		return ((TYPE_CLASS)this).father.inheritsFrom(other); // recursive step up
+
+		return false;
 	}
 }
