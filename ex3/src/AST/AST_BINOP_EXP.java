@@ -33,19 +33,39 @@ public class AST_BINOP_EXP extends AST_EXP {
 	public TYPE SemantMe(){
 		TYPE rightType = this.right.SemantMe();
 		TYPE leftType = this.left.SemantMe();
-		if(!(rightType == leftType)){
-			// TODO report error and stop program!!
+
+		if(this.op.equals("=")){
+			boolean isLeftArray = leftType instanceof TYPE_ARRAY;
+			boolean isRightArray = rightType instanceof TYPE_ARRAY;
+			boolean isLeftClass = leftType instanceof TYPE_CLASS;
+			boolean isRightClass = rightType instanceof TYPE_CLASS;
+			boolean isLeftNil = leftType == TYPE_NIL.getInstance();
+			boolean isRightNil = rightType == TYPE_NIL.getInstance();
+
+			if(rightType.inheritsFrom(leftType) || leftType.inheritsFrom(rightType)){
+				return TYPE_INT.getInstance();
+			}
+			if((isRightNil && (isLeftArray || isLeftClass))|| (isLeftNil && (isRightArray || isRightClass))){
+				return TYPE_INT.getInstance();
+			}
+
+			System.out.format(">> Error: cannot compare those vars\n");
+			System.exit(0);
+			return null;
+		}
+		if(rightType != leftType){
+			System.out.format(">> ERROR type mismatch for binop\n");
 			System.exit(0);
 			return null;
 		}
 		if(!(rightType == TYPE_INT.getInstance()) && !((rightType == TYPE_STRING.getInstance()) && this.op.equals("+"))){
-			// TODO report error and stop program!!
+				System.out.format(">> ERROR type mismatch for binop\n");
 				System.exit(0);
 			return null;
 		}
 		if(this.op.equals("/") && this.right instanceof AST_INT ){
 			if(((AST_INT)this.right).val == 0){
-				// TODO report error and stop program!!
+				System.out.format(">> ERROR division by zero\n");
 				System.exit(0);
 				return null;
 			}

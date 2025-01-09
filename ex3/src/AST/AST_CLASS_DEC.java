@@ -47,10 +47,12 @@ public class AST_CLASS_DEC extends AST_DEC {
 		}
 
 		t.beginScope("Class");
-		TYPE_LIST f = (TYPE_LIST)fields.SemantMe((TYPE_CLASS)father);
+		TYPE_LIST f = new TYPE_LIST(null, null);
+		TYPE_CLASS c = new TYPE_CLASS((TYPE_CLASS)father, cName, f);
+		t.enter(cName, c);
+		fields.SemantMe((TYPE_CLASS)father, f);
 		t.endScope();
 
-		TYPE_CLASS c = new TYPE_CLASS((TYPE_CLASS)father, cName, f);
 		t.enter(cName, c);
 
 		return c;
