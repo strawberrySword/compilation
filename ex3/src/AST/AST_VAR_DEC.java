@@ -44,7 +44,7 @@ public class AST_VAR_DEC extends AST_DEC {
 			System.exit(0);
 		}
 
-		if (sTable.find(this.name) != null){ // a variable with this name exists
+		if (sTable.findInScope(this.name) != null){ // a variable with this name exists
 			System.out.println("Semantic error: variable name is taken");
 			System.exit(0);
 		}
