@@ -38,6 +38,6 @@ public class TYPE_LIST extends TYPE
 		if (other.tail == null) // only other list ended
 			return false;
 
-		return this.tail.equals(other.tail);
+		return this.tail.matches(other.tail);
 	}
 }
