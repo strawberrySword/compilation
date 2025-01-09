@@ -12,6 +12,7 @@ public class AST_STMT_LIST extends AST_Node {
 		this.next = l;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("StmtList");
 
@@ -37,8 +38,8 @@ public class AST_STMT_LIST extends AST_Node {
 		value.SemantMe();
 
 		if (this.next != null){
-			if(this.next.value instanceof AST_STMT_RETURN){
-				next.value.SemantMe(fName, t);
+			if(this.next.value instanceof AST_STMT_RETURN ast_stmt_return){
+				ast_stmt_return.SemantMe(fName, t);
 			}
 			else{
 				next.SemantMe();
