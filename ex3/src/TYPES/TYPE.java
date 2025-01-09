@@ -19,7 +19,7 @@ public abstract class TYPE
 
 	public boolean inheritsFrom(TYPE other){
 		if(this == other) return true; // two primitives
-
+		
 		if (this instanceof TYPE_CLASS && !(other instanceof TYPE_CLASS)) return false;
 		if (!(this instanceof TYPE_CLASS) && other instanceof TYPE_CLASS) return false;
 

@@ -39,6 +39,9 @@ public class AST_VAR_FIELD extends AST_VAR {
 			System.exit(0);
 			return null;
 		}
+		if (tf instanceof TYPE_VAR_DEC type_var_dec){
+			return type_var_dec.t;
+		}
 		return tf;
 	}
 }

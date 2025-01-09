@@ -30,8 +30,17 @@ public class AST_STMT_ASSIGN extends AST_STMT {
 	public TYPE SemantMe(){
 		TYPE t1 = var.SemantMe();
 		TYPE t2 = exp.SemantMe();
+		if(t1 instanceof TYPE_VAR_DEC type_var_dec){
+			t1 = type_var_dec.t;
+		}
+		if(t2 instanceof TYPE_VAR_DEC type_var_dec){
+			t2 = type_var_dec.t;
+		}
+		if(t1 instanceof TYPE_ARRAY || t1 instanceof TYPE_CLASS){
+			return null;
+		}
 		if (!t1.inheritsFrom(t2)) {
-			System.out.format(">> ERROR [%d:%d] type mismatch for var := exp\n",6,6);
+			System.out.println(">> ERROR type mismatch for var := exp\n  var: " + t1 + "\n   exp: " + t2);
 			System.exit(0);
 		}
 		return null;
