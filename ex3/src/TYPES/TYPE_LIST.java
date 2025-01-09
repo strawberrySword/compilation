@@ -30,7 +30,7 @@ public class TYPE_LIST extends TYPE
 	}
 
 	public boolean matches(TYPE_LIST other){
-		if (this.head.inheritsFrom(other.head)) // type mismatch
+		if (!(this.head.inheritsFrom(other.head))) // type mismatch
 			return false;
 
 		if (this.tail == null)
