@@ -4,6 +4,7 @@ import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.TYPE;
 import TYPES.TYPE_ARRAY;
 import TYPES.TYPE_CLASS;
+import TYPES.TYPE_INT;
 import TYPES.TYPE_NIL;
 
 public class AST_NEW_EXP extends AST_EXP {
@@ -52,6 +53,18 @@ public class AST_NEW_EXP extends AST_EXP {
 			return (TYPE_CLASS)instanceType;
 		}
 		if (instanceType instanceof TYPE_ARRAY){
+			TYPE lenType = this.len.SemantMe();
+
+			if (this.len instanceof AST_INT && ((AST_INT)this.len).val < 0){
+				System.out.println("Semantic error: array subscript is less than 0");
+				System.exit(0);
+			}
+
+			if (!(lenType instanceof TYPE_INT)){
+				System.out.println("Semantic error: array subscript must be of type int");
+				System.exit(0);
+			}
+			
 			return (TYPE_ARRAY)instanceType;
 		}
 		if (instanceType instanceof TYPE_NIL){
