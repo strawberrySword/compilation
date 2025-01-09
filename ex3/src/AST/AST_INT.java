@@ -16,4 +16,8 @@ public class AST_INT extends AST_EXP {
 
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Int(%s)", this.val));
 	}
+
+	public TYPE SemantMe(){
+		return TYPE_INT.getInstance();
+	}
 }

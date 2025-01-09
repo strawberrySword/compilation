@@ -9,4 +9,8 @@ public class AST_NIL extends AST_EXP {
 
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Nil"));
 	}
+
+	public TYPE SemantMe(){
+		return TYPE_NIL.getInstance();
+	}
 }

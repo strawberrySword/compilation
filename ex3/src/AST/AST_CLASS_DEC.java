@@ -41,7 +41,7 @@ public class AST_CLASS_DEC extends AST_DEC {
 			System.exit(0);
 		}
 
-		t.beginScope(true);
+		t.beginScope("Class");
 		TYPE_LIST f = (TYPE_LIST)fields.SemantMe((TYPE_CLASS)father);
 		t.endScope();
 
