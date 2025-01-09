@@ -11,6 +11,6 @@ public class AST_NIL extends AST_EXP {
 	}
 
 	public TYPE SemantMe(){
-		return null; //TODO: is this legit? how should we handle Nil type?
+		return TYPE_NIL.getInstance();
 	}
 }
