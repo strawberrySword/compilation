@@ -56,7 +56,7 @@ public class AST_VAR_DEC extends AST_DEC {
 			System.exit(0);
 		}
 
-		if ((sTable.inClassDef() && this.newExp != null) || (sTable.inClassDef() && !(this.exp instanceof AST_INT) && !(this.exp instanceof AST_STRING) && !(this.exp instanceof AST_NIL))){ // variables in class definition must be assigned a constant expression
+		if ((sTable.inClassDef() && this.newExp != null) || (sTable.inClassDef() && this.exp != null && !(this.exp instanceof AST_INT) && !(this.exp instanceof AST_STRING) && !(this.exp instanceof AST_NIL))){ // variables in class definition must be assigned a constant expression
 			System.out.println("Semantic error: variable declaration inside class must be assigned a constant expression");
 			System.exit(0);
 		}
