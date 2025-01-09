@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
+
 public class AST_STMT_WHILE extends AST_STMT {
 	AST_EXP cond;
 	AST_STMT_LIST body;
@@ -11,6 +14,7 @@ public class AST_STMT_WHILE extends AST_STMT {
 		this.body = body;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("Stmt_while");
 
@@ -21,5 +25,18 @@ public class AST_STMT_WHILE extends AST_STMT {
 	
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.cond.SerialNumber);
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.body.SerialNumber);
+	}
+
+	@Override
+	public TYPE SemantMe(){
+		TYPE t = cond.SemantMe();
+		if (t != TYPE_INT.getInstance()){
+			System.out.format(">> condition inside while statement is not of type int\n");
+			System.exit(0);
+			return null;
+		}
+		SYMBOL_TABLE.getInstance().beginScope(false);
+		
+		body.SemantMe();
 	}
 }

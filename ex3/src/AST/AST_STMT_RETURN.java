@@ -1,5 +1,4 @@
 package AST;
-import TYPES.*;
 
 public class AST_STMT_RETURN extends AST_STMT {
 	AST_EXP retVal;
@@ -10,6 +9,7 @@ public class AST_STMT_RETURN extends AST_STMT {
 		this.retVal = retVal;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("Stmt_ret");
 
@@ -18,5 +18,14 @@ public class AST_STMT_RETURN extends AST_STMT {
 	
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Stmt_ret"));
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.retVal.SerialNumber);
+	}
+
+	@Override 
+	public TYPE SemantMe() {
+		TYPE t = null;
+		if (this.retVal != null) {
+			t = this.retVal.SemantMe();
+		}
+		return t;
 	}
 }

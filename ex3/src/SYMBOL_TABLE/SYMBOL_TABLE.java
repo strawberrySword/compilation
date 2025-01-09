@@ -6,12 +6,8 @@ package SYMBOL_TABLE;
 /*******************/
 /* GENERAL IMPORTS */
 /*******************/
-import java.io.PrintWriter;
-
-/*******************/
-/* PROJECT IMPORTS */
-/*******************/
 import TYPES.*;
+import java.io.PrintWriter;
 
 /****************/
 /* SYMBOL TABLE */
@@ -26,7 +22,6 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_ENTRY[] table = new SYMBOL_TABLE_ENTRY[hashArraySize];
 	private SYMBOL_TABLE_ENTRY top;
 	private int top_index = 0;
-	private boolean classFlag = false; // classFlag is true when inside a class scope
 
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
@@ -114,13 +109,25 @@ public class SYMBOL_TABLE
 	}
 
 	public boolean inClassDef(){
-		return classFlag;
+		return isUnderScope("Class");
+	}
+
+	public boolean inFunctionDef(){
+		return isUnderScope("Function");
+	}
+
+	public boolean inLoopDef(){
+		return isUnderScope("Loop");
+	}
+
+	public boolean inIfDef(){
+		return isUnderScope("If");
 	}
 
 	/***************************************************************************/
 	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/
-	public void beginScope(boolean classScope)
+	public void beginScope(String name)
 	{
 		/************************************************************************/
 		/* Though <SCOPE-BOUNDARY> entries are present inside the symbol table, */
@@ -128,15 +135,24 @@ public class SYMBOL_TABLE
 		/* a special TYPE_FOR_SCOPE_BOUNDARIES was developed for them. This     */
 		/* class only contain their type name which is the bottom sign: _|_     */
 		/************************************************************************/
-		this.classFlag = classScope;
 		enter(
-			"SCOPE-BOUNDARY",
-			new TYPE_FOR_SCOPE_BOUNDARIES("NONE"));
+			"@SCOPE-BOUNDARY",
+			new TYPE_FOR_SCOPE_BOUNDARIES(name));
 
 		/*********************************************/
 		/* Print the symbol table after every change */
 		/*********************************************/
 		PrintMe();
+	}
+
+	public boolean isUnderScope(String name){
+		SYMBOL_TABLE_ENTRY e;
+		for(e = table[hash(name)]; e != null; e = e.next){
+			if(e.name.equals("@SCOPE-BOUNDARY") && e.type.name.equals(name)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/********************************************************************************/
@@ -148,11 +164,7 @@ public class SYMBOL_TABLE
 		/**************************************************************************/
 		/* Pop elements from the symbol table stack until a SCOPE-BOUNDARY is hit */		
 		/**************************************************************************/
-		if (this.classFlag == true){ // if this was a class scope, close it
-			this.classFlag = false;
-		}
-
-		while (top.name != "SCOPE-BOUNDARY")
+		while (top.name != "@SCOPE-BOUNDARY")
 		{
 			table[top.index] = top.next;
 			top_index = top_index-1;
