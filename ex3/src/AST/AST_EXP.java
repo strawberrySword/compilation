@@ -6,7 +6,5 @@ public abstract class AST_EXP extends AST_Node {
 
 	public void PrintMe(){}
 
-    public TYPE SemantMe(){
-        return null;
-    }
+    public TYPE SemantMe(){return null;}
 }
