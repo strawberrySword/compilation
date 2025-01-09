@@ -5,7 +5,6 @@ import TYPES.TYPE;
 import TYPES.TYPE_ARRAY;
 import TYPES.TYPE_CLASS;
 import TYPES.TYPE_INT;
-import TYPES.TYPE_NIL;
 
 public class AST_NEW_EXP extends AST_EXP {
 
@@ -37,42 +36,31 @@ public class AST_NEW_EXP extends AST_EXP {
 		
 		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
 
-		TYPE instanceType = t.find(this.type.myType);
+		TYPE instanceDataType = t.find(this.type.myType);
 
-		//check that the thing I got is a real type and not "(x, TYPE_INT)"
-		if (!(instanceType.name.equals(this.type.myType))){
+		if(len == null){ // class instance
+			if(!(instanceDataType instanceof TYPE_CLASS)){
+				System.out.println("Semantic error: no such class");
+				System.exit(0);
+			}
+			return instanceDataType;
+		}
+
+		if (this.len instanceof AST_INT && ((AST_INT)this.len).val < 0){
+			System.out.println("Semantic error: array subscript is less than 0");
+			System.exit(0);
+		}
+		TYPE lenType = this.len.SemantMe(); 
+		if (!(lenType instanceof TYPE_INT)){
+				System.out.println("Semantic error: array subscript must be of type int");
+				System.exit(0);
+		}
+		
+		if(instanceDataType == null){
 			System.out.println("Semantic error: no such type");
 			System.exit(0);
 		}
 
-		// only class, array, or NIL instantiation is allowed
-		if (!(instanceType instanceof TYPE_CLASS) && !(instanceType instanceof TYPE_ARRAY) && !(instanceType instanceof TYPE_NIL)){
-			System.out.println("Semantic error: can only instantiate class or array");
-			System.exit(0);
-		}
-
-		if (instanceType instanceof TYPE_CLASS type_class){
-			return type_class;
-		}
-		if (instanceType instanceof TYPE_ARRAY type_array){
-			TYPE lenType = this.len.SemantMe();
-
-			if (this.len instanceof AST_INT && ((AST_INT)this.len).val < 0){
-				System.out.println("Semantic error: array subscript is less than 0");
-				System.exit(0);
-			}
-
-			if (!(lenType instanceof TYPE_INT)){
-				System.out.println("Semantic error: array subscript must be of type int");
-				System.exit(0);
-			}
-			
-			return type_array;
-		}
-		if (instanceType instanceof TYPE_NIL type_nil){
-			return type_nil;
-		}
-
-		return null;
+		return new TYPE_ARRAY(instanceDataType.name,instanceDataType);
 	}
 }
