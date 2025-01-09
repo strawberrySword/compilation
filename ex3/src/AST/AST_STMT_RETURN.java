@@ -25,26 +25,25 @@ public class AST_STMT_RETURN extends AST_STMT {
 
 	public TYPE SemantMe(String fName, TYPE t) {
 		if(!SYMBOL_TABLE.getInstance().inFunctionDef()) {
-			System.out.format(">> ERROR at line %d\n", 3);
+			System.out.format(">> ERROR at line\n");
 			System.exit(0);
 		}
 
-		if (this.retVal != null) {
-			TYPE retType = this.retVal.SemantMe();
-			if (!t.equals(retType)) {
-				System.out.format(">> ERROR at line %d\n", 3);
+		TYPE retType = retVal.SemantMe();
+
+		if(retType == null) {
+			if(t != TYPE_VOID.getInstance()) {
+				System.out.format(">> ERROR at line\n");
 				System.exit(0);
 			}
+			return TYPE_VOID.getInstance();
 		}
-		else {
-			if (t != TYPE_VOID.getInstance()) {
-				System.out.format(">> ERROR at line %d\n", 3);
-				System.exit(0);
-			}
+
+		if(retType != t) {
+			System.out.format(">> ERROR at line\n");
+			System.exit(0);
 		}
-		if (this.retVal != null) {
-			t = this.retVal.SemantMe();
-		}
+
 		return t;
 	}
 }

@@ -191,7 +191,7 @@ exp			::=		var:v 															{:RESULT = v;:}
 					| STRING:s 														{:RESULT = new AST_STRING(s);:}
 					;
 
-eqBinop		::= 	exp:e1 EQ exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"==",e2);:}
+eqBinop		::= 	exp:e1 EQ exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"=",e2);:}
 					| ltGtBinop:e 													{:RESULT = e;:}
 					;
 
