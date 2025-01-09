@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.*;
+import TYPES.*;
+
 public class AST_STMT_RETURN extends AST_STMT {
 	AST_EXP retVal;
 
@@ -20,9 +23,25 @@ public class AST_STMT_RETURN extends AST_STMT {
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.retVal.SerialNumber);
 	}
 
-	@Override 
-	public TYPE SemantMe() {
-		TYPE t = null;
+	public TYPE SemantMe(String fName, TYPE t) {
+		if(!SYMBOL_TABLE.getInstance().inFunctionDef()) {
+			System.out.format(">> ERROR at line %d\n", 3);
+			System.exit(0);
+		}
+
+		if (this.retVal != null) {
+			TYPE retType = this.retVal.SemantMe();
+			if (!t.equals(retType)) {
+				System.out.format(">> ERROR at line %d\n", 3);
+				System.exit(0);
+			}
+		}
+		else {
+			if (t != TYPE_VOID.getInstance()) {
+				System.out.format(">> ERROR at line %d\n", 3);
+				System.exit(0);
+			}
+		}
 		if (this.retVal != null) {
 			t = this.retVal.SemantMe();
 		}
