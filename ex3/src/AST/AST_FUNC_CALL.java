@@ -46,8 +46,7 @@ public class AST_FUNC_CALL extends AST_EXP {
 		if(var != null){
 			TYPE varClass = var.SemantMe();
 			if(!(varClass instanceof TYPE_CLASS)){
-				// var is not a class
-				// TODO report error to file
+				System.out.println("Semantic error: var is not a class");
 				System.exit(0);
 				return null;
 			}
