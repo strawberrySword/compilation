@@ -13,6 +13,7 @@ public class AST_VAR_FIELD extends AST_VAR {
 		this.fieldName = f;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("Var_field(%s)", this.fieldName);
 
@@ -23,6 +24,7 @@ public class AST_VAR_FIELD extends AST_VAR {
 		if (this.var != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.var.SerialNumber);
 	}
 
+	@Override
 	public TYPE SemantMe(){
 		TYPE t = this.var.SemantMe();
 		if (!(t instanceof TYPE_CLASS)){

@@ -13,6 +13,7 @@ public class AST_CLASS_FIELD_LIST extends AST_Node {
 		this.next = l;
 	}
 
+    @Override
 	public void PrintMe(){
 		System.out.format("CfieldList");
 
@@ -27,8 +28,8 @@ public class AST_CLASS_FIELD_LIST extends AST_Node {
 
 	public TYPE SemantMe(TYPE_CLASS father){
 		TYPE h;
-		if (this.value instanceof AST_FUNC_DEC){
-			h = ((AST_FUNC_DEC)this.value).SemantMe(father);
+		if (this.value instanceof AST_FUNC_DEC ast_func_dec){
+			h = ast_func_dec.SemantMe(father);
 		}else{
 			h = this.value.SemantMe(); 
 		}

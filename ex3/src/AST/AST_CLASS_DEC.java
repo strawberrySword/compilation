@@ -1,7 +1,7 @@
 package AST;
 
-import TYPES.*;
 import SYMBOL_TABLE.*;
+import TYPES.*;
 
 public class AST_CLASS_DEC extends AST_DEC {
 
@@ -17,6 +17,7 @@ public class AST_CLASS_DEC extends AST_DEC {
 		this.fields = f;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("ClassDec(%s, %s)", this.cName, this.parentName);
 
@@ -27,6 +28,7 @@ public class AST_CLASS_DEC extends AST_DEC {
 		if (this.fields != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.fields.SerialNumber);
 	}
 
+	@Override
 	public TYPE SemantMe(){
 		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
 		

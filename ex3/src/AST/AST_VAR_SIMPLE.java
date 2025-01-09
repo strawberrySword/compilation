@@ -12,12 +12,14 @@ public class AST_VAR_SIMPLE extends AST_VAR {
 		this.name = n;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("var_simple(%s)", this.name);
 
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Var_simple(%s)", this.name));
 	}
 
+	@Override
 	public TYPE SemantMe(){
 		TYPE t =  SYMBOL_TABLE.getInstance().find(name);
 		if(t == null){

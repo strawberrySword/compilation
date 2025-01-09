@@ -1,5 +1,8 @@
 package AST;
 
+import SYMBOL_TABLE.*;
+import TYPES.*;
+
 public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 	AST_VAR var;
 	String funcName;
@@ -34,6 +37,7 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 		this.args = null;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("Stmt_FuncCall(%s)", this.funcName);
 
@@ -44,5 +48,46 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 	
 		if (this.var != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.var.SerialNumber);
 		if (this.args != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.args.SerialNumber);
+	}
+
+	@Override
+	public TYPE SemantMe(){
+		// 1. make sure function is defined and get its type
+		TYPE function;
+		function = SYMBOL_TABLE.getInstance().find(funcName);
+		if(var != null){
+			TYPE varClass = var.SemantMe();
+			if(!(varClass instanceof TYPE_CLASS)){
+				// var is not a class
+				// TODO report error to file
+				System.exit(0);
+				return null;
+			}
+			function = ((TYPE_CLASS)varClass).findField(funcName);
+		}
+
+		if(!(function instanceof TYPE_FUNCTION)){
+			// funcName is not a function
+			// TODO report error to file
+			System.exit(0);
+			return null;
+		}
+		// 2. make sure args match function signature
+		TYPE_LIST argsTypes = args.SemantMe();
+
+		if(!argsTypes.matches(((TYPE_FUNCTION)function).params)){
+			// args do not match function signature
+			// TODO report error to file: args do not match function signature
+			System.exit(0);
+			return null;
+		}
+		// 3. return function return type
+
+		if(((TYPE_FUNCTION)function).returnType == null){
+			// TODO report error
+			System.exit(0);
+			return null;
+		}
+		return ((TYPE_FUNCTION)function).returnType;
 	}
 }

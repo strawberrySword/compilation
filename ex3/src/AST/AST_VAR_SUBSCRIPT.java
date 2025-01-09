@@ -13,6 +13,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR {
 		this.exp = e;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("Var_subscript");
 
@@ -25,6 +26,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR {
 		if (this.exp != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.exp.SerialNumber);
 	}
 
+	@Override
 	public TYPE SemantMe(){
 		TYPE t = var.SemantMe();
 

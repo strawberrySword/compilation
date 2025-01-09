@@ -27,6 +27,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		this.argList = new AST_ARG_LIST(t1,a1,args);		
 	}
 
+    @Override
 	public void PrintMe(){
 		System.out.format("FuncDec(%s, %s)", this.retType.myType, this.fName);
 
@@ -127,13 +128,9 @@ public class AST_FUNC_DEC extends AST_DEC {
 
 		// otherFunc exists in hierarchy, may be null
 		if (otherFunc != null){ // overriding is O.K
-			if (ret == ((TYPE_FUNCTION)otherFunc).returnType && name.equals(((TYPE_FUNCTION)otherFunc).name) && args.equals(((TYPE_FUNCTION)otherFunc).params)){
-				return true;
-			}else{ // Other function exists in hierarchy, which differs from current but matches name
-				return false;
-			}
-		}else{ // this is the first declaration of this function
-			return true;
-		}
+            return ret == ((TYPE_FUNCTION)otherFunc).returnType && name.equals(((TYPE_FUNCTION)otherFunc).name) && args.equals(((TYPE_FUNCTION)otherFunc).params); // Other function exists in hierarchy, which differs from current but matches name
+		} 
+		return true; // this is the first declaration of this function
+		
 	}
 }

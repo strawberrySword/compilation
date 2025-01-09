@@ -19,6 +19,7 @@ public class AST_NEW_EXP extends AST_EXP {
 		this.len = e;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("NewExp(%s)", this.type.myType);
 
@@ -28,6 +29,7 @@ public class AST_NEW_EXP extends AST_EXP {
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.len.SerialNumber);
 	}
 
+	@Override
 	public TYPE SemantMe(){
 		// check if a class is instantiated.
 		// or array type
@@ -49,10 +51,10 @@ public class AST_NEW_EXP extends AST_EXP {
 			System.exit(0);
 		}
 
-		if (instanceType instanceof TYPE_CLASS){
-			return (TYPE_CLASS)instanceType;
+		if (instanceType instanceof TYPE_CLASS type_class){
+			return type_class;
 		}
-		if (instanceType instanceof TYPE_ARRAY){
+		if (instanceType instanceof TYPE_ARRAY type_array){
 			TYPE lenType = this.len.SemantMe();
 
 			if (this.len instanceof AST_INT && ((AST_INT)this.len).val < 0){
@@ -65,10 +67,10 @@ public class AST_NEW_EXP extends AST_EXP {
 				System.exit(0);
 			}
 			
-			return (TYPE_ARRAY)instanceType;
+			return type_array;
 		}
-		if (instanceType instanceof TYPE_NIL){
-			return (TYPE_NIL)instanceType;
+		if (instanceType instanceof TYPE_NIL type_nil){
+			return type_nil;
 		}
 
 		return null;

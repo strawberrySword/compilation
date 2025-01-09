@@ -40,7 +40,7 @@ public class AST_BINOP_EXP extends AST_EXP {
 		}
 		if(!(rightType == TYPE_INT.getInstance()) && !((rightType == TYPE_STRING.getInstance()) && this.op.equals("+"))){
 			// TODO report error and stop program!!
-			System.exit(0);
+				System.exit(0);
 			return null;
 		}
 		if(this.op.equals("/") && this.right instanceof AST_INT ){

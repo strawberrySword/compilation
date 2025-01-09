@@ -17,6 +17,7 @@ public class AST_VAR_DEC extends AST_DEC {
 		this.newExp = ne;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("VarDec(%s, %s)", this.type.myType, this.name);
 
@@ -29,6 +30,7 @@ public class AST_VAR_DEC extends AST_DEC {
 		if (this.newExp != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.newExp.SerialNumber);
 	}
 
+	@Override
 	public TYPE SemantMe(){
 		// type != void
 		// Name not taken

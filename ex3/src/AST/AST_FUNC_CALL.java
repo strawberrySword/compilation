@@ -26,6 +26,7 @@ public class AST_FUNC_CALL extends AST_EXP {
 		this.args = new AST_EXP_LIST(a1,l);
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("FuncCall(%s)", this.fName);
 
@@ -37,9 +38,9 @@ public class AST_FUNC_CALL extends AST_EXP {
 		if (this.args != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.args.SerialNumber);
 	}
 
+	@Override
 	public TYPE SemantMe(){
 		// 1. make sure function is defined and get its type
-		// TODO: funding the function should be scope sensetive maybe should change how we save function or write a method for it
 		TYPE function;
 		function = SYMBOL_TABLE.getInstance().find(fName);
 		if(var != null){
@@ -62,7 +63,7 @@ public class AST_FUNC_CALL extends AST_EXP {
 		// 2. make sure args match function signature
 		TYPE_LIST argsTypes = args.SemantMe();
 
-		if(!argsTypes.equals(((TYPE_FUNCTION)function).params)){
+		if(!argsTypes.matches(((TYPE_FUNCTION)function).params)){
 			// args do not match function signature
 			// TODO report error to file: args do not match function signature
 			System.exit(0);

@@ -11,12 +11,14 @@ public class AST_INT extends AST_EXP {
 		this.val = i;
 	}
 
+	@Override
 	public void PrintMe(){
 		System.out.format("Int(%d)", this.val);
 
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Int(%s)", this.val));
 	}
 
+	@Override
 	public TYPE SemantMe(){
 		return TYPE_INT.getInstance();
 	}

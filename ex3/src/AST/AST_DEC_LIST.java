@@ -11,7 +11,7 @@ public class AST_DEC_LIST extends AST_Node {
 		this.value = d;
 		this.next = l;
 	}
-
+	@Override
 	public void PrintMe(){
 		System.out.format("DecList");
 
