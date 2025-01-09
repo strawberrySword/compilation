@@ -22,7 +22,8 @@ public class AST_NEW_EXP extends AST_EXP {
 	public void PrintMe(){
 		System.out.format("NewExp(%s)", this.type.myType);
 
-		this.len.PrintMe();
+
+		if (this.len != null) this.len.PrintMe();
 
 		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("NewExp(%s)", this.type.myType));
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.len.SerialNumber);
