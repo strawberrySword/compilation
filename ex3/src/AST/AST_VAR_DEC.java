@@ -77,7 +77,7 @@ public class AST_VAR_DEC extends AST_DEC {
 		if (this.newExp == null){
 			if (this.exp == null){ // both null "int x;"
 				sTable.enter(this.name, tLeft);
-				return tLeft;
+				return new TYPE_VAR_DEC(tLeft, this.name);
 			}
 
 			tRight = this.exp.SemantMe(); // "int x := 32 + 98;"
