@@ -46,7 +46,11 @@ public class AST_FUNC_DEC extends AST_DEC {
 		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
 
 		TYPE returnType = t.find(this.retType.myType);
-		
+		if (returnType == null && !(this.retType.myType.equals("void"))){ // void is allowed
+			System.out.println("Semantic error: boid return type not allowed");
+			System.exit(0);
+		}
+
 		TYPE prevDef = t.find(fName);
 
 		if (prevDef != null){
