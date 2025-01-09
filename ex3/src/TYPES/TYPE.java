@@ -24,6 +24,9 @@ public abstract class TYPE
 		if (this instanceof TYPE_NIL && other instanceof TYPE_CLASS){
 			return true;
 		}
+		if (this instanceof TYPE_NIL && other instanceof TYPE_ARRAY){
+			return true;
+		}
 		if( (this instanceof TYPE_CLASS && !(other instanceof TYPE_CLASS)) || !(this instanceof TYPE_CLASS) && other instanceof TYPE_CLASS){ // one class one primitive
 			return false;
 		}
