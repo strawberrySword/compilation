@@ -1,4 +1,5 @@
 package AST;
+import TYPES.*;
 
 public class AST_EXP_LIST extends AST_Node {
 
@@ -22,5 +23,15 @@ public class AST_EXP_LIST extends AST_Node {
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.value.SerialNumber);
 
 		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
+	}
+
+	public TYPE_LIST SemantMe(){		
+		TYPE expType = value.SemantMe();
+		
+		if (this.next == null){
+			return new TYPE_LIST(expType, null);
+		}
+
+		return new TYPE_LIST(expType, this.next.SemantMe());
 	}
 }
