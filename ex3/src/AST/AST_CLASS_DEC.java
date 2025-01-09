@@ -50,7 +50,14 @@ public class AST_CLASS_DEC extends AST_DEC {
 		TYPE_LIST f = new TYPE_LIST(null, null);
 		TYPE_CLASS c = new TYPE_CLASS((TYPE_CLASS)father, cName, f);
 		t.enter(cName, c);
-		fields.SemantMe((TYPE_CLASS)father, f);
+		fields.SemantMe((TYPE_CLASS)father, c.data_members);
+
+		TYPE_LIST templist = c.data_members;
+		while(templist != null){
+			System.out.println("filed####################"+templist.head.name+"\n");
+			templist = templist.tail;
+		}
+
 		t.endScope();
 
 		t.enter(cName, c);

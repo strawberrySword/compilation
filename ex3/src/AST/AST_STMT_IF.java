@@ -29,14 +29,13 @@ public class AST_STMT_IF extends AST_STMT {
 
 	@Override
 	public TYPE SemantMe(){
+		SYMBOL_TABLE.getInstance().beginScope("If");
 		TYPE t = cond.SemantMe();
 		if (t != TYPE_INT.getInstance()){
 			System.out.format(">> condition inside if statement is not of type int\n");
 			System.exit(0);
 			return null;
 		}
-		SYMBOL_TABLE.getInstance().beginScope("If");
-
 		body.SemantMe();
 
 		SYMBOL_TABLE.getInstance().endScope();

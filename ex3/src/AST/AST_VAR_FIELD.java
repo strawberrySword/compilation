@@ -28,14 +28,14 @@ public class AST_VAR_FIELD extends AST_VAR {
 	public TYPE SemantMe(){
 		TYPE t = this.var.SemantMe();
 		if (!(t instanceof TYPE_CLASS)){
-			System.out.format(">> ERROR [%d:%d] access field of non-class variable\n",6,6);
+			System.out.format(">> ERROR access field of non-class variable\n");
 			System.exit(0);
 			return null;
 		}
 		TYPE_CLASS tc = (TYPE_CLASS)t;
 		TYPE tf = tc.findField(this.fieldName);
 		if (tf == null){
-			System.out.format(">> ERROR [%d:%d] field %s does not exist in class\n",6,6,this.fieldName);
+			System.out.format(">> ERROR field does not exist in class\n");
 			System.exit(0);
 			return null;
 		}

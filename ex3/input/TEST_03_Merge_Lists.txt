@@ -5,13 +5,16 @@ class IntList
 }
 
 IntList MergeLists(IntList l1, IntList l2)
-{
+{   
+    int x := 1;
     if (l1 = nil)
     {
+        int y := 1;
         return l2;
     }
     if (l2 = nil)
     {
+        int y := 1;
         return l1;
     }
     
