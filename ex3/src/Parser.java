@@ -390,7 +390,6 @@ public class Parser extends java_cup.runtime.lr_parser {
 	}
 	public void report_error(String message, Object info)
 	{
-		
 		writer.write("Error("+lexer.getLine() + ")");
 		writer.close();
 		System.exit(0);
@@ -955,7 +954,7 @@ class CUP$Parser$actions {
 		int e2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		AST_EXP e2 = (AST_EXP)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		RESULT = new AST_BINOP_EXP(e1,"==",e2);
+		RESULT = new AST_BINOP_EXP(e1,"=",e2);
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("eqBinop",18, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

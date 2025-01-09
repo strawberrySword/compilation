@@ -61,8 +61,10 @@ public class AST_FUNC_DEC extends AST_DEC {
 		}
 			
 		t.beginScope("Function");
-
-		TYPE_LIST argTypes = this.argList.SemantMe();
+		TYPE_LIST argTypes = null;
+		if (this.argList != null){
+			argTypes = this.argList.SemantMe();
+		}
 		TYPE_FUNCTION res = new TYPE_FUNCTION(returnType, fName, argTypes);
 		t.enter(fName, res); // for recursion
 		body.SemantMe(fName, res);
