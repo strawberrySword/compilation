@@ -99,7 +99,10 @@ public class AST_FUNC_DEC extends AST_DEC {
 
 		t.beginScope("Function");
 
-		TYPE_LIST argTypes = this.argList.SemantMe();
+		TYPE_LIST argTypes = null;
+		if (this.argList != null){
+			argTypes = this.argList.SemantMe();
+		}
 
 		if (!(checkOverride(returnType, fName, argTypes, this.myDad))){
 			System.out.println("Semantic error: overloading is not allowed");
