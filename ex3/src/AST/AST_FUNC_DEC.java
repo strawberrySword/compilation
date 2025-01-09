@@ -54,7 +54,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 			System.exit(0);
 		}
 			
-		t.beginScope(false);
+		t.beginScope("Function");
 
 		TYPE_LIST argTypes = this.argList.SemantMe();
 		TYPE_FUNCTION res = new TYPE_FUNCTION(returnType, fName, argTypes);
@@ -83,7 +83,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		TYPE returnType = t.find(this.retType.myType);
 		
 
-		t.beginScope(false);
+		t.beginScope("Function");
 
 		TYPE_LIST argTypes = this.argList.SemantMe();
 
