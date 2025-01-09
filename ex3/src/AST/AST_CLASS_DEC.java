@@ -32,7 +32,10 @@ public class AST_CLASS_DEC extends AST_DEC {
 	public TYPE SemantMe(){
 		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
 		
-		TYPE father = t.find(this.parentName);
+		TYPE father = null;
+		if (this.parentName != null){
+			father = t.find(this.parentName);
+		}
 		
 		if (father == null && this.parentName != null){ // "class son extends father{}; class father{};"
 			System.out.println("Semantic error: parent class undefined");
