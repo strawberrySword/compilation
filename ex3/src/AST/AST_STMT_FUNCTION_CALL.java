@@ -58,8 +58,7 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 		if(var != null){
 			TYPE varClass = var.SemantMe();
 			if(!(varClass instanceof TYPE_CLASS)){
-				// var is not a class
-				// TODO report error to file
+				System.out.println("Semantic error: var is not a class");
 				System.exit(0);
 				return null;
 			}
@@ -67,36 +66,28 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 		}
 
 		if(!(function instanceof TYPE_FUNCTION)){
-			// funcName is not a function
-			// TODO report error to file
+			System.out.println("Semantic error: funcName is not a function");
 			System.exit(0);
 			return null;
 		}
+
 		// 2. make sure args match function signature
 		if(args != null) {
 			TYPE_LIST argsTypes = args.SemantMe();
 		 
-			if(!argsTypes.matches(((TYPE_FUNCTION)function).params)){
-				// args do not match function signature
-				// TODO report error to file: args do not match function signature
+			if(!(argsTypes.matches(((TYPE_FUNCTION)function).params))){
+				System.out.println("args do not match function signature");
 				System.exit(0);
 				return null;
 			}
 		} else {
 			if(((TYPE_FUNCTION)function).params != null){
-				// args do not match function signature
-				// TODO report error to file: args do not match function signature
+				System.out.println("args do not match function signature");
 				System.exit(0);
 				return null;
 			}
 		}
-		// 3. return function return type
 
-		if(((TYPE_FUNCTION)function).returnType == null){
-			// TODO report error
-			System.exit(0);
-			return null;
-		}
 		return ((TYPE_FUNCTION)function).returnType;
 	}
 }
