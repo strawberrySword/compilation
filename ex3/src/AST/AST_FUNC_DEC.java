@@ -105,24 +105,24 @@ public class AST_FUNC_DEC extends AST_DEC {
 	// this function assumes no other method of same name in current scope (checked in SemantMe)
 	// true is O.K (no other fields with same name in inheritence, except overrides), false is bad
 	private boolean checkOverride(TYPE ret, String name, TYPE_LIST args, TYPE_CLASS parent){
-		if (parent == null){
+		if (parent == null){ // function is declared in this class and there is no hierarchy
 			return true;
 		}
 
-		TYPE otherFunc = parent.findField(name);
+		TYPE otherFunc = parent.findField(name); // searches in hierarchy
 		if (otherFunc != null && !(otherFunc instanceof TYPE_FUNCTION)){ // of course an error - overriding a variable with a function
 			return false;
 		}
 
-		// otherFunc is a function or null and parent exists
+		// otherFunc exists in hierarchy, may be null
 		if (otherFunc != null){ // overriding is O.K
 			if (ret == ((TYPE_FUNCTION)otherFunc).returnType && name.equals(((TYPE_FUNCTION)otherFunc).name) && args.equals(((TYPE_FUNCTION)otherFunc).params)){
 				return true;
-			}else{ // Other function exists in parent class, which differs from current but matches name
+			}else{ // Other function exists in hierarchy, which differs from current but matches name
 				return false;
 			}
+		}else{ // this is the first declaration of this function
+			return true;
 		}
-
-		return checkOverride(ret, name, args, parent.father);
 	}
 }
