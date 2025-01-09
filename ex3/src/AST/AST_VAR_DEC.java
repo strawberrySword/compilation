@@ -60,8 +60,14 @@ public class AST_VAR_DEC extends AST_DEC {
 		}
 
 
-		 // type of assignment must match declaration type 
+		// type of assignment must match declaration type 
 		TYPE tLeft = sTable.find(this.type.myType);
+		// check that the given type is an actual type and not an instance
+		if (!(tLeft.name.equals(this.type.myType))){
+			System.out.println("Semantic error: type does not exist");
+			System.exit(0);
+		}
+		
 		TYPE tRight;
 		if (this.newExp == null){
 			if (this.exp == null){ // both null "int x;"
