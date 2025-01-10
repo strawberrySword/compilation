@@ -9,12 +9,13 @@ public class AST_ARG_LIST extends AST_Node {
 	public String name;
 	public AST_ARG_LIST next;
 
-	public AST_ARG_LIST(AST_TYPE t, String n, AST_ARG_LIST l) {
+	public AST_ARG_LIST(AST_TYPE t, String n, AST_ARG_LIST l, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.type = t;
 		this.name = n;
 		this.next = l;
+		this.lineNum = line;
 	}
 
 	@Override

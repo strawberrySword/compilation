@@ -8,33 +8,37 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 	String funcName;
 	AST_EXP_LIST args;
 
-	public AST_STMT_FUNCTION_CALL(AST_VAR var, String funcName, AST_EXP arg1, AST_EXP_LIST args) {
+	public AST_STMT_FUNCTION_CALL(AST_VAR var, String funcName, AST_EXP arg1, AST_EXP_LIST args, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 
 		this.var = var;
 		this.funcName = funcName;
 		this.args = new AST_EXP_LIST(arg1, args);
+		this.lineNum = line;
 	}
-	public AST_STMT_FUNCTION_CALL(AST_VAR var, String funcName) {
+	public AST_STMT_FUNCTION_CALL(AST_VAR var, String funcName, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 
 		this.var = var;
 		this.funcName = funcName;
 		this.args = null;
+		this.lineNum = line;
 	}
-	public AST_STMT_FUNCTION_CALL(String funcName, AST_EXP arg1, AST_EXP_LIST args) {
+	public AST_STMT_FUNCTION_CALL(String funcName, AST_EXP arg1, AST_EXP_LIST args, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 
 		this.var = null;
 		this.funcName = funcName;
 		this.args = new AST_EXP_LIST(arg1, args);
+		this.lineNum = line;
 	}
-	public AST_STMT_FUNCTION_CALL(String funcName) {
+	public AST_STMT_FUNCTION_CALL(String funcName, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.var = null;
 		this.funcName = funcName;
 		this.args = null;
+		this.lineNum = line;
 	}
 
 	@Override

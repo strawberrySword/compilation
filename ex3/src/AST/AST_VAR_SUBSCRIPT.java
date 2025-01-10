@@ -6,11 +6,12 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR {
 	public AST_VAR var;
 	public AST_EXP exp;
 
-	public AST_VAR_SUBSCRIPT(AST_VAR v, AST_EXP e) {
+	public AST_VAR_SUBSCRIPT(AST_VAR v, AST_EXP e, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.var = v;
 		this.exp = e;
+		this.lineNum = line;
 	}
 
 	@Override

@@ -6,11 +6,12 @@ public class AST_EXP_LIST extends AST_Node {
 	public AST_EXP value;
 	public AST_EXP_LIST next;
 	
-	public AST_EXP_LIST(AST_EXP e, AST_EXP_LIST l) {
+	public AST_EXP_LIST(AST_EXP e, AST_EXP_LIST l, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.value = e;
 		this.next = l;
+		this.lineNum = line;
 	}
 
 	@Override

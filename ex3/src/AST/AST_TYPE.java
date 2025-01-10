@@ -7,10 +7,11 @@ public class AST_TYPE extends AST_Node {
 
 	public String myType;
 
-	public AST_TYPE(String t) {
+	public AST_TYPE(String t, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.myType = t;
+		this.lineNum = line;
 	}
 
 	@Override
