@@ -98,17 +98,23 @@ public class AST_VAR_DEC extends AST_DEC {
 		}
 
 		if((tLeft instanceof TYPE_ARRAY || tLeft instanceof TYPE_CLASS) && tRight == TYPE_NIL.getInstance()){
-			return null;
+			sTable.enter(this.name, tLeft);
+			return new TYPE_VAR_DEC(tLeft, this.name);
 		}
 
-		if (tLeft instanceof TYPE_ARRAY && tRight instanceof TYPE_ARRAY){
+		if (tLeft instanceof TYPE_ARRAY lArr && tRight instanceof TYPE_ARRAY rArr){
+			if (rArr.name.equals(rArr.dataType.name) && lArr.dataType.name.equals(rArr.dataType.name)){ // arr1 := new int[8];
+				sTable.enter(this.name, tLeft);
+				return new TYPE_VAR_DEC(tLeft, this.name);
+			}
 			if (!(tLeft.name.equals(tRight.name))){ // two arrays must be of exactly the same type
 				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("Semantic error: assignment type mismatch");
 				System.exit(0);
 			}
-
-			return null;
+			
+			sTable.enter(this.name, tLeft);
+			return new TYPE_VAR_DEC(tLeft, this.name);
 		}
 
 		if (!(tRight.inheritsFrom(tLeft))){ // Check inheritance and type mismatch

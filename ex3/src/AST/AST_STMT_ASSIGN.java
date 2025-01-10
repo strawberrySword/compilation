@@ -30,6 +30,8 @@ public class AST_STMT_ASSIGN extends AST_STMT {
 
 	@Override
 	public TYPE SemantMe(){
+		SYMBOL_TABLE table = SYMBOL_TABLE.getInstance();
+
 		TYPE t1 = var.SemantMe();
 		TYPE t2 = exp.SemantMe();
 		if(t1 instanceof TYPE_VAR_DEC type_var_dec){
@@ -42,7 +44,10 @@ public class AST_STMT_ASSIGN extends AST_STMT {
 			return null;
 		}
 
-		if (t1 instanceof TYPE_ARRAY && t2 instanceof TYPE_ARRAY){
+		if (t1 instanceof TYPE_ARRAY arr1 && t2 instanceof TYPE_ARRAY arr2){
+			if (arr2.name.equals(arr2.dataType.name) && arr1.dataType.name.equals(arr2.dataType.name)){ // arr1 := new int[8];
+				return null;
+			}
 			if (!(t1.name.equals(t2.name))){ // two arrays must be of exactly the same type
 				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("Semantic error: assignment type mismatch");
