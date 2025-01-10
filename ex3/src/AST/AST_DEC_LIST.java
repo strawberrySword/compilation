@@ -5,11 +5,12 @@ public class AST_DEC_LIST extends AST_Node {
 	public AST_DEC value;
 	public AST_DEC_LIST next;
 
-	public AST_DEC_LIST(AST_DEC d, AST_DEC_LIST l) {
+	public AST_DEC_LIST(AST_DEC d, AST_DEC_LIST l, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.value = d;
 		this.next = l;
+		this.lineNum = line;
 	}
 	@Override
 	public void PrintMe(){
