@@ -24,7 +24,7 @@ public class AST_FUNC_CALL extends AST_EXP {
 		
 		this.var = v;
 		this.fName = f;
-		this.args = new AST_EXP_LIST(a1,l);
+		this.args = new AST_EXP_LIST(a1,l, line);
 		this.lineNum = line;
 	}
 

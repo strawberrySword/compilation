@@ -25,7 +25,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		this.retType = t;
 		this.fName = n;
 		this.body = b;
-		this.argList = new AST_ARG_LIST(t1,a1,args);
+		this.argList = new AST_ARG_LIST(t1,a1,args, line);
 		this.lineNum = line;
 	}
 

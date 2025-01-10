@@ -13,7 +13,7 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 
 		this.var = var;
 		this.funcName = funcName;
-		this.args = new AST_EXP_LIST(arg1, args);
+		this.args = new AST_EXP_LIST(arg1, args, line);
 		this.lineNum = line;
 	}
 	public AST_STMT_FUNCTION_CALL(AST_VAR var, String funcName, int line) {
@@ -29,7 +29,7 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 
 		this.var = null;
 		this.funcName = funcName;
-		this.args = new AST_EXP_LIST(arg1, args);
+		this.args = new AST_EXP_LIST(arg1, args, line);
 		this.lineNum = line;
 	}
 	public AST_STMT_FUNCTION_CALL(String funcName, int line) {
