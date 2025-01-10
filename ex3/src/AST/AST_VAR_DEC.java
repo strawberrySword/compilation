@@ -43,21 +43,25 @@ public class AST_VAR_DEC extends AST_DEC {
 		
 
 		if (this.type.myType.equals("void")){ // variable declaration of type void
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: variable cannot be of type void");
 			System.exit(0);
 		}
 
 		if (sTable.findInScope(this.name) != null){ // a variable with this name exists
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: variable name is taken");
 			System.exit(0);
 		}
 
 		if (sTable.find(this.type.myType) == null){ // type does not exist
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: type "+this.type.myType+" does not exist");
 			System.exit(0);
 		}
 
 		if ((sTable.inClassDef() && this.newExp != null) || (sTable.inClassDef() && this.exp != null && !(this.exp instanceof AST_INT) && !(this.exp instanceof AST_STRING) && !(this.exp instanceof AST_NIL))){ // variables in class definition must be assigned a constant expression
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: variable declaration inside class must be assigned a constant expression");
 			System.exit(0);
 		}
@@ -65,11 +69,13 @@ public class AST_VAR_DEC extends AST_DEC {
 		// type of assignment must match declaration type 
 		TYPE tLeft = sTable.find(this.type.myType);
 		if(tLeft == null){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: type does not exist");
 			System.exit(0);
 		}
 		// check that the given type is an actual type and not an instance
 		if (!(tLeft.name.equals(this.type.myType))){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: type does not exist");
 			System.exit(0);
 		}

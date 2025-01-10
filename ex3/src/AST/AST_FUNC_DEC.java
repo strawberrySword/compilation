@@ -52,6 +52,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		TYPE returnType = t.find(this.retType.myType);
 		if (returnType == null){
 			if(!this.retType.myType.equals("void")){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("Semantic error: return type not found");
 				System.exit(0);
 			}
@@ -61,6 +62,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		TYPE prevDef = t.findInScope(fName);
 
 		if (prevDef != null){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: can't declare function with taken name");
 			System.exit(0);
 		}
