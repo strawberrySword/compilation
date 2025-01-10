@@ -1,4 +1,5 @@
 package AST;
+import SYMBOL_TABLE.*;
 import TYPES.*;
 
 public class AST_VAR_SUBSCRIPT extends AST_VAR {
