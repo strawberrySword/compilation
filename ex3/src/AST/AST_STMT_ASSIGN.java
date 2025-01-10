@@ -41,6 +41,17 @@ public class AST_STMT_ASSIGN extends AST_STMT {
 		if((t1 instanceof TYPE_ARRAY || t1 instanceof TYPE_CLASS) && t2 == TYPE_NIL.getInstance()){
 			return null;
 		}
+
+		if (t1 instanceof TYPE_ARRAY && t2 instanceof TYPE_ARRAY){
+			if (!(t1.name.equals(t2.name))){ // two arrays must be of exactly the same type
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
+				System.out.println("Semantic error: assignment type mismatch");
+				System.exit(0);
+			}
+
+			return null;
+		}
+
 		if (!t1.inheritsFrom(t2)) {
 			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println(">> ERROR type mismatch for var := exp\n  var: " + t1 + "\n   exp: " + t2);

@@ -96,8 +96,18 @@ public class AST_VAR_DEC extends AST_DEC {
 		}else{ // new assign
 			tRight = this.newExp.SemantMe(); // "Car x := new Car;"
 		}
-		
+
 		if((tLeft instanceof TYPE_ARRAY || tLeft instanceof TYPE_CLASS) && tRight == TYPE_NIL.getInstance()){
+			return null;
+		}
+
+		if (tLeft instanceof TYPE_ARRAY && tRight instanceof TYPE_ARRAY){
+			if (!(tLeft.name.equals(tRight.name))){ // two arrays must be of exactly the same type
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
+				System.out.println("Semantic error: assignment type mismatch");
+				System.exit(0);
+			}
+
 			return null;
 		}
 
