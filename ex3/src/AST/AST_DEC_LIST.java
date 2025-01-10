@@ -1,5 +1,7 @@
 package AST;
+import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
+import java.io.PrintWriter;
 
 public class AST_DEC_LIST extends AST_Node {
 	public AST_DEC value;
@@ -23,6 +25,11 @@ public class AST_DEC_LIST extends AST_Node {
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.value.SerialNumber);
 		
 		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
+	}
+
+	public TYPE SemantMe(PrintWriter file_writer){
+		SYMBOL_TABLE.getInstance().registerWriter(file_writer);
+		return SemantMe();
 	}
 
 	public TYPE SemantMe(){

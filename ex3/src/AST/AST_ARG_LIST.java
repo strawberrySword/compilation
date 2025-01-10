@@ -33,6 +33,7 @@ public class AST_ARG_LIST extends AST_Node {
 
 
 		if (t.findInScope(this.name)!= null){ // double argument definition "int f(int x,int x){}"
+			SYMBOL_TABLE.getInstance().writeError(this.lineNum);
 			System.out.println("Semantic error: double definition of function argument "+this.name);
 			System.exit(0);
 		}

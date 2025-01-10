@@ -22,7 +22,15 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_ENTRY[] table = new SYMBOL_TABLE_ENTRY[hashArraySize];
 	private SYMBOL_TABLE_ENTRY top;
 	private int top_index = 0;
+	private PrintWriter writer;
 
+	public void registerWriter(PrintWriter writer){
+		this.writer = writer;
+	}
+
+	public void writeError(int lineNum){
+		writer.println("ERROR(" + lineNum + ")");
+	}
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
 	/**************************************************************/
