@@ -33,6 +33,12 @@ public class TYPE_LIST extends TYPE
 		boolean isOtherArray = other.head instanceof TYPE_ARRAY;
 		boolean isOtherClass = other.head instanceof TYPE_CLASS;
 		boolean isThisNil = this.head == TYPE_NIL.getInstance();
+		boolean isThisArray = this.head instanceof TYPE_ARRAY;
+
+		if (isThisArray && isOtherArray && !(this.head.name.equals(other.head.name))){
+			return false;
+		}
+
 		if (!(this.head.inheritsFrom(other.head) || (isThisNil && (isOtherArray || isOtherClass)))) // type mismatch
 			return false;
 
