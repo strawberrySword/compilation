@@ -23,7 +23,7 @@ public class AST_VAR_SIMPLE extends AST_VAR {
 	public TYPE SemantMe(){
 		TYPE t =  SYMBOL_TABLE.getInstance().find(name);
 		if(t == null){
-			// TODO: print error to file: variable not found
+			System.out.println("Semantic error: variable not found");
 			System.exit(0);
 			return null;
 		}
