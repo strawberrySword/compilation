@@ -60,10 +60,15 @@ public class AST_VAR_DEC extends AST_DEC {
 			System.exit(0);
 		}
 
-		if ((sTable.inClassDef() && this.newExp != null) || (sTable.inClassDef() && this.exp != null && !(this.exp instanceof AST_INT) && !(this.exp instanceof AST_STRING) && !(this.exp instanceof AST_NIL))){ // variables in class definition must be assigned a constant expression
-			SYMBOL_TABLE.getInstance().writeError(lineNum);
-			System.out.println("Semantic error: variable declaration inside class must be assigned a constant expression");
-			System.exit(0);
+		if (sTable.inClassDef()){
+			// assignment in class must be constant
+			if (this.newExp != null || (this.exp != null && !(this.exp instanceof AST_INT) && !(this.exp instanceof AST_STRING) && !(this.exp instanceof AST_NIL))){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
+				System.out.println("Semantic error: variable declaration inside class must be assigned a constant expression");
+				System.exit(0);
+			}
+
+			// shadowing is handled in the second semantme()
 		}
 
 		// type of assignment must match declaration type 
@@ -100,5 +105,16 @@ public class AST_VAR_DEC extends AST_DEC {
 
 		sTable.enter(this.name, tLeft);
 		return new TYPE_VAR_DEC(tLeft, this.name);
+	}
+
+	// called when declaring a variable inside a function, checks shadowing
+	public TYPE SemantMe(TYPE_CLASS parent){
+		if (parent != null && parent.findField(this.name) != null){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
+			System.out.println("Semantic error: shadowing is not allowed");
+			System.exit(0);
+		}
+
+		return this.SemantMe();
 	}
 }

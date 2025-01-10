@@ -32,8 +32,10 @@ public class AST_CLASS_FIELD_LIST extends AST_Node {
 
 		if (this.value instanceof AST_FUNC_DEC ast_func_dec){
 			h = ast_func_dec.SemantMe(father);
+		}else if (this.value instanceof AST_VAR_DEC ast_var_dec){
+			h = ast_var_dec.SemantMe(father);
 		}else{
-			h = this.value.SemantMe(); 
+			h = this.value.SemantMe();
 		}
 
 		l.head = h;
