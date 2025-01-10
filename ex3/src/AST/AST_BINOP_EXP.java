@@ -83,8 +83,8 @@ public class AST_BINOP_EXP extends AST_EXP {
 				System.exit(0);
 			return null;
 		}
-		if(this.op.equals("/") && this.right instanceof AST_INT ){
-			if(((AST_INT)this.right).val == 0){
+		if(this.op.equals("/") && this.right instanceof AST_INT right_int){
+			if(right_int.val == 0){
 				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.format(">> ERROR division by zero\n");
 				System.exit(0);

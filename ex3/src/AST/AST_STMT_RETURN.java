@@ -27,30 +27,25 @@ public class AST_STMT_RETURN extends AST_STMT {
 	public TYPE SemantMe(String fName, TYPE t) {
 		if(!(SYMBOL_TABLE.getInstance().inFunctionDef())) {
 			SYMBOL_TABLE.getInstance().writeError(lineNum);
-			System.out.println("Semantic error: return statement outside of function");
+			System.out.println("\nSemantic error: return statement outside of function\n");
 			System.exit(0);
 		}
 
-		TYPE retType = null;
-		if (retVal != null){
-			retType = retVal.SemantMe();
-		}
-
-		if(retType == null) {
-			if(t != TYPE_VOID.getInstance()) {
+		if(retVal == null) {
+			if(((TYPE_FUNCTION)t).returnType != TYPE_VOID.getInstance()) {
 				SYMBOL_TABLE.getInstance().writeError(lineNum);
-				System.out.format("Semantic error: this function must return void");
+				System.out.println("\nSemantic error: this function must return void\n");
 				System.exit(0);
 			}
 			return TYPE_VOID.getInstance();
 		}
-		
+
+		TYPE retType = retVal.SemantMe();
 		if(!(retType.name.equals(((TYPE_FUNCTION)t).returnType.name))) {
 			SYMBOL_TABLE.getInstance().writeError(lineNum);
-			System.out.format("Semantic error: returned value must of the said type");
+			System.out.println("\nSemantic error: returned value must of the said type\n");
 			System.exit(0);
 		}
-
 		return t;
 	}
 }
