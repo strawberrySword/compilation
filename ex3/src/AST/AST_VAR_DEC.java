@@ -96,6 +96,10 @@ public class AST_VAR_DEC extends AST_DEC {
 		}else{ // new assign
 			tRight = this.newExp.SemantMe(); // "Car x := new Car;"
 		}
+		
+		if((tLeft instanceof TYPE_ARRAY || tLeft instanceof TYPE_CLASS) && tRight == TYPE_NIL.getInstance()){
+			return null;
+		}
 
 		if (!(tRight.inheritsFrom(tLeft))){ // Check inheritance and type mismatch
 			SYMBOL_TABLE.getInstance().writeError(lineNum);

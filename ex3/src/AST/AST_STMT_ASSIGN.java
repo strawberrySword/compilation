@@ -38,7 +38,7 @@ public class AST_STMT_ASSIGN extends AST_STMT {
 		if(t2 instanceof TYPE_VAR_DEC type_var_dec){
 			t2 = type_var_dec.t;
 		}
-		if(t1 instanceof TYPE_ARRAY || t1 instanceof TYPE_CLASS){
+		if((t1 instanceof TYPE_ARRAY || t1 instanceof TYPE_CLASS) && t2 == TYPE_NIL.getInstance()){
 			return null;
 		}
 		if (!t1.inheritsFrom(t2)) {
