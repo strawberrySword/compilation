@@ -24,6 +24,7 @@ public class AST_VAR_SIMPLE extends AST_VAR {
 	public TYPE SemantMe(){
 		TYPE t =  SYMBOL_TABLE.getInstance().find(name);
 		if(t == null){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: variable not found");
 			System.exit(0);
 			return null;

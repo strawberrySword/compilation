@@ -1,5 +1,6 @@
 package AST;
 
+import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
 public class AST_BINOP_EXP extends AST_EXP {
@@ -49,23 +50,26 @@ public class AST_BINOP_EXP extends AST_EXP {
 			if((isRightNil && (isLeftArray || isLeftClass))|| (isLeftNil && (isRightArray || isRightClass))){
 				return TYPE_INT.getInstance();
 			}
-
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.format(">> Error: cannot compare those vars\n");
 			System.exit(0);
 			return null;
 		}
 		if(rightType != leftType){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.format(">> ERROR type mismatch for binop\n");
 			System.exit(0);
 			return null;
 		}
 		if(!(rightType == TYPE_INT.getInstance()) && !((rightType == TYPE_STRING.getInstance()) && this.op.equals("+"))){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.format(">> ERROR type mismatch for binop\n");
 				System.exit(0);
 			return null;
 		}
 		if(this.op.equals("/") && this.right instanceof AST_INT ){
 			if(((AST_INT)this.right).val == 0){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.format(">> ERROR division by zero\n");
 				System.exit(0);
 				return null;

@@ -1,4 +1,5 @@
 package AST;
+import SYMBOL_TABLE.*;
 import TYPES.*;
 
 public class AST_VAR_FIELD extends AST_VAR {
@@ -29,6 +30,7 @@ public class AST_VAR_FIELD extends AST_VAR {
 	public TYPE SemantMe(){
 		TYPE t = this.var.SemantMe();
 		if (!(t instanceof TYPE_CLASS)){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.format(">> ERROR access field of non-class variable\n");
 			System.exit(0);
 			return null;
@@ -36,6 +38,7 @@ public class AST_VAR_FIELD extends AST_VAR {
 		TYPE_CLASS tc = (TYPE_CLASS)t;
 		TYPE tf = tc.findField(this.fieldName);
 		if (tf == null){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.format(">> ERROR field does not exist in class\n");
 			System.exit(0);
 			return null;

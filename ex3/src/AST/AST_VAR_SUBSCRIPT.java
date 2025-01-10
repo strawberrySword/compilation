@@ -32,6 +32,7 @@ public class AST_VAR_SUBSCRIPT extends AST_VAR {
 		TYPE t = var.SemantMe();
 
 		if(!(t instanceof TYPE_ARRAY)){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.format(">> ERROR [%d:%d] access operator [] applied to non-array\n",6,6);
 			System.exit(0);
 		}

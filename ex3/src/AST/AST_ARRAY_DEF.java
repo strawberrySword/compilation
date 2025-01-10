@@ -28,10 +28,12 @@ public class AST_ARRAY_DEF extends AST_DEC {
 
 		TYPE data_type = t.find(this.type.myType);
 		if (data_type == null){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: array type undefined");
 			System.exit(0);
 		}
 		if (data_type.name.equals("void")){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: array type cannot be void");
 			System.exit(0);
 		}

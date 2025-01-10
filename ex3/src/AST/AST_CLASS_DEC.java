@@ -39,10 +39,12 @@ public class AST_CLASS_DEC extends AST_DEC {
 		}
 		
 		if (father == null && this.parentName != null){ // "class son extends father{}; class father{};"
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: parent class undefined");
 			System.exit(0);
 		}
 		if (father != null && !(father instanceof TYPE_CLASS)){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: cannot extend non-class type");
 			System.exit(0);
 		}

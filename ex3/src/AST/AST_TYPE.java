@@ -26,6 +26,7 @@ public class AST_TYPE extends AST_Node {
 
 		TYPE a = t.find(this.myType);
 		if(a == null){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantcic error: type "+myType+" does not exist");
 			System.exit(0);
 		}

@@ -34,6 +34,7 @@ public class AST_STMT_WHILE extends AST_STMT {
 		
 		TYPE t = cond.SemantMe();
 		if (t != TYPE_INT.getInstance()){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.format(">> condition inside while statement is not of type int\n");
 			System.exit(0);
 			return null;

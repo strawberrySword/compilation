@@ -33,6 +33,7 @@ public class AST_STMT_IF extends AST_STMT {
 		SYMBOL_TABLE.getInstance().beginScope("If");
 		TYPE t = cond.SemantMe();
 		if (t != TYPE_INT.getInstance()){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.format(">> condition inside if statement is not of type int\n");
 			System.exit(0);
 			return null;

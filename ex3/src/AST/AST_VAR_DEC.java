@@ -87,6 +87,7 @@ public class AST_VAR_DEC extends AST_DEC {
 		}
 
 		if (!(tRight.inheritsFrom(tLeft))){ // Check inheritance and type mismatch
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: assignment type mismatch");
 			System.exit(0);
 		}

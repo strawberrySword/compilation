@@ -48,6 +48,7 @@ public class AST_FUNC_CALL extends AST_EXP {
 		if(var != null){
 			TYPE varClass = var.SemantMe();
 			if(!(varClass instanceof TYPE_CLASS)){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("Semantic error: var is not a class");
 				System.exit(0);
 				return null;
@@ -56,6 +57,7 @@ public class AST_FUNC_CALL extends AST_EXP {
 		}
 
 		if(!(function instanceof TYPE_FUNCTION)){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: funcName is not a function");
 			System.exit(0);
 			return null;
@@ -66,12 +68,14 @@ public class AST_FUNC_CALL extends AST_EXP {
 			TYPE_LIST argsTypes = args.SemantMe();
 		 
 			if(!(argsTypes.matches(((TYPE_FUNCTION)function).params))){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("args do not match function signature");
 				System.exit(0);
 				return null;
 			}
 		} else {
 			if(((TYPE_FUNCTION)function).params != null){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("args do not match function signature");
 				System.exit(0);
 				return null;

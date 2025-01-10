@@ -89,6 +89,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 
 		TYPE prevDef = t.findInScope(fName);
 		if (prevDef != null){ // this is double definition inside same scope (class or function)
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantci error: double definition for "+fName);
 			System.exit(0);
 		}
@@ -96,6 +97,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		TYPE returnType = t.find(this.retType.myType);
 		if(returnType == null){
 			if(!this.retType.myType.equals("void")){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("Semantic error: return type not found");
 				System.exit(0);
 			}
@@ -110,6 +112,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 		}
 
 		if (!(checkOverride(returnType, fName, argTypes, this.myDad))){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: overloading is not allowed");
 			System.exit(0);
 		}

@@ -42,6 +42,7 @@ public class AST_NEW_EXP extends AST_EXP {
 
 		if(len == null){ // class instance
 			if(!(instanceDataType instanceof TYPE_CLASS)){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("Semantic error: no such class");
 				System.exit(0);
 			}
@@ -49,16 +50,19 @@ public class AST_NEW_EXP extends AST_EXP {
 		}
 
 		if (this.len instanceof AST_INT && ((AST_INT)this.len).val < 0){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: array subscript is less than 0");
 			System.exit(0);
 		}
 		TYPE lenType = this.len.SemantMe(); 
 		if (!(lenType instanceof TYPE_INT)){
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("Semantic error: array subscript must be of type int");
 				System.exit(0);
 		}
 		
 		if(instanceDataType == null){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: no such type");
 			System.exit(0);
 		}
