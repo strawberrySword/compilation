@@ -6,11 +6,12 @@ public class AST_VAR_FIELD extends AST_VAR {
 	public AST_VAR var;
 	public String fieldName;
 
-	public AST_VAR_FIELD(AST_VAR v, String f) {
+	public AST_VAR_FIELD(AST_VAR v, String f, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.var = v;
 		this.fieldName = f;
+		this.lineNum = line;
 	}
 
 	@Override

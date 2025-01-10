@@ -6,12 +6,13 @@ public class AST_ARRAY_DEF extends AST_DEC {
 
 	public String arrName;
 	public AST_TYPE type;
-
-	public AST_ARRAY_DEF(String s, AST_TYPE t) {
+	
+	public AST_ARRAY_DEF(String s, AST_TYPE t, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.arrName = s;
 		this.type = t;
+		this.lineNum = line;
 	}
 
 	@Override

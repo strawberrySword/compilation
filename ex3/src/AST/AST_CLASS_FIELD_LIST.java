@@ -6,11 +6,12 @@ public class AST_CLASS_FIELD_LIST extends AST_Node {
 	public AST_DEC value;
 	public AST_CLASS_FIELD_LIST next;
 
-	public AST_CLASS_FIELD_LIST(AST_DEC d, AST_CLASS_FIELD_LIST l) {
+	public AST_CLASS_FIELD_LIST(AST_DEC d, AST_CLASS_FIELD_LIST l, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.value = d;
 		this.next = l;
+		this.lineNum = line;
 	}
 
     @Override

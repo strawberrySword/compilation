@@ -5,10 +5,11 @@ public class AST_INT extends AST_EXP {
 
 	public int val;
 
-	public AST_INT(int i) {
+	public AST_INT(int i, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.val = i;
+		this.lineNum = line;
 	}
 
 	@Override

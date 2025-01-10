@@ -5,11 +5,12 @@ public class AST_STMT_LIST extends AST_Node {
 	public AST_STMT value;
 	public AST_STMT_LIST next;
 
-	public AST_STMT_LIST(AST_STMT d, AST_STMT_LIST l) {
+	public AST_STMT_LIST(AST_STMT d, AST_STMT_LIST l, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.value = d;
 		this.next = l;
+		this.lineNum = line;
 	}
 
 	@Override

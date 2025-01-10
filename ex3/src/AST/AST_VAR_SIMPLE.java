@@ -6,10 +6,11 @@ public class AST_VAR_SIMPLE extends AST_VAR {
 
 	public String name;
 
-	public AST_VAR_SIMPLE(String n) {
+	public AST_VAR_SIMPLE(String n, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.name = n;
+		this.lineNum = line;
 	}
 
 	@Override

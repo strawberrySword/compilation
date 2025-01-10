@@ -8,13 +8,14 @@ public class AST_VAR_DEC extends AST_DEC {
 	public AST_EXP exp;
 	public AST_NEW_EXP newExp;
 
-	public AST_VAR_DEC(AST_TYPE t, String n, AST_EXP e, AST_NEW_EXP ne) {
+	public AST_VAR_DEC(AST_TYPE t, String n, AST_EXP e, AST_NEW_EXP ne, int line) {
 		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
 		this.type = t;
 		this.name = n;
 		this.exp = e;
 		this.newExp = ne;
+		this.lineNum = line;
 	}
 
 	@Override
