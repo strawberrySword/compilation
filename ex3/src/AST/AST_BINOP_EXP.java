@@ -44,10 +44,26 @@ public class AST_BINOP_EXP extends AST_EXP {
 			boolean isLeftNil = leftType == TYPE_NIL.getInstance();
 			boolean isRightNil = rightType == TYPE_NIL.getInstance();
 
-			if(rightType.inheritsFrom(leftType) || leftType.inheritsFrom(rightType)){
-				return TYPE_INT.getInstance();
+			if (isLeftArray && isRightArray){
+				if (leftType.name.equals(rightType.name)){
+					return TYPE_INT.getInstance();
+				}
+				System.out.format(">> Error: cannot compare those vars\n");
+				System.exit(0);
+				return null;
 			}
 			if((isRightNil && (isLeftArray || isLeftClass))|| (isLeftNil && (isRightArray || isRightClass))){
+				return TYPE_INT.getInstance();
+			}
+
+			if (isRightArray || isLeftArray){
+				System.out.format(">> Error: cannot compare those vars\n");
+				System.exit(0);
+				return null;
+			}
+
+			// now we have two classes or two primitives
+			if(rightType.inheritsFrom(leftType) || leftType.inheritsFrom(rightType)){
 				return TYPE_INT.getInstance();
 			}
 			SYMBOL_TABLE.getInstance().writeError(lineNum);
