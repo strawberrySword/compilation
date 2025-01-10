@@ -98,7 +98,7 @@ public class SYMBOL_TABLE
 	{
 		SYMBOL_TABLE_ENTRY e;
 
-		for(e = table[hash(name)]; e != null && e.type instanceof TYPE_FOR_SCOPE_BOUNDARIES; e = e.next){
+		for(e = top; e != null && !(e.type instanceof TYPE_FOR_SCOPE_BOUNDARIES) ; e = e.prevtop){
 			if(name.equals((e.name)))
 			{
 				return e.type;
