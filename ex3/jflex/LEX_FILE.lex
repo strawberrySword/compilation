@@ -61,6 +61,14 @@ import java_cup.runtime.*;
 	/*******************************************/
 	public int getLine() { return yyline + 1; } 
 
+	public int getPrevTokenLine() { 
+		if(yycolumn == 0) {
+			return yyline - 1;
+		} else {
+			return yyline;
+		}
+	}
+
 	/**********************************************/
 	/* Enable token position extraction from main */
 	/**********************************************/
