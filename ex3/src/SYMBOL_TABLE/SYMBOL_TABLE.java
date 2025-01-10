@@ -30,6 +30,11 @@ public class SYMBOL_TABLE
 
 	public void writeError(int lineNum){
 		writer.println("ERROR(" + lineNum + ")");
+		this.closeWriter();
+	}
+
+	public void closeWriter(){
+		writer.close();
 	}
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
