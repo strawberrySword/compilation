@@ -169,6 +169,17 @@ public class SYMBOL_TABLE
 		return false;
 	}
 
+	public TYPE WhichClassAmIIn(){
+		SYMBOL_TABLE_ENTRY e;
+		for(e = top; e.prevtop != null ; e = e.prevtop){
+			if(e.prevtop.name.equals("@SCOPE-BOUNDARY") && e.prevtop.type.name.equals("Class"))
+			{
+				return e.type;
+			}
+		}
+		return null;
+	}
+
 	/********************************************************************************/
 	/* end scope = Keep popping elements out of the data structure,                 */
 	/* from most recent element entered, until a <NEW-SCOPE> element is encountered */
