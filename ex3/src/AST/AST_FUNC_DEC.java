@@ -45,8 +45,6 @@ public class AST_FUNC_DEC extends AST_DEC {
 	// called when a function is declared in global scope
 	@Override
 	public TYPE SemantMe(){
-		// the whole overriding thing
-
 		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
 
 		TYPE returnType = t.find(this.retType.myType);
@@ -141,7 +139,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 			return false;
 		}
 
-		// otherFunc exists in hierarchy, may be null
+		// otherFunc exists in hierarchy
 		if (otherFunc != null){ // overriding is O.K
 			boolean sameRetType = (ret == ((TYPE_FUNCTION)otherFunc).returnType);
 			boolean sameName = name.equals(((TYPE_FUNCTION)otherFunc).name);
@@ -150,7 +148,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 				if (args == null){
 					return ((TYPE_FUNCTION)otherFunc).params == null;
 				}
-				return args.equals(((TYPE_FUNCTION)otherFunc).params); // Other function exists in hierarchy, which differs from current but matches name
+				return args.equals(((TYPE_FUNCTION)otherFunc).params);
 			}
 		} 
 		return true; // this is the first declaration of this function
