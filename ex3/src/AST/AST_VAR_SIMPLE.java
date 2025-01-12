@@ -22,12 +22,29 @@ public class AST_VAR_SIMPLE extends AST_VAR {
 
 	@Override
 	public TYPE SemantMe(){
-		TYPE t =  SYMBOL_TABLE.getInstance().find(name);
+		SYMBOL_TABLE table = SYMBOL_TABLE.getInstance();
+		TYPE_CLASS thisClass = null;
+
+		TYPE t = table.findInScope(this.name);
+
+		if (t == null && table.inClassDef()){ // Prioritize scope over class
+			thisClass = (TYPE_CLASS)table.WhichClassAmIIn();
+			t = thisClass.findField(this.name);
+		}
+
+		if (t == null){ // Prioritize class over general search
+			t = table.find(this.name);
+		}
+
 		if(t == null){
 			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("Semantic error: variable not found");
 			System.exit(0);
 			return null;
+		}
+
+		if (t instanceof TYPE_VAR_DEC type_var_dec){
+			t = type_var_dec.t;
 		}
 		return t;
 	}
