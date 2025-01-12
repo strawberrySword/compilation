@@ -42,9 +42,19 @@ public class AST_FUNC_CALL extends AST_EXP {
 
 	@Override
 	public TYPE SemantMe(){
-		// 1. make sure function is defined and get its type
-		TYPE function;
-		function = SYMBOL_TABLE.getInstance().find(fName);
+		SYMBOL_TABLE table = SYMBOL_TABLE.getInstance();
+		TYPE_CLASS thisClass = null;
+
+		TYPE function = table.findInScope(this.fName);
+
+		if (function == null && table.inClassDef()){
+			thisClass = (TYPE_CLASS)table.WhichClassAmIIn();
+			function = thisClass.findField(this.fName);
+		}
+		if (function == null){
+			function = table.find(this.fName);
+		}
+
 		if(var != null){
 			TYPE varClass = var.SemantMe();
 			if(!(varClass instanceof TYPE_CLASS)){

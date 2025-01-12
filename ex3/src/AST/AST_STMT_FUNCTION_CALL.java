@@ -56,9 +56,19 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 
 	@Override
 	public TYPE SemantMe(){
-		// 1. make sure function is defined and get its type
-		TYPE function;
-		function = SYMBOL_TABLE.getInstance().find(funcName);
+		SYMBOL_TABLE table = SYMBOL_TABLE.getInstance();
+		TYPE_CLASS thisClass = null;
+
+		TYPE function = table.findInScope(this.funcName);
+
+		if (function == null && table.inClassDef()){
+			thisClass = (TYPE_CLASS)table.WhichClassAmIIn();
+			function = thisClass.findField(this.funcName);
+		}
+		if (function == null){
+			function = table.find(this.funcName);
+		}
+
 		if(var != null){
 			TYPE varClass = var.SemantMe();
 			if(!(varClass instanceof TYPE_CLASS)){
