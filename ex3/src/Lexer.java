@@ -353,17 +353,11 @@ class Lexer implements java_cup.runtime.Scanner {
   private boolean zzEOFDone;
 
   /* user code: */
-	private int prevLine = 0;
 	/*********************************************************************************/
 	/* Create a new java_cup.runtime.Symbol with information about the current token */
 	/*********************************************************************************/
-	private Symbol symbol(int type)               {
-		prevLine = yyline;
-		return new Symbol(type, yyline, yycolumn);
-	}
-	private Symbol symbol(int type, Object value) {
-		prevLine = yyline;
-		return new Symbol(type, yyline, yycolumn, value);}
+	private Symbol symbol(int type)               {return new Symbol(type, yyline, yycolumn);}
+	private Symbol symbol(int type, Object value) {return new Symbol(type, yyline, yycolumn, value);}
 
 	/*******************************************/
 	/* Enable line number extraction from main */
@@ -371,7 +365,11 @@ class Lexer implements java_cup.runtime.Scanner {
 	public int getLine() { return yyline + 1; } 
 
 	public int getPrevTokenLine() { 
-		return prevLine + 1;
+		if(yycolumn == 0) {
+			return yyline - 1;
+		} else {
+			return yyline;
+		}
 	}
 
 	/**********************************************/

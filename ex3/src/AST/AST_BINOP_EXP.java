@@ -48,6 +48,7 @@ public class AST_BINOP_EXP extends AST_EXP {
 				if (leftType.name.equals(rightType.name)){
 					return TYPE_INT.getInstance();
 				}
+				SYMBOL_TABLE.getInstance().writeError(this.lineNum);
 				System.out.format(">> Error: cannot compare those vars\n");
 				System.exit(0);
 				return null;
@@ -57,6 +58,7 @@ public class AST_BINOP_EXP extends AST_EXP {
 			}
 
 			if (isRightArray || isLeftArray){
+				SYMBOL_TABLE.getInstance().writeError(this.lineNum);
 				System.out.format(">> Error: cannot compare those vars\n");
 				System.exit(0);
 				return null;

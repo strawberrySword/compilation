@@ -53,6 +53,8 @@ public class Main
 			/* [7] Semant the AST ... */
 			/**************************/
 			AST.SemantMe(file_writer);
+
+			file_writer.println("OK\n");
 			
 			/*************************/
 			/* [8] Close output file */
