@@ -18,6 +18,10 @@ public class TYPE_LIST extends TYPE
 	}
 
 	public boolean equals(TYPE_LIST other){
+		if (other == null){ // other is null but I am not
+			return false;
+		}
+
 		if (this.head != other.head)// type mismatch
 			return false;
 
