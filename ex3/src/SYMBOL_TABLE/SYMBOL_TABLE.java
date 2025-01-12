@@ -160,8 +160,9 @@ public class SYMBOL_TABLE
 
 	public boolean isUnderScope(String name){
 		SYMBOL_TABLE_ENTRY e;
-		for(e = table[hash(name)]; e != null; e = e.next){
-			if(e.name.equals("@SCOPE-BOUNDARY") && e.type.name.equals(name)){
+		for(e = top; e != null ; e = e.prevtop){
+			if(e.name.equals("@SCOPE-BOUNDARY") && e.type.name.equals(name))
+			{
 				return true;
 			}
 		}
