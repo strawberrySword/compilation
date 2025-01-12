@@ -29,7 +29,7 @@ public class SYMBOL_TABLE
 	}
 
 	public void writeError(int lineNum){
-		writer.println("ERROR(" + lineNum + ")");
+		writer.println("ERROR(" + (lineNum+1) + ")");
 		this.closeWriter();
 	}
 

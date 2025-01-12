@@ -130,8 +130,8 @@ start with program;
 /* DERIVATION RULES */
 /********************/
 
-program		::=		dec:s program:l 	{:RESULT = new AST_DEC_LIST(s,l, lexer.getPrevTokenLine());:}
-					| dec:s				{:RESULT = new AST_DEC_LIST(s, null, lexer.getPrevTokenLine());:}
+program		::=		dec:s program:l 	{:RESULT = new AST_DEC_LIST(s,l, sleft);:}
+					| dec:s				{:RESULT = new AST_DEC_LIST(s, null, sleft);:}
 					;
 
 dec			::=		varDec:dec 			{:RESULT = dec;:}
@@ -140,106 +140,106 @@ dec			::=		varDec:dec 			{:RESULT = dec;:}
 					| arrayTypedef:dec	{:RESULT = dec;:}
 					;
 
-type		::= 	TYPE_INT		{: RESULT = new AST_TYPE("int",lexer.getPrevTokenLine());:} 
-					| TYPE_STRING 	{: RESULT = new AST_TYPE("string",lexer.getPrevTokenLine());:} 		
-					| TYPE_VOID 	{: RESULT = new AST_TYPE("void",lexer.getPrevTokenLine());:} 		
-					| ID:t			{: RESULT = new AST_TYPE(t,lexer.getPrevTokenLine());:} 		
+type		::= 	TYPE_INT:t		{: RESULT = new AST_TYPE("int",tleft);:} 
+					| TYPE_STRING:t {: RESULT = new AST_TYPE("string",tleft);:} 		
+					| TYPE_VOID:t 	{: RESULT = new AST_TYPE("void",tleft);:} 		
+					| ID:t			{: RESULT = new AST_TYPE(t,tleft);:} 		
 					;
 
-varDec 		::=		type:t ID:name ASSIGN exp:val SEMICOLON 		{:RESULT = new AST_VAR_DEC(t,name,val,null,lexer.getPrevTokenLine());:}
-					| type:t ID:name SEMICOLON						{:RESULT = new AST_VAR_DEC(t,name,null,null,lexer.getPrevTokenLine());:}
-					| type:t ID:name ASSIGN newExp:val SEMICOLON	{:RESULT = new AST_VAR_DEC(t,name,null,val,lexer.getPrevTokenLine());:}
+varDec 		::=		type:t ID:name ASSIGN exp:val SEMICOLON 		{:RESULT = new AST_VAR_DEC(t,name,val,null,tleft);:}
+					| type:t ID:name SEMICOLON						{:RESULT = new AST_VAR_DEC(t,name,null,null,tleft);:}
+					| type:t ID:name ASSIGN newExp:val SEMICOLON	{:RESULT = new AST_VAR_DEC(t,name,null,val,tleft);:}
 					;
 
-funcDec		::= 	type:retType ID:funcName LPAREN type:type1 ID:arg1 commaTypeIdStar:args RPAREN LBRACE stmtPlus:body RBRACE	{:RESULT = new AST_FUNC_DEC(retType, funcName, type1, arg1, args, body,lexer.getPrevTokenLine());:}
-					| type:retType ID:funcName LPAREN RPAREN LBRACE stmtPlus:body RBRACE										{:RESULT = new AST_FUNC_DEC(retType, funcName, body,lexer.getPrevTokenLine());:}
+funcDec		::= 	type:retType ID:funcName LPAREN type:type1 ID:arg1 commaTypeIdStar:args RPAREN LBRACE stmtPlus:body RBRACE	{:RESULT = new AST_FUNC_DEC(retType, funcName, type1, arg1, args, body,retTypeleft);:}
+					| type:retType ID:funcName LPAREN RPAREN LBRACE stmtPlus:body RBRACE										{:RESULT = new AST_FUNC_DEC(retType, funcName, body,retTypeleft);:}
 					;
 
-commaTypeIdPlus ::= COMMA type:t ID:name commaTypeIdPlus:l 	{:RESULT = new AST_ARG_LIST(t,name,l,lexer.getPrevTokenLine());:}
-					| COMMA type:t ID:name 					{:RESULT = new AST_ARG_LIST(t,name,null,lexer.getPrevTokenLine());:}
+commaTypeIdPlus ::= COMMA:c type:t ID:name commaTypeIdPlus:l 	{:RESULT = new AST_ARG_LIST(t,name,l,cleft);:}
+					| COMMA:c type:t ID:name 					{:RESULT = new AST_ARG_LIST(t,name,null,cleft);:}
 					;
 
 commaTypeIdStar	::=	commaTypeIdPlus:l 	{:RESULT = l;:}
 					| 					{:RESULT = null;:}
 					;
 
-classDec	::=		CLASS ID:cName EXTENDS ID:parentName LBRACE cFieldPlus:fields RBRACE	{:RESULT = new AST_CLASS_DEC(cName, parentName, fields,lexer.getPrevTokenLine());:}
-					| CLASS ID:cName LBRACE cFieldPlus:fields RBRACE						{:RESULT = new AST_CLASS_DEC(cName, null,fields,lexer.getPrevTokenLine());:}
+classDec	::=		CLASS:c ID:cName EXTENDS ID:parentName LBRACE cFieldPlus:fields RBRACE	{:RESULT = new AST_CLASS_DEC(cName, parentName, fields,cleft);:}
+					| CLASS:c ID:cName LBRACE cFieldPlus:fields RBRACE						{:RESULT = new AST_CLASS_DEC(cName, null,fields,cleft);:}
 					;
 
 cField		::=		varDec:dec 		{:RESULT = dec;:}
 					| funcDec:dec 	{:RESULT = dec;:}
 					;
 
-cFieldPlus	::=		cField:f cFieldPlus:l 	{:RESULT = new AST_CLASS_FIELD_LIST(f,l,lexer.getPrevTokenLine());:}
-					| cField:f 				{:RESULT = new AST_CLASS_FIELD_LIST(f, null,lexer.getPrevTokenLine());:}
+cFieldPlus	::=		cField:f cFieldPlus:l 	{:RESULT = new AST_CLASS_FIELD_LIST(f,l,fleft);:}
+					| cField:f 				{:RESULT = new AST_CLASS_FIELD_LIST(f, null,fleft);:}
 					;
 
-arrayTypedef	::=	ARRAY ID:arrayName EQ type:t LBRACK RBRACK SEMICOLON	{:RESULT = new AST_ARRAY_DEF(arrayName, t,lexer.getPrevTokenLine());:}
+arrayTypedef	::=	ARRAY:a ID:arrayName EQ type:t LBRACK RBRACK SEMICOLON	{:RESULT = new AST_ARRAY_DEF(arrayName, t,aleft);:}
 					;
 
 exp			::=		var:v 															{:RESULT = v;:}
 					| LPAREN exp:exp RPAREN	 										{:RESULT = exp;:}
 					| eqBinop:e 													{:RESULT = e;:}
-					| var:v DOT ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN 	{:RESULT = new AST_FUNC_CALL(v, fname, arg1,args,lexer.getPrevTokenLine());:}
-					| var:v DOT ID:fname LPAREN RPAREN 								{:RESULT = new AST_FUNC_CALL(v, fname,lexer.getPrevTokenLine());:}
-					| ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN 			{:RESULT = new AST_FUNC_CALL(null, fname, arg1, args,lexer.getPrevTokenLine());:}
-					| ID:fname LPAREN RPAREN 										{:RESULT = new AST_FUNC_CALL(null, fname,lexer.getPrevTokenLine());:}
-					| MINUS INT:i 													{:RESULT = new AST_INT(-i,lexer.getPrevTokenLine());:}
-					| INT:i 														{:RESULT = new AST_INT(i,lexer.getPrevTokenLine());:}
-					| NIL 															{:RESULT = new AST_NIL(lexer.getPrevTokenLine());:}
-					| STRING:s 														{:RESULT = new AST_STRING(s,lexer.getPrevTokenLine());:}
+					| var:v DOT ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN 	{:RESULT = new AST_FUNC_CALL(v, fname, arg1,args, vleft);:}
+					| var:v DOT ID:fname LPAREN RPAREN 								{:RESULT = new AST_FUNC_CALL(v, fname, vleft);:}
+					| ID:fname LPAREN exp:arg1 commaExpStar:args RPAREN 			{:RESULT = new AST_FUNC_CALL(null, fname, arg1, args, fnameleft);:}
+					| ID:fname LPAREN RPAREN 										{:RESULT = new AST_FUNC_CALL(null, fname, fnameleft);:}
+					| MINUS:min INT:i 													{:RESULT = new AST_INT(-i,minleft);:}
+					| INT:i 														{:RESULT = new AST_INT(i,ileft);:}
+					| NIL:n 															{:RESULT = new AST_NIL(nleft);:}
+					| STRING:s 														{:RESULT = new AST_STRING(s,sleft);:}
 					;
 
-eqBinop		::= 	exp:e1 EQ exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"=",e2,lexer.getPrevTokenLine());:}
+eqBinop		::= 	exp:e1 EQ exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"=",e2, e1left);:}
 					| ltGtBinop:e 													{:RESULT = e;:}
 					;
 
-ltGtBinop	::=		exp:e1 LT exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"<",e2,lexer.getPrevTokenLine());:}
-					| exp:e1 GT exp:e2												{:RESULT = new AST_BINOP_EXP(e1,">",e2,lexer.getPrevTokenLine());:}
+ltGtBinop	::=		exp:e1 LT exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"<",e2, e1left);:}
+					| exp:e1 GT exp:e2												{:RESULT = new AST_BINOP_EXP(e1,">",e2, e1left);:}
 					| addBinop:e													{:RESULT = e;:}
 					;
 
-addBinop	::=		exp:e1 PLUS exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"+",e2,lexer.getPrevTokenLine());:}
-					| exp:e1 MINUS exp:e2											{:RESULT = new AST_BINOP_EXP(e1,"-",e2,lexer.getPrevTokenLine());:}
+addBinop	::=		exp:e1 PLUS exp:e2												{:RESULT = new AST_BINOP_EXP(e1,"+",e2, e1left);:}
+					| exp:e1 MINUS exp:e2											{:RESULT = new AST_BINOP_EXP(e1,"-",e2, e1left);:}
 					| mulBinop:e													{:RESULT = e;:}
 					;
 
-mulBinop	::=		exp:e1 TIMES exp:e2 											{:RESULT = new AST_BINOP_EXP(e1,"*",e2,lexer.getPrevTokenLine());:}
-					| exp:e1 DIVIDE exp:e2											{:RESULT = new AST_BINOP_EXP(e1,"/",e2,lexer.getPrevTokenLine());:}	
+mulBinop	::=		exp:e1 TIMES exp:e2 											{:RESULT = new AST_BINOP_EXP(e1,"*",e2, e1left);:}
+					| exp:e1 DIVIDE exp:e2											{:RESULT = new AST_BINOP_EXP(e1,"/",e2, e1left);:}	
 					;
 
 
-commaExpPlus ::=	COMMA exp:e {:RESULT = new AST_EXP_LIST(e,null,lexer.getPrevTokenLine());:} 
-					| COMMA exp:e commaExpPlus:l {:RESULT = new AST_EXP_LIST(e,l,lexer.getPrevTokenLine());:}
+commaExpPlus ::=	COMMA:c exp:e {:RESULT = new AST_EXP_LIST(e,null, cleft);:} 
+					| COMMA:c exp:e commaExpPlus:l {:RESULT = new AST_EXP_LIST(e,l, cleft);:}
 					;
 
 commaExpStar ::= 	commaExpPlus:l {:RESULT = l;:}
 					|  {:RESULT = null;:}
 					;
 
-var			::=		ID:name 						{:RESULT = new AST_VAR_SIMPLE(name,lexer.getPrevTokenLine());:} 
-					| var:v DOT ID:fieldName		{:RESULT = new AST_VAR_FIELD(v, fieldName,lexer.getPrevTokenLine());:}	 
-					| var:v LBRACK exp:exp RBRACK	{:RESULT = new AST_VAR_SUBSCRIPT(v, exp,lexer.getPrevTokenLine());:}
+var			::=		ID:name 						{:RESULT = new AST_VAR_SIMPLE(name, nameleft);:} 
+					| var:v DOT ID:fieldName		{:RESULT = new AST_VAR_FIELD(v, fieldName, vleft);:}	 
+					| var:v LBRACK exp:exp RBRACK	{:RESULT = new AST_VAR_SUBSCRIPT(v, exp, vleft);:}
 					;
 					
 stmt		::=		varDec:dec 																	{:RESULT = dec;:}
-					| var:v ASSIGN exp:e SEMICOLON												{:RESULT = new AST_STMT_ASSIGN(v,e,lexer.getPrevTokenLine());:}
-					| var:v ASSIGN newExp:e SEMICOLON											{:RESULT = new AST_STMT_ASSIGN(v,e,lexer.getPrevTokenLine());:}
-					| RETURN exp:e SEMICOLON													{:RESULT = new AST_STMT_RETURN(e,lexer.getPrevTokenLine());:}
-					| RETURN SEMICOLON															{:RESULT = new AST_STMT_RETURN(null,lexer.getPrevTokenLine());:}
-					| IF LPAREN exp:cond RPAREN LBRACE stmtPlus:body RBRACE						{:RESULT = new AST_STMT_IF(cond, body,lexer.getPrevTokenLine());:}
-					| WHILE LPAREN exp:cond RPAREN LBRACE stmtPlus:body RBRACE					{:RESULT = new AST_STMT_WHILE(cond, body,lexer.getPrevTokenLine());:}
-					| var:v DOT ID:func LPAREN exp:arg1 commaExpStar:args RPAREN SEMICOLON		{:RESULT = new AST_STMT_FUNCTION_CALL(v, func, arg1, args,lexer.getPrevTokenLine());:}
-					| ID:func LPAREN exp:arg1 commaExpStar:args RPAREN SEMICOLON 				{:RESULT = new AST_STMT_FUNCTION_CALL(func, arg1, args,lexer.getPrevTokenLine());:}
-					| var:v DOT ID:func LPAREN RPAREN SEMICOLON 								{:RESULT = new AST_STMT_FUNCTION_CALL(v, func,lexer.getPrevTokenLine());:}
-					| ID:func LPAREN RPAREN SEMICOLON											{:RESULT = new AST_STMT_FUNCTION_CALL(func,lexer.getPrevTokenLine());:}
+					| var:v ASSIGN exp:e SEMICOLON												{:RESULT = new AST_STMT_ASSIGN(v,e, vleft);:}
+					| var:v ASSIGN newExp:e SEMICOLON											{:RESULT = new AST_STMT_ASSIGN(v,e, vleft);:}
+					| RETURN:ret exp:e SEMICOLON													{:RESULT = new AST_STMT_RETURN(e, retleft);:}
+					| RETURN:ret SEMICOLON															{:RESULT = new AST_STMT_RETURN(null, retleft);:}
+					| IF:i LPAREN exp:cond RPAREN LBRACE stmtPlus:body RBRACE						{:RESULT = new AST_STMT_IF(cond, body, ileft);:}
+					| WHILE:w LPAREN exp:cond RPAREN LBRACE stmtPlus:body RBRACE					{:RESULT = new AST_STMT_WHILE(cond, body, wleft);:}
+					| var:v DOT ID:func LPAREN exp:arg1 commaExpStar:args RPAREN SEMICOLON		{:RESULT = new AST_STMT_FUNCTION_CALL(v, func, arg1, args, vleft);:}
+					| ID:func LPAREN exp:arg1 commaExpStar:args RPAREN SEMICOLON 				{:RESULT = new AST_STMT_FUNCTION_CALL(func, arg1, args, funcleft);:}
+					| var:v DOT ID:func LPAREN RPAREN SEMICOLON 								{:RESULT = new AST_STMT_FUNCTION_CALL(v, func, vleft);:}
+					| ID:func LPAREN RPAREN SEMICOLON											{:RESULT = new AST_STMT_FUNCTION_CALL(func, funcleft);:}
 					;
 
-stmtPlus	::=		stmt:s	stmtPlus:l 		{: 	RESULT = new AST_STMT_LIST(s,l,lexer.getPrevTokenLine()); :}
-					| stmt:s 				{:	RESULT = new AST_STMT_LIST(s, null,lexer.getPrevTokenLine());:}
+stmtPlus	::=		stmt:s	stmtPlus:l 		{: 	RESULT = new AST_STMT_LIST(s,l, sleft); :}
+					| stmt:s 				{:	RESULT = new AST_STMT_LIST(s, null, sleft);:}
 					;
 
-newExp 		::= 	NEW type:t 							{: RESULT = new AST_NEW_EXP(t, null,lexer.getPrevTokenLine());:}
-					| NEW type:t LBRACK exp:exp RBRACK 	{:RESULT = new AST_NEW_EXP(t, exp,lexer.getPrevTokenLine());:}
+newExp 		::= 	NEW:n type:t 							{: RESULT = new AST_NEW_EXP(t, null, nleft);:}
+					| NEW:n type:t LBRACK exp:exp RBRACK 	{:RESULT = new AST_NEW_EXP(t, exp, nleft);:}
 					;
