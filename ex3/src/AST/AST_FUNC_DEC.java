@@ -146,10 +146,10 @@ public class AST_FUNC_DEC extends AST_DEC {
 
 			if (sameRetType && sameName){
 				if (args == null){
-					return ((TYPE_FUNCTION)otherFunc).params == null;
+					return (((TYPE_FUNCTION)otherFunc).params == null);
 				}
 				return args.equals(((TYPE_FUNCTION)otherFunc).params);
-			}
+			}else { return false; }
 		} 
 		return true; // this is the first declaration of this function
 		
