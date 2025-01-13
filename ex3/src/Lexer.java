@@ -364,14 +364,6 @@ class Lexer implements java_cup.runtime.Scanner {
 	/*******************************************/
 	public int getLine() { return yyline + 1; } 
 
-	public int getPrevTokenLine() { 
-		if(yycolumn == 0) {
-			return yyline - 1;
-		} else {
-			return yyline;
-		}
-	}
-
 	/**********************************************/
 	/* Enable token position extraction from main */
 	/**********************************************/

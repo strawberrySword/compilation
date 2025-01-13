@@ -1,1 +1,2 @@
-int x = new NotExists[];
+class Father { int foo() { return 90; } }
+class Son extends Father { int j := foo(); }
