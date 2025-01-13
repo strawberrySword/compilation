@@ -1,1 +1,1 @@
-Error(22)
+ERROR(22)

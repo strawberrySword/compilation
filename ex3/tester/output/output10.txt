@@ -1,1 +1,1 @@
-Error(7)
+ERROR(7)
