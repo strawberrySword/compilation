@@ -34,6 +34,9 @@ public class TYPE_CLASS extends TYPE
 			if (t.head == null && this.father != null){
 				return this.father.findField(fieldName);	
 			}
+			if(t.head == null){
+				return null;
+			}
 			if (t.head.name.equals(fieldName)){
 				return t.head;
 			}
