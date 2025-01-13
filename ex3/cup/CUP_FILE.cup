@@ -146,9 +146,9 @@ type		::= 	TYPE_INT:t		{: RESULT = new AST_TYPE("int",tleft);:}
 					| ID:t			{: RESULT = new AST_TYPE(t,tleft);:} 		
 					;
 
-varDec 		::=		type:t ID:name ASSIGN exp:val SEMICOLON 		{:RESULT = new AST_VAR_DEC(t,name,val,null,tright);:}
-					| type:t ID:name SEMICOLON						{:RESULT = new AST_VAR_DEC(t,name,null,null,tright);:}
-					| type:t ID:name ASSIGN newExp:val SEMICOLON	{:RESULT = new AST_VAR_DEC(t,name,null,val,tright);:}
+varDec 		::=		type:t ID:name ASSIGN exp:val SEMICOLON 		{:RESULT = new AST_VAR_DEC(t,name,val,null,tleft);:}
+					| type:t ID:name SEMICOLON						{:RESULT = new AST_VAR_DEC(t,name,null,null,tleft);:}
+					| type:t ID:name ASSIGN newExp:val SEMICOLON	{:RESULT = new AST_VAR_DEC(t,name,null,val,tleft);:}
 					;
 
 funcDec		::= 	type:retType ID:funcName LPAREN type:type1 ID:arg1 commaTypeIdStar:args RPAREN LBRACE stmtPlus:body RBRACE	{:RESULT = new AST_FUNC_DEC(retType, funcName, type1, arg1, args, body,retTypeleft);:}
