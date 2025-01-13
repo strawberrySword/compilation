@@ -35,7 +35,6 @@ public class AST_NEW_EXP extends AST_EXP {
 		// check if a class is instantiated.
 		// or array type
 		// may be Nil
-		System.out.println("Sementing########################");
 		SYMBOL_TABLE t = SYMBOL_TABLE.getInstance();
 
 		TYPE instanceDataType = t.find(this.type.myType);

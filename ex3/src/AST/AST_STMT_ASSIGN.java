@@ -57,9 +57,9 @@ public class AST_STMT_ASSIGN extends AST_STMT {
 			return null;
 		}
 
-		if (!t1.inheritsFrom(t2)) {
+		if (!(t2.inheritsFrom(t1))) {
 			table.writeError(lineNum);
-			System.out.println(">> ERROR type mismatch for var := exp\n  var: " + t1 + "\n   exp: " + t2);
+			System.out.println(">> ERROR type mismatch for var := exp\n  var: " + t1.name + "\n   exp: " + t2.name);
 			System.exit(0);
 		}
 		return null;

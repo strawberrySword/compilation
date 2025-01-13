@@ -24,15 +24,17 @@ public class AST_STMT_RETURN extends AST_STMT {
 		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.retVal.SerialNumber);
 	}
 
-	public TYPE SemantMe(String fName, TYPE t) {
+	public TYPE SemantMe() {
 		if(!(SYMBOL_TABLE.getInstance().inFunctionDef())) {
 			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("\nSemantic error: return statement outside of function\n");
 			System.exit(0);
 		}
 
+		TYPE t = SYMBOL_TABLE.getInstance().currentFunctionReturnType();
+
 		if(retVal == null) {
-			if(((TYPE_FUNCTION)t).returnType != TYPE_VOID.getInstance()) {
+			if(t != TYPE_VOID.getInstance()) {
 				SYMBOL_TABLE.getInstance().writeError(lineNum);
 				System.out.println("\nSemantic error: this function must return void\n");
 				System.exit(0);
@@ -41,7 +43,10 @@ public class AST_STMT_RETURN extends AST_STMT {
 		}
 
 		TYPE retType = retVal.SemantMe();
-		if(!(retType.name.equals(((TYPE_FUNCTION)t).returnType.name))) {
+		if(retType == TYPE_NIL.getInstance() && (t instanceof TYPE_ARRAY || t instanceof TYPE_CLASS)) {
+			return t;
+		}
+		if(!(retType.name.equals(t.name))) {
 			SYMBOL_TABLE.getInstance().writeError(lineNum);
 			System.out.println("\nSemantic error: returned value must of the said type\n");
 			System.exit(0);

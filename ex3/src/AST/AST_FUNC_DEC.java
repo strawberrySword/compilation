@@ -64,15 +64,15 @@ public class AST_FUNC_DEC extends AST_DEC {
 			System.out.println("Semantic error: can't declare function with taken name");
 			System.exit(0);
 		}
-			
-		t.beginScope("Function");
+
+		t.beginScope("Function", returnType);
 		TYPE_LIST argTypes = null;
 		if (this.argList != null){
 			argTypes = this.argList.SemantMe();
 		}
 		TYPE_FUNCTION res = new TYPE_FUNCTION(returnType, fName, argTypes);
 		t.enter(fName, res); // for recursion
-		body.SemantMe(fName, res);
+		body.SemantMe();
 
 		t.endScope();
 		t.enter(fName, res); // for use of function
@@ -104,7 +104,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 			returnType = TYPE_VOID.getInstance();
 		}
 
-		t.beginScope("Function");
+		t.beginScope("Function", returnType);
 
 		TYPE_LIST argTypes = null;
 		if (this.argList != null){
@@ -119,7 +119,7 @@ public class AST_FUNC_DEC extends AST_DEC {
 
 		TYPE_FUNCTION res = new TYPE_FUNCTION(returnType, fName, argTypes);
 		t.enter(fName, res); // for recursion
-		body.SemantMe(fName, res);
+		body.SemantMe();
 
 		t.endScope();
 		t.enter(fName, res); // for use of function

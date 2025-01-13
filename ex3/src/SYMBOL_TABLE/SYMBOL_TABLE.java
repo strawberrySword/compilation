@@ -142,19 +142,18 @@ public class SYMBOL_TABLE
 	/***************************************************************************/
 	public void beginScope(String name)
 	{
-		/************************************************************************/
-		/* Though <SCOPE-BOUNDARY> entries are present inside the symbol table, */
-		/* they are not really types. In order to be ablt to debug print them,  */
-		/* a special TYPE_FOR_SCOPE_BOUNDARIES was developed for them. This     */
-		/* class only contain their type name which is the bottom sign: _|_     */
-		/************************************************************************/
 		enter(
 			"@SCOPE-BOUNDARY",
 			new TYPE_FOR_SCOPE_BOUNDARIES(name));
 
-		/*********************************************/
-		/* Print the symbol table after every change */
-		/*********************************************/
+		PrintMe();
+	}
+	public void beginScope(String name, TYPE returnType)
+	{
+		enter(
+			"@SCOPE-BOUNDARY",
+			new TYPE_FOR_SCOPE_BOUNDARIES(name, returnType));
+
 		PrintMe();
 	}
 
@@ -180,12 +179,12 @@ public class SYMBOL_TABLE
 		return null;
 	}
 
-	public TYPE WhichFunctionAmIIn(){
+	public TYPE currentFunctionReturnType(){
 		SYMBOL_TABLE_ENTRY e;
-		for(e = top; e.prevtop != null ; e = e.prevtop){
-			if(e.prevtop.name.equals("@SCOPE-BOUNDARY") && e.prevtop.type.name.equals("Function"))
+		for(e = top; e != null ; e = e.prevtop){
+			if(e.name.equals("@SCOPE-BOUNDARY") && e.type.name.equals("Function"))
 			{
-				return e.type;
+				return ((TYPE_FOR_SCOPE_BOUNDARIES)e.type).boundType;
 			}
 		}
 		return null;

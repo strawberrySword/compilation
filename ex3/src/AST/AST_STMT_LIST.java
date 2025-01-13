@@ -35,23 +35,4 @@ public class AST_STMT_LIST extends AST_Node {
 		
 		return null;
 	}
-	public TYPE SemantMe(String fName, TYPE t){
-		if(value instanceof AST_STMT_RETURN ast_stmt_return){
-			ast_stmt_return.SemantMe(fName, t);
-		}
-		else {
-			value.SemantMe();
-		}
-
-		if (this.next != null){
-			if(this.next.value instanceof AST_STMT_RETURN ast_stmt_return){
-				ast_stmt_return.SemantMe(fName, t);
-			}
-			else{
-				next.SemantMe();
-			}
-		}
-		
-		return null;
-	}
 }
