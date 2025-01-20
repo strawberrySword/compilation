@@ -1,70 +1,48 @@
 package AST;
 
-import TEMP.*;
-import IR.*;
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TYPES.*;
 
-public class AST_STMT_WHILE extends AST_STMT
-{
-	public AST_EXP cond;
-	public AST_STMT_LIST body;
+public class AST_STMT_WHILE extends AST_STMT {
+	AST_EXP cond;
+	AST_STMT_LIST body;
 
-	/*******************/
-	/*  CONSTRUCTOR(S) */
-	/*******************/
-	public AST_STMT_WHILE(AST_EXP cond,AST_STMT_LIST body)
-	{
+	public AST_STMT_WHILE(AST_EXP cond, AST_STMT_LIST body, int line) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.cond = cond;
 		this.body = body;
+		this.lineNum = line;
 	}
-	public TEMP IRme()
-	{
-		/*******************************/
-		/* [1] Allocate 2 fresh labels */
-		/*******************************/
-		String label_end   = IRcommand.getFreshLabel("end");
-		String label_start = IRcommand.getFreshLabel("start");
+
+	@Override
+	public void PrintMe(){
+		System.out.format("Stmt_while");
+
+		this.cond.PrintMe();
+		this.body.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Stmt_while"));
 	
-		/*********************************/
-		/* [2] entry label for the while */
-		/*********************************/
-		IR.
-		getInstance().
-		Add_IRcommand(new IRcommand_Label(label_start));
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.cond.SerialNumber);
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.body.SerialNumber);
+	}
 
-		/********************/
-		/* [3] cond.IRme(); */
-		/********************/
-		TEMP cond_temp = cond.IRme();
+	@Override
+	public TYPE SemantMe(){
+		SYMBOL_TABLE.getInstance().beginScope("Loop");
+		
+		TYPE t = cond.SemantMe();
+		if (t != TYPE_INT.getInstance()){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
+			System.out.format(">> condition inside while statement is not of type int\n");
+			System.exit(0);
+			return null;
+		}
+		
+		body.SemantMe();
 
-		/******************************************/
-		/* [4] Jump conditionally to the loop end */
-		/******************************************/
-		IR.
-		getInstance().
-		Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(cond_temp,label_end));		
-
-		/*******************/
-		/* [5] body.IRme() */
-		/*******************/
-		body.IRme();
-
-		/******************************/
-		/* [6] Jump to the loop entry */
-		/******************************/
-		IR.
-		getInstance().
-		Add_IRcommand(new IRcommand_Jump_Label(label_start));		
-
-		/**********************/
-		/* [7] Loop end label */
-		/**********************/
-		IR.
-		getInstance().
-		Add_IRcommand(new IRcommand_Label(label_end));
-
-		/*******************/
-		/* [8] return null */
-		/*******************/
+		SYMBOL_TABLE.getInstance().endScope();
 		return null;
 	}
 }
