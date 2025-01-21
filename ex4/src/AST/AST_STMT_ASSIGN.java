@@ -1,6 +1,9 @@
 package AST;
 
+import IR.IR;
+import IR.IRcommand_Store;
 import SYMBOL_TABLE.SYMBOL_TABLE;
+import TEMP.TEMP;
 import TYPES.*;
 
 public class AST_STMT_ASSIGN extends AST_STMT {
@@ -62,6 +65,13 @@ public class AST_STMT_ASSIGN extends AST_STMT {
 			System.out.println(">> ERROR type mismatch for var := exp\n  var: " + t1.name + "\n   exp: " + t2.name);
 			System.exit(0);
 		}
+		return null;
+	}
+
+	public TEMP IRme(){
+		TEMP src = exp.IRme();
+		IR.getInstance().Add_IRcommand(new IRcommand_Store(((AST_VAR_SIMPLE) var).name,src));
+
 		return null;
 	}
 }

@@ -1,6 +1,9 @@
 package AST;
 
+import IR.IR;
+import IR.IRcommand_PrintInt;
 import SYMBOL_TABLE.*;
+import TEMP.TEMP;
 import TYPES.*;
 
 public class AST_STMT_FUNCTION_CALL extends AST_STMT {
@@ -107,5 +110,15 @@ public class AST_STMT_FUNCTION_CALL extends AST_STMT {
 		}
 
 		return ((TYPE_FUNCTION)function).returnType;
+	}
+
+	public TEMP IRme(){
+		TEMP t=null;
+		
+		if (this.args != null) { t = this.args.IRme(); }
+		
+		IR.getInstance().Add_IRcommand(new IRcommand_PrintInt(t));
+		
+		return null;
 	}
 }

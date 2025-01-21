@@ -1,7 +1,9 @@
 package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
+import TEMP.TEMP;
 import TYPES.*;
+import IR.*;
 
 public class AST_STMT_WHILE extends AST_STMT {
 	AST_EXP cond;
@@ -43,6 +45,28 @@ public class AST_STMT_WHILE extends AST_STMT {
 		body.SemantMe();
 
 		SYMBOL_TABLE.getInstance().endScope();
+		return null;
+	}
+
+
+	public TEMP IRme(){
+		IR ir = IR.getInstance();
+
+		String label_end   = IRcommand.getFreshLabel("end");
+		String label_start = IRcommand.getFreshLabel("start");
+	
+		ir.Add_IRcommand(new IRcommand_Label(label_start)); // loop:
+
+		TEMP cond_temp = cond.IRme();
+
+		ir.Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(cond_temp,label_end)); // beq cond,0,end
+
+		body.IRme();
+
+		ir.Add_IRcommand(new IRcommand_Jump_Label(label_start)); // jump to loop start
+
+		ir.Add_IRcommand(new IRcommand_Label(label_end)); // end label
+
 		return null;
 	}
 }
