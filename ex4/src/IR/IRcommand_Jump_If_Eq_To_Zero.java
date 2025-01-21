@@ -1,18 +1,8 @@
-/***********/
-/* PACKAGE */
-/***********/
 package IR;
 
-/*******************/
-/* GENERAL IMPORTS */
-/*******************/
-
-/*******************/
-/* PROJECT IMPORTS */
-/*******************/
 import TEMP.*;
 
-public class IRcommand_Jump_If_Eq_To_Zero extends IRcommand
+public class IRcommand_Jump_If_Eq_To_Zero extends IRcommand_Branch
 {
 	TEMP t;
 	String label_name;

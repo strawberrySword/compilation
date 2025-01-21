@@ -38,4 +38,48 @@ public class IR
 		}
 		return instance;
 	}
+
+	public void CFGme()
+	{
+		Graph<IRcommand> cfg = new Graph<>();
+
+		IRcommand curr = getInstance().head;
+		IRcommandList next = getInstance().tail;
+		while(curr != null)
+		{
+			cfg.addNode(curr);
+
+			if (next != null)
+			{
+				cfg.addEdge(curr,next.head);
+			}
+
+			if(curr instanceof IRcommand_Branch irBranch)
+			{
+				cfg.addEdge(curr, findNodeByLabel(irBranch.label_name));
+			}
+
+			// Move to the next command
+			curr = next != null ? next.head : null;
+			next = next != null ? next.tail : null;
+		}
+	}
+
+	private IRcommand findNodeByLabel(String label)
+	{
+		IRcommand curr = getInstance().head;
+		IRcommandList next = getInstance().tail;
+		while(curr != null)
+		{
+			if(curr instanceof IRcommand_Label irLabel && irLabel.label_name.equals(label))
+			{
+				return curr;
+			}
+
+			curr = next != null ? next.head : null;
+			next = next != null ? next.tail : null;
+		}
+
+		return null;
+	}
 }

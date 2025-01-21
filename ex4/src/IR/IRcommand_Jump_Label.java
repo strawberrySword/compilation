@@ -10,9 +10,8 @@ package IR;
 /*******************/
 /* PROJECT IMPORTS */
 /*******************/
-import TEMP.*;
 
-public class IRcommand_Jump_Label extends IRcommand
+public class IRcommand_Jump_Label extends IRcommand_Branch
 {
 	String label_name;
 	
