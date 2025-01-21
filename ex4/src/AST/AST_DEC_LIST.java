@@ -1,6 +1,7 @@
 package AST;
 import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
+import TEMP.*;
 import java.io.PrintWriter;
 
 public class AST_DEC_LIST extends AST_Node {
@@ -37,6 +38,16 @@ public class AST_DEC_LIST extends AST_Node {
 
 		if(this.next != null){
 			this.next.SemantMe();
+		}
+
+		return null;
+	}
+
+	public TEMP IRme(){
+		this.value.IRme();
+
+		if(this.next != null){
+			this.next.IRme();
 		}
 
 		return null;
