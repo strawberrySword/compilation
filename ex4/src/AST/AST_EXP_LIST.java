@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
 
 public class AST_EXP_LIST extends AST_Node {
 
@@ -35,5 +36,15 @@ public class AST_EXP_LIST extends AST_Node {
 		}
 
 		return new TYPE_LIST(expType, this.next.SemantMe());
+	}
+
+	public TEMP IRme(){ // no returns here since we just want to generate the IR 
+		this.value.IRme();
+
+		if (this.next != null){
+			this.next.IRme();
+		}
+
+		return null;
 	}
 }
