@@ -1,5 +1,7 @@
 package AST;
+import IR.*;
 import SYMBOL_TABLE.*;
+import TEMP.*;
 import TYPES.*;
 
 public class AST_FUNC_CALL extends AST_EXP {
@@ -94,4 +96,17 @@ public class AST_FUNC_CALL extends AST_EXP {
 
 		return ((TYPE_FUNCTION)function).returnType;
 	}
+
+    @Override
+	public TEMP IRme()
+	{
+		TEMP t=null;
+		
+		if (args != null) { t = args.value.IRme(); }
+		
+		IR.getInstance().Add_IRcommand(new IRcommand_PrintInt(t));
+		
+		return null;
+	}
+
 }
