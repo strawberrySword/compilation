@@ -1,6 +1,8 @@
 package AST;
 import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
+import TEMP.*;
+import IR.*;
 
 public class AST_VAR_DEC extends AST_DEC {
 	public AST_TYPE type;
@@ -136,5 +138,15 @@ public class AST_VAR_DEC extends AST_DEC {
 		}
 
 		return this.SemantMe();
+	}
+
+
+	public TEMP IRme(){
+		IR.getInstance().Add_IRcommand(new IRcommand_Allocate(name));
+		
+		if (this.exp != null){ // no need to add handling for new command since we are in targil 4 (oh no)
+			IR.getInstance().Add_IRcommand(new IRcommand_Store(name,this.exp.IRme()));
+		}
+		return null;
 	}
 }
