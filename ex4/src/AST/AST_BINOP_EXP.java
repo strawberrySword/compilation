@@ -2,6 +2,7 @@ package AST;
 
 import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
+import IR.*;
 
 public class AST_BINOP_EXP extends AST_EXP {
 
@@ -95,5 +96,48 @@ public class AST_BINOP_EXP extends AST_EXP {
 		}
 
 		return rightType;
+	}
+
+	public TEMP IRme()
+	{
+		TEMP t1 = null;
+		TEMP t2 = null;
+		TEMP dst = TEMP_FACTORY.getInstance().getFreshTEMP();
+
+		IR irInstance = IR.getInstance();
+				
+		if (left  != null) t1 = left.IRme();
+		if (right != null) t2 = right.IRme();
+		
+		if (op.equals("+"))
+		{
+			irInstance.Add_IRcommand(new IRcommand_Binop_Add_Integers(dst,t1,t2));
+		}
+		if (op.equals("*"))
+		{
+			irInstance.Add_IRcommand(new IRcommand_Binop_Mul_Integers(dst,t1,t2));
+		}
+		if (op.equals("="))
+		{
+			irInstance.Add_IRcommand(new IRcommand_Binop_EQ_Integers(dst,t1,t2));
+		}
+		if (op.equals("<"))
+		{
+			irInstance.Add_IRcommand(new IRcommand_Binop_LT_Integers(dst,t1,t2));
+		}
+		if (op.equals(">"))
+		{
+			irInstance.Add_IRcommand(new IRcommand_Binop_LT_Integers(dst,t2,t1));
+		}
+		if (op.equals("/"))
+		{
+			irInstance.Add_IRcommand(new IRcommand_Binop_Div_Integers(dst,t1,t2));
+		}
+		if (op.equals("-"))
+		{
+			irInstance.Add_IRcommand(new IRcommand_Binop_Sub_Integers(dst,t1,t2));
+		}
+
+		return dst;
 	}
 }
