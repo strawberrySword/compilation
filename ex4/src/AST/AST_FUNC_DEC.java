@@ -1,5 +1,8 @@
 package AST;
+import IR.IR;
+import IR.IRcommand_Label;
 import SYMBOL_TABLE.SYMBOL_TABLE;
+import TEMP.TEMP;
 import TYPES.*;
 
 public class AST_FUNC_DEC extends AST_DEC {
@@ -153,5 +156,15 @@ public class AST_FUNC_DEC extends AST_DEC {
 		} 
 		return true; // this is the first declaration of this function
 		
+	}
+
+
+
+
+	public TEMP IRme(){
+		IR.getInstance().Add_IRcommand(new IRcommand_Label(fName)); // changed from skeleton's "main"		
+		if (body != null) body.IRme();
+
+		return null;
 	}
 }
