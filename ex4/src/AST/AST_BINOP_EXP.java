@@ -3,6 +3,7 @@ package AST;
 import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 import IR.*;
+import TEMP.*;
 
 public class AST_BINOP_EXP extends AST_EXP {
 
