@@ -1,5 +1,6 @@
 package AST;
 import TYPES.*;
+import TEMP.*;
 
 public class AST_STMT_LIST extends AST_Node {
 	public AST_STMT value;
@@ -31,6 +32,16 @@ public class AST_STMT_LIST extends AST_Node {
 
 		if (this.next != null){
 			next.SemantMe();
+		}
+		
+		return null;
+	}
+
+	public TEMP IRme(){
+		value.IRme();
+
+		if (this.next != null){
+			next.IRme();
 		}
 		
 		return null;
