@@ -158,9 +158,6 @@ public class AST_FUNC_DEC extends AST_DEC {
 		
 	}
 
-
-
-
 	public TEMP IRme(){
 		IR.getInstance().Add_IRcommand(new IRcommand_Label(fName)); // changed from skeleton's "main"		
 		if (body != null) body.IRme();

@@ -1,24 +1,10 @@
-/***********/
-/* PACKAGE */
-/***********/
 package IR;
-
-/*******************/
-/* GENERAL IMPORTS */
-/*******************/
-
-/*******************/
-/* PROJECT IMPORTS */
-/*******************/
 
 public class IR
 {
 	private IRcommand head=null;
 	private IRcommandList tail=null;
 
-	/******************/
-	/* Add IR command */
-	/******************/
 	public void Add_IRcommand(IRcommand cmd)
 	{
 		if ((head == null) && (tail == null))
@@ -40,26 +26,14 @@ public class IR
 		}
 	}
 	
-	/**************************************/
-	/* USUAL SINGLETON IMPLEMENTATION ... */
-	/**************************************/
 	private static IR instance = null;
 
-	/*****************************/
-	/* PREVENT INSTANTIATION ... */
-	/*****************************/
 	protected IR() {}
 
-	/******************************/
-	/* GET SINGLETON INSTANCE ... */
-	/******************************/
 	public static IR getInstance()
 	{
 		if (instance == null)
 		{
-			/*******************************/
-			/* [0] The instance itself ... */
-			/*******************************/
 			instance = new IR();
 		}
 		return instance;
