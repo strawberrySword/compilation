@@ -4,6 +4,20 @@ import java.util.*;
 
 public class Graph<T> {
     private Map<T, List<T>> adjacencyList;
+    private Map<T, List<T>> prevList; // Each entry stores the list of nodes that point to the key node
+
+    private HashSet<assignment> in = new HashSet<>();
+    private HashSet<assignment> out = new HashSet<>();
+
+    private class assignment {
+        String var;
+        boolean isAssigned;
+
+        public assignment(String v, boolean b) {
+            this.var = v;
+            this.isAssigned = b;
+        }
+    }
 
     public Graph() {
         adjacencyList = new HashMap<>();
@@ -21,11 +35,15 @@ public class Graph<T> {
             addNode(destination);
         }
         adjacencyList.get(source).add(destination);
-        adjacencyList.get(destination).add(source); // Assuming an undirected graph
+        prevList.get(destination).add(source);
     }
 
     public List<T> getNeighbors(T node) {
         return adjacencyList.get(node);
+    }
+
+    public List<T> getPrev(T node) {
+        return prevList.get(node);
     }
 
     public void invertGraph() {
