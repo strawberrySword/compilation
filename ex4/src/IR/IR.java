@@ -42,17 +42,22 @@ public class IR
 
 		IRcommand curr = getInstance().head;
 		IRcommandList next = getInstance().tail;
-		while(curr != null)
-		{
+		while(curr != null){
 			cfg.addNode(curr);
 
-			if (next != null)
-			{
+			if (curr instanceof IRcommand_Jump_Label irJump){
+				cfg.addEdge(curr, findNodeByLabel(irJump.label_name));
+				// Move to the next command
+				curr = next != null ? next.head : null;
+				next = next != null ? next.tail : null;
+				continue; // here we don't want to add the edge to the next command
+			}
+
+			if (next != null){
 				cfg.addEdge(curr,next.head);
 			}
 
-			if(curr instanceof IRcommand_Branch irBranch)
-			{
+			if(curr instanceof IRcommand_Branch irBranch){
 				cfg.addEdge(curr, findNodeByLabel(irBranch.label_name));
 			}
 
