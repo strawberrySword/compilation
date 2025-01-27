@@ -1,8 +1,8 @@
 package AST;
-import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.*;
-import TEMP.*;
 import IR.*;
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TEMP.*;
+import TYPES.*;
 
 public class AST_VAR_DEC extends AST_DEC {
 	public AST_TYPE type;
@@ -35,12 +35,6 @@ public class AST_VAR_DEC extends AST_DEC {
 
 	@Override
 	public TYPE SemantMe(){
-		// type != void
-		// Name not taken
-		// type exists
-		// type matches with assignment (exp or newExp) (Check inheritance)
-		// if inside class, must be a constant exp!!!! (of type AST_INT/AST_STRING/AST_NIL)
-		
 		SYMBOL_TABLE sTable = SYMBOL_TABLE.getInstance();
 		
 

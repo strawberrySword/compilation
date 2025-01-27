@@ -1,5 +1,7 @@
 package AST;
+import IR.*;
 import SYMBOL_TABLE.SYMBOL_TABLE;
+import TEMP.*;
 import TYPES.*;
 
 public class AST_VAR_SIMPLE extends AST_VAR {
@@ -46,6 +48,13 @@ public class AST_VAR_SIMPLE extends AST_VAR {
 		if (t instanceof TYPE_VAR_DEC type_var_dec){
 			t = type_var_dec.t;
 		}
+		return t;
+	}
+
+	@Override
+	public TEMP IRme() {
+		TEMP t = TEMP_FACTORY.getInstance().getFreshTEMP();
+		IR.getInstance().Add_IRcommand(new IRcommand_Load(t,name));
 		return t;
 	}
 }
