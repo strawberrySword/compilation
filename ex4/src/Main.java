@@ -63,7 +63,7 @@ public class Main
 			/*************************/
 			/* [9] CFG the me        */
 			/*************************/
-			IR.getInstance().CFGme();
+			Graph<IRcommand> cfg = IR.getInstance().CFGme();
 
 			/**************************/
 			/* [12] Close output file */

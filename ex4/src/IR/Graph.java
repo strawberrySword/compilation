@@ -2,7 +2,7 @@ package IR;
 
 import java.util.*;
 
-class Graph<T> {
+public class Graph<T> {
     private Map<T, List<T>> adjacencyList;
 
     public Graph() {

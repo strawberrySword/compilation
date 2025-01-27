@@ -5,8 +5,7 @@ public class IR
 	private IRcommand head=null;
 	private IRcommandList tail=null;
 
-	public void Add_IRcommand(IRcommand cmd)
-	{
+	public void Add_IRcommand(IRcommand cmd){
 		if ((head == null) && (tail == null))
 		{
 			this.head = cmd;
@@ -30,8 +29,7 @@ public class IR
 
 	protected IR() {}
 
-	public static IR getInstance()
-	{
+	public static IR getInstance(){
 		if (instance == null)
 		{
 			instance = new IR();
@@ -39,8 +37,7 @@ public class IR
 		return instance;
 	}
 
-	public void CFGme()
-	{
+	public Graph<IRcommand> CFGme(){
 		Graph<IRcommand> cfg = new Graph<>();
 
 		IRcommand curr = getInstance().head;
@@ -63,10 +60,11 @@ public class IR
 			curr = next != null ? next.head : null;
 			next = next != null ? next.tail : null;
 		}
+
+		return cfg;
 	}
 
-	private IRcommand findNodeByLabel(String label)
-	{
+	private IRcommand findNodeByLabel(String label){
 		IRcommand curr = getInstance().head;
 		IRcommandList next = getInstance().tail;
 		while(curr != null)
