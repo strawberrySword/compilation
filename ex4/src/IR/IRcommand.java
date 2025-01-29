@@ -17,7 +17,7 @@ public abstract class IRcommand
         }
 
 		public assignment copy(){
-			return new assignment(this.var, this.isAssigned);
+			return new assignment(new String(this.var), this.isAssigned);
 		}
     }
 
