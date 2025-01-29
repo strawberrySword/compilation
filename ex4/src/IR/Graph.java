@@ -3,27 +3,20 @@ package IR;
 import java.util.*;
 
 public class Graph<T> {
-    private Map<T, List<T>> adjacencyList;
-    private Map<T, List<T>> prevList; // Each entry stores the list of nodes that point to the key node
+    public Map<T, List<T>> adjacencyList;
+    public Map<T, List<T>> prevList; // Each entry stores the list of nodes that point to the key node
 
-    private HashSet<assignment> in = new HashSet<>();
-    private HashSet<assignment> out = new HashSet<>();
-
-    private class assignment {
-        String var;
-        boolean isAssigned;
-
-        public assignment(String v, boolean b) {
-            this.var = v;
-            this.isAssigned = b;
-        }
-    }
+    private T first = null;
 
     public Graph() {
         adjacencyList = new HashMap<>();
     }
 
+    public T getFirstCommand(){return first;}
+
     public void addNode(T node) {
+        if(first == null){first = node;}
+        
         adjacencyList.put(node, new ArrayList<>());
     }
 
