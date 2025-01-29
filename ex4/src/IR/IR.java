@@ -100,7 +100,12 @@ public class IR
 			next = (ArrayList<IRcommand>)cfg.getNeighbors(curr); // the "next" in the cfg
 
 			for (IRcommand n: next){
-				temp = n.in;
+				temp = new HashSet<>();
+
+				for (assignment a: n.in){
+					temp.add(a.copy());
+				}
+				// now temp is n.in before addition
 
 				n.in.addAll(curr.out); // in_{v} = in_{v} U out_{u}
 
