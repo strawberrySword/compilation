@@ -1,7 +1,5 @@
 package IR;
 
-import TEMP.*;
-
 public class IRcommand_Allocate extends IRcommand
 {
 	String var_name;

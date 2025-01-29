@@ -1,17 +1,8 @@
-/***********/
-/* PACKAGE */
-/***********/
 package SYMBOL_TABLE;
 
-/*******************/
-/* GENERAL IMPORTS */
-/*******************/
 import TYPES.*;
 import java.io.PrintWriter;
 
-/****************/
-/* SYMBOL TABLE */
-/****************/
 public class SYMBOL_TABLE
 {
 	private int hashArraySize = 13;

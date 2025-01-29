@@ -1,16 +1,4 @@
-/***********/
-/* PACKAGE */
-/***********/
 package IR;
-
-/*******************/
-/* GENERAL IMPORTS */
-/*******************/
-
-/*******************/
-/* PROJECT IMPORTS */
-/*******************/
-import TEMP.*;
 
 public class IRcommand_Label extends IRcommand
 {
