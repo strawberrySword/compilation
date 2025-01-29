@@ -1,9 +1,12 @@
    
 import java.io.*;
 import java.io.PrintWriter;
+import java.util.HashSet;
+
 import java_cup.runtime.Symbol;
 import AST.*;
 import IR.*;
+import IR.IRcommand;
 
 public class Main
 {
@@ -64,6 +67,20 @@ public class Main
 			/* [9] CFG the me        */
 			/*************************/
 			Graph<IRcommand> cfg = IR.getInstance().CFGme();
+
+			/*************************/
+			/* [10] Chaotic Iterate  */
+			/*************************/
+			HashSet<IRcommand.assignment> initialValue = null;
+			
+			IR.AnalyzeCFG(cfg, initialValue); // This performs chaotic iterations
+
+			// Now, cfg has final in/out sets in all nodes
+
+			/*******************************/
+			/* [11] Perform goofy analysis */
+			/*******************************/
+			//TODO: Perform goofy analysis
 
 			/**************************/
 			/* [12] Close output file */
