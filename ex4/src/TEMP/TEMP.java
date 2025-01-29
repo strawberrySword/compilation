@@ -13,4 +13,9 @@ public class TEMP
 	{
 		return serial;
 	}
+
+	@Override
+	public String toString(){
+		return ""+this.serial;
+	}
 }
