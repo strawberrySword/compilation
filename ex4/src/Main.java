@@ -71,6 +71,7 @@ public class Main
 			/*************************/
 			/* [10] Chaotic Iterate  */
 			/*************************/
+			//TODO: compute initial value
 			HashSet<IRcommand.assignment> initialValue = null;
 			
 			IR.AnalyzeCFG(cfg, initialValue); // This performs chaotic iterations
