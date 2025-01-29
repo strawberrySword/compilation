@@ -1,15 +1,5 @@
-/***********/
-/* PACKAGE */
-/***********/
 package IR;
 
-/*******************/
-/* GENERAL IMPORTS */
-/*******************/
-
-/*******************/
-/* PROJECT IMPORTS */
-/*******************/
 import TEMP.*;
 
 public class IRcommand_Binop_EQ_Integers extends IRcommand_Binop {
