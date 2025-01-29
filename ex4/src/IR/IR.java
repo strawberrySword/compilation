@@ -74,7 +74,7 @@ public class IR
 		return cfg;
 	}
 
-	public void AnalyzeCFG(Graph<IRcommand> cfg, HashSet<assignment> initialValue){
+	public static void AnalyzeCFG(Graph<IRcommand> cfg, HashSet<assignment> initialValue){
 		for (IRcommand node : cfg.adjacencyList.keySet()) {
 			node.initInSet();
     	}
