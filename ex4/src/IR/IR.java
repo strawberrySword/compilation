@@ -187,11 +187,6 @@ public class IR
 					return false;
 				}
 			}
-			else if (curr instanceof IRcommand_Branch branch){
-				if (!curr.isInitialized(branch.var_name)){
-					return false;
-				}
-			}
 
 			curr = next != null ? next.head : null;
 			next = next != null ? next.tail : null;
