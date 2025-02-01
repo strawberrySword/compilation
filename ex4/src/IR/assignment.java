@@ -1,5 +1,6 @@
 package IR;
 
+import java.util.Objects;
 
 public class assignment {
     String var;
@@ -12,5 +13,18 @@ public class assignment {
 
     public assignment copy(){
         return new assignment(new String(this.var), this.isAssigned);
+    }
+
+    @Override
+	public boolean equals(Object O){
+        if (O instanceof assignment a){
+            return (this.var.equals(a.var) && this.isAssigned == a.isAssigned);
+        }
+        return false;
+	}
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(var, isAssigned);
     }
 }
