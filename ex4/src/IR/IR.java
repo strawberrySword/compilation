@@ -112,6 +112,8 @@ public class IR
 	private static HashSet<assignment> computeInitialSetForEx4(){
 		HashSet<assignment> res = new HashSet<>();
 
+		addVariables();
+
 		for (String s : getInstance().allVars){
 			res.add(new assignment(s, false));
 		}
@@ -128,7 +130,7 @@ public class IR
 		IRcommand curr;
 
 		first.in = computeInitialSetForEx4();
-
+		
 		ArrayList<IRcommand> workList = new ArrayList<>();
 		ArrayList<IRcommand> next;
 
