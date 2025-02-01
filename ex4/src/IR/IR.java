@@ -5,8 +5,8 @@ import java.util.HashSet;
 
 public class IR
 {
-	private IRcommand head=null;
-	private IRcommandList tail=null;
+	public IRcommand head=null;
+	public IRcommandList tail=null;
 	public HashSet<String>allVars = new HashSet<>();
 
 
