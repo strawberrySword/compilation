@@ -85,7 +85,7 @@ public class Main
 			/*******************************/
 			
 			boolean IsTheCodeValidAccordingToExcersiceNuberFour = IR.CheckUsedBeforeAssigned();
-
+			System.out.println("\n###"+IsTheCodeValidAccordingToExcersiceNuberFour+"###\n");
 			/**************************/
 			/* [12] Close output file */
 			/**************************/
