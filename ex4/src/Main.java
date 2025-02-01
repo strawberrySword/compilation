@@ -71,7 +71,15 @@ public class Main
 			/*************************/
 			
 			IR.ChaoticIterate(cfg); // This performs chaotic iterations
+			
+			IRcommand curr = IR.getInstance().head;
+			IRcommandList next = IR.getInstance().tail;
 
+			while(curr != null){
+				System.out.print(curr.toString());
+				curr = next != null ? next.head : null;
+				next = next != null ? next.tail : null;
+			}
 			/*******************************/
 			/* [11] Perform goofy analysis */
 			/*******************************/
