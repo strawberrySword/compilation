@@ -89,13 +89,16 @@ public abstract class IRcommand
 
 	// This function determines wether a variable (or temp) is initialized at IN
 	private boolean isInitialized(String vName){
+		boolean ans = false;
 		for (assignment a : this.in){
 			if (a.var.equals(vName)){
-				return a.isAssigned;
+				if (a.isAssigned == false){
+					return false;
+				}
+				ans = a.isAssigned;
 			}
 		}
-
-		return false;
+		return ans;
 	}
 
 	public void initInSet(){
