@@ -7,20 +7,6 @@ public abstract class IRcommand
 	public HashSet<assignment> in;
     public HashSet<assignment> out;
 
-    public class assignment {
-        String var;
-        boolean isAssigned;
-
-        public assignment(String v, boolean b) {
-            this.var = v;
-            this.isAssigned = b;
-        }
-
-		public assignment copy(){
-			return new assignment(new String(this.var), this.isAssigned);
-		}
-    }
-
 	public void computeAndAssignOutSetForEx4(){
 		out = new HashSet<>();
 
@@ -88,7 +74,7 @@ public abstract class IRcommand
 	}
 
 	// This function determines wether a variable (or temp) is initialized at IN
-	private boolean isInitialized(String vName){
+	public boolean isInitialized(String vName){
 		boolean ans = false;
 		for (assignment a : this.in){
 			if (a.var.equals(vName)){
