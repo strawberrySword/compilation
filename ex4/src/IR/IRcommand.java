@@ -96,4 +96,43 @@ public abstract class IRcommand
 	{
 		return String.format("Label_%d_%s",label_counter++,msg);
 	}
+
+
+	public String toString(){
+		String res = "";
+
+		if (this instanceof IRcommandConstInt c){
+			res += "const. int: t"+c.t.toString()+" = "+c.value+"\n";
+		}
+		else if (this instanceof IRcommand_Allocate alloc){
+			res += "allocate: "+alloc.var_name+"\n";
+		}
+		else if (this instanceof IRcommand_Load load){
+			res += "load: t"+load.dst.toString()+" = "+load.var_name+"\n";
+		}
+		else if (this instanceof IRcommand_Store store){
+			res += "store: "+store.var_name+" = t"+store.src.toString()+"\n";
+		}
+		else if (this instanceof IRcommand_Binop binop){
+			res += "binop: t"+binop.dst.toString()+" = t"+binop.t1.toString()+"op t"+binop.t2.toString()+"\n";
+		}
+
+		res += "in: {";
+		for (assignment a : this.in){
+			res += "("+a.var+",";
+			res += a.isAssigned+") , ";
+		}
+		res += "}\n";
+
+		res += "out: {";
+		for (assignment a : this.out){
+			res += "("+a.var+",";
+			res += a.isAssigned+") , ";
+		}
+		res += "}\n";
+
+
+		return res;
+		
+	}
 }
