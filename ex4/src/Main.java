@@ -1,12 +1,10 @@
    
 import java.io.*;
-import java.io.PrintWriter;
 import java.util.HashSet;
 
 import java_cup.runtime.Symbol;
 import AST.*;
 import IR.*;
-import IR.IRcommand;
 
 public class Main
 {
@@ -71,17 +69,14 @@ public class Main
 			/*************************/
 			/* [10] Chaotic Iterate  */
 			/*************************/
-			//TODO: compute initial value
-			HashSet<IRcommand.assignment> initialValue = null;
 			
-			IR.AnalyzeCFG(cfg, initialValue); // This performs chaotic iterations
-
-			// Now, cfg has final in/out sets in all nodes
+			IR.ChaoticIterate(cfg); // This performs chaotic iterations
 
 			/*******************************/
 			/* [11] Perform goofy analysis */
 			/*******************************/
-			//TODO: Perform goofy analysis
+			
+			boolean IsTheCodeValidAccordingToExcersiceNuberFour = IR.CheckUsedBeforeAssigned();
 
 			/**************************/
 			/* [12] Close output file */
