@@ -3,12 +3,12 @@ package IR;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import IR.IRcommand.assignment;
-
 public class IR
 {
 	private IRcommand head=null;
 	private IRcommandList tail=null;
+	public HashSet<String>allVars = new HashSet<>();
+
 
 	public void Add_IRcommand(IRcommand cmd){
 		if ((head == null) && (tail == null))
@@ -33,7 +33,7 @@ public class IR
 	private static IR instance = null;
 
 	protected IR() {}
-
+	
 	public static IR getInstance(){
 		if (instance == null)
 		{
@@ -41,6 +41,39 @@ public class IR
 		}
 		return instance;
 	}
+
+
+	public static void addVariables(){
+		IR me = getInstance();
+
+		IRcommand curr = getInstance().head;
+		IRcommandList next = getInstance().tail;
+		while(curr != null){
+			if (curr instanceof IRcommand_Binop bin){
+				me.allVars.add(bin.t1.toString());
+				me.allVars.add(bin.t2.toString());
+				me.allVars.add(bin.dst.toString());
+			}
+			else if (curr instanceof IRcommand_Allocate alloc){
+				me.allVars.add(alloc.var_name);
+			}
+			else if (curr instanceof IRcommand_Load load){
+				me.allVars.add(load.var_name);
+				me.allVars.add(load.dst.toString());
+			}
+			else if (curr instanceof IRcommand_Store store){
+				me.allVars.add(store.var_name);
+				me.allVars.add(store.src.toString());
+			}
+			else if (curr instanceof IRcommandConstInt cInt){
+				me.allVars.add(cInt.t.toString());
+			}
+
+			curr = next != null ? next.head : null;
+			next = next != null ? next.tail : null;
+		}
+	}
+
 
 	public Graph<IRcommand> CFGme(){
 		Graph<IRcommand> cfg = new Graph<>();
@@ -74,7 +107,19 @@ public class IR
 		return cfg;
 	}
 
-	public static void AnalyzeCFG(Graph<IRcommand> cfg, HashSet<assignment> initialValue){
+
+
+	private static HashSet<assignment> computeInitialSetForEx4(){
+		HashSet<assignment> res = new HashSet<>();
+
+		for (String s : getInstance().allVars){
+			res.add(new assignment(s, false));
+		}
+
+		return res;
+	}
+
+	public static void ChaoticIterate(Graph<IRcommand> cfg){
 		for (IRcommand node : cfg.adjacencyList.keySet()) {
 			node.initInSet();
     	}
@@ -82,7 +127,7 @@ public class IR
 		IRcommand first = cfg.getFirstCommand();
 		IRcommand curr;
 
-		first.in = initialValue;
+		first.in = computeInitialSetForEx4();
 
 		ArrayList<IRcommand> workList = new ArrayList<>();
 		ArrayList<IRcommand> next;
@@ -115,6 +160,47 @@ public class IR
 			}
 		}
 	}
+
+
+
+	public static boolean CheckUsedBeforeAssigned(){
+
+		IRcommand curr = getInstance().head;
+		IRcommandList next = getInstance().tail;
+
+		while(curr != null){
+			if (curr instanceof IRcommand_Binop bin){
+				if (!curr.isInitialized(bin.t1.toString())){
+					return false;
+				}
+				if (!curr.isInitialized(bin.t2.toString())){
+					return false;
+				}
+			}
+			else if (curr instanceof IRcommand_Load load){
+				if (!curr.isInitialized(load.var_name)){
+					return false;
+				}
+			}
+			else if (curr instanceof IRcommand_Store store){
+				if (!curr.isInitialized(store.src.toString())){
+					return false;
+				}
+			}
+			else if (curr instanceof IRcommand_Branch branch){
+				if (!curr.isInitialized(branch.var_name)){
+					return false;
+				}
+			}
+
+			curr = next != null ? next.head : null;
+			next = next != null ? next.tail : null;
+		}
+
+		return true;
+	}
+
+
 
 	private IRcommand findNodeByLabel(String label){
 		IRcommand curr = getInstance().head;
