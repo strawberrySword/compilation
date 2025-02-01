@@ -10,6 +10,7 @@ public class Graph<T> {
 
     public Graph() {
         adjacencyList = new HashMap<>();
+        prevList = new HashMap<>();
     }
 
     public T getFirstCommand(){return first;}
@@ -18,13 +19,14 @@ public class Graph<T> {
         if(first == null){first = node;}
         
         adjacencyList.put(node, new ArrayList<>());
+        prevList.put(node, new ArrayList<>());
     }
 
     public void addEdge(T source, T destination) {
-        if (!adjacencyList.containsKey(source)) {
+        if (!adjacencyList.containsKey(source) || !prevList.containsKey(source)) {
             addNode(source);
         }
-        if (!adjacencyList.containsKey(destination)) {
+        if (!adjacencyList.containsKey(destination) || !prevList.containsKey(destination)) {
             addNode(destination);
         }
         adjacencyList.get(source).add(destination);
