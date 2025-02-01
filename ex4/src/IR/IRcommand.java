@@ -5,7 +5,7 @@ import java.util.HashSet;
 public abstract class IRcommand
 {
 	public HashSet<assignment> in;
-    public HashSet<assignment> out;
+    public HashSet<assignment> out = new HashSet<>();
 
 	public void computeAndAssignOutSetForEx4(){
 		out = new HashSet<>();
