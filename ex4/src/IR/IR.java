@@ -2,15 +2,18 @@ package IR;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class IR
 {
 	public IRcommand head=null;
 	public IRcommandList tail=null;
 	public HashSet<String>allVars = new HashSet<>();
-
+	public int IRcommandCounter = 0;
 
 	public void Add_IRcommand(IRcommand cmd){
+		cmd.irNumber = IRcommandCounter++;
 		if ((head == null) && (tail == null))
 		{
 			this.head = cmd;
@@ -113,7 +116,7 @@ public class IR
 		addVariables();
 
 		for (String s : getInstance().allVars){
-			res.add(new assignment(s, false));
+			res.add(new assignment(s, false, 0));
 		}
 
 		return res;
@@ -152,7 +155,18 @@ public class IR
 				}
 				// now temp is n.in before addition
 
-				n.in.addAll(curr.out); // in_{v} = in_{v} U out_{u}
+				HashSet<assignment> mergedSet = new HashSet<>();
+				mergedSet.addAll(n.in);
+				mergedSet.addAll(curr.out);
+
+				Map<String, assignment> nameToMinObject = mergedSet.stream()
+            		.collect(Collectors.toMap(
+                		assignment::getVarName,           // key: name
+                		obj -> obj,                  // value: the object itself
+                		(obj1, obj2) -> obj1.irNumber <= obj2.irNumber ? obj1 : obj2 // merge function: keep the one with the smaller value
+            	));
+
+				n.in = new HashSet<>(nameToMinObject.values());
 
 				if (!(temp.equals(n.in))){
 					workList.add(n);
@@ -211,8 +225,6 @@ public class IR
 
 		return unset;
 	}
-
-
 
 	private IRcommand findNodeByLabel(String label){
 		IRcommand curr = getInstance().head;

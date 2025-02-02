@@ -6,6 +6,7 @@ public abstract class IRcommand
 {
 	public HashSet<assignment> in;
     public HashSet<assignment> out = new HashSet<>();
+	public int irNumber;
 
 	public void computeAndAssignOutSetForEx4(){
 		out = new HashSet<>();
@@ -27,24 +28,24 @@ public abstract class IRcommand
 		HashSet<assignment> res = new HashSet<>();
 
 		if (this instanceof IRcommandConstInt cInt){
-			res.add(new assignment(cInt.t.toString(), true));
-			res.add(new assignment(cInt.t.toString(), false));
+			res.add(new assignment(cInt.t.toString(), true, this.irNumber));
+			res.add(new assignment(cInt.t.toString(), false, this.irNumber));
 		}
 		else if (this instanceof IRcommand_Allocate alloc){
-			res.add(new assignment(alloc.var_name, true));
-			res.add(new assignment(alloc.var_name, false));
+			res.add(new assignment(alloc.var_name, true, this.irNumber));
+			res.add(new assignment(alloc.var_name, false, this.irNumber));
 		}
 		else if (this instanceof IRcommand_Load load){
-			res.add(new assignment(load.dst.toString(), true));
-			res.add(new assignment(load.dst.toString(), false));
+			res.add(new assignment(load.dst.toString(), true, this.irNumber));
+			res.add(new assignment(load.dst.toString(), false, this.irNumber));
 		}
 		else if (this instanceof IRcommand_Store store){
-			res.add(new assignment(store.var_name, true));
-			res.add(new assignment(store.var_name, false));
+			res.add(new assignment(store.var_name, true, this.irNumber));
+			res.add(new assignment(store.var_name, false, this.irNumber));
 		}
 		else if (this instanceof IRcommand_Binop binop){
-			res.add(new assignment(binop.dst.toString(), true));
-			res.add(new assignment(binop.dst.toString(), false));
+			res.add(new assignment(binop.dst.toString(), true, this.irNumber));
+			res.add(new assignment(binop.dst.toString(), false, this.irNumber));
 		}
 		return res;
 	}
@@ -55,20 +56,20 @@ public abstract class IRcommand
 		HashSet<assignment> res = new HashSet<>();
 
 		if (this instanceof IRcommandConstInt cInt){
-			res.add(new assignment(cInt.t.toString(), true));
+			res.add(new assignment(cInt.t.toString(), true, this.irNumber));
 		}
 		else if (this instanceof IRcommand_Allocate alloc){
-			res.add(new assignment(alloc.var_name, false));
+			res.add(new assignment(alloc.var_name, false, this.irNumber));
 		}
 		else if (this instanceof IRcommand_Load load){
-			res.add(new assignment(load.dst.toString(), this.isInitialized(load.var_name)));
+			res.add(new assignment(load.dst.toString(), this.isInitialized(load.var_name), this.irNumber));
 		}
 		else if (this instanceof IRcommand_Store store){
-			res.add(new assignment(store.var_name, this.isInitialized(store.src.toString())));
+			res.add(new assignment(store.var_name, this.isInitialized(store.src.toString()), this.irNumber));
 		}
 		else if (this instanceof IRcommand_Binop binop){
 			boolean ans = this.isInitialized(binop.t1.toString()) && this.isInitialized(binop.t2.toString());
-			res.add(new assignment(binop.dst.toString(), ans)); // will be true iff both are initialized
+			res.add(new assignment(binop.dst.toString(), ans, this.irNumber)); // will be true iff both are initialized
 		}
 		return res;
 	}

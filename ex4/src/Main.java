@@ -86,8 +86,16 @@ public class Main
 			
 			boolean IsTheCodeValidAccordingToExcersiceNuberFour = IR.CheckUsedBeforeAssigned();
 			HashSet<String> unset = IR.getUsedBeforeAssignedVars();
-			// System.out.println("\n###"+IsTheCodeValidAccordingToExcersiceNuberFour+"###\n");
-			System.out.println(unset);
+			String output = "";
+			if(unset.isEmpty()){
+				output = "!OK";
+			}
+			else{
+				for(String var : unset){
+					output += var + "\n";
+				}
+			}
+			file_writer.println(output);
 			/**************************/
 			/* [12] Close output file */
 			/**************************/

@@ -5,14 +5,20 @@ import java.util.Objects;
 public class assignment {
     String var;
     boolean isAssigned;
+    int irNumber;
 
-    public assignment(String v, boolean b) {
+    public assignment(String v, boolean b, int ir){
         this.var = v;
         this.isAssigned = b;
+        this.irNumber = ir;
     }
 
     public assignment copy(){
-        return new assignment(new String(this.var), this.isAssigned);
+        return new assignment(new String(this.var), this.isAssigned, this.irNumber);
+    }
+
+    public String getVarName(){
+        return this.var;
     }
 
     @Override
