@@ -82,7 +82,6 @@ public class IR
 		IRcommandList next = getInstance().tail;
 		while(curr != null){
 			cfg.addNode(curr);
-
 			if (curr instanceof IRcommand_Jump_Label irJump){
 				cfg.addEdge(curr, findNodeByLabel(irJump.label_name));
 				// Move to the next command
@@ -103,7 +102,6 @@ public class IR
 			curr = next != null ? next.head : null;
 			next = next != null ? next.tail : null;
 		}
-
 		return cfg;
 	}
 
@@ -195,6 +193,23 @@ public class IR
 		}
 
 		return true;
+	}
+
+	public static HashSet<String> getUsedBeforeAssignedVars(){
+		HashSet<String> unset = new HashSet<>();
+		IRcommand curr = getInstance().head;
+		IRcommandList next = getInstance().tail;
+
+		while(curr != null){
+			if (curr instanceof IRcommand_Load load && !curr.isInitialized(load.var_name)){
+				unset.add(load.var_name);	
+			}
+
+			curr = next != null ? next.head : null;
+			next = next != null ? next.tail : null;
+		}
+
+		return unset;
 	}
 
 

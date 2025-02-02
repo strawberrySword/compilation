@@ -65,7 +65,7 @@ public class Main
 			/* [9] CFG the me        */
 			/*************************/
 			Graph<IRcommand> cfg = IR.getInstance().CFGme();
-
+			System.out.println("IR: ");
 			/*************************/
 			/* [10] Chaotic Iterate  */
 			/*************************/
@@ -85,7 +85,9 @@ public class Main
 			/*******************************/
 			
 			boolean IsTheCodeValidAccordingToExcersiceNuberFour = IR.CheckUsedBeforeAssigned();
-			System.out.println("\n###"+IsTheCodeValidAccordingToExcersiceNuberFour+"###\n");
+			HashSet<String> unset = IR.getUsedBeforeAssignedVars();
+			// System.out.println("\n###"+IsTheCodeValidAccordingToExcersiceNuberFour+"###\n");
+			System.out.println(unset);
 			/**************************/
 			/* [12] Close output file */
 			/**************************/

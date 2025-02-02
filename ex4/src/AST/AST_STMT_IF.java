@@ -1,8 +1,8 @@
 package AST;
-import SYMBOL_TABLE.SYMBOL_TABLE;
-import TYPES.*;
-import TEMP.*;
 import IR.*;
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TEMP.*;
+import TYPES.*;
 
 public class AST_STMT_IF extends AST_STMT {
 	AST_EXP cond;
@@ -51,7 +51,6 @@ public class AST_STMT_IF extends AST_STMT {
 		String label_end   = IRcommand.getFreshLabel("end");
 	
 		TEMP cond_temp = cond.IRme();
-
 		ir.Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(cond_temp,label_end)); // beq cond,0,end
 
 		body.IRme();
