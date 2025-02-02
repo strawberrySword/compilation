@@ -116,6 +116,12 @@ public abstract class IRcommand
 		else if (this instanceof IRcommand_Binop binop){
 			res += "binop: t"+binop.dst.toString()+" = t"+binop.t1.toString()+"op t"+binop.t2.toString()+"\n";
 		}
+		else if (this instanceof IRcommand_Label label){
+			res += "Label: "+label.label_name+"\n";
+		}
+		else if (this instanceof IRcommand_Branch br){
+			res += "Branch: "+br.label_name+"\n";
+		}
 
 		res += "in: {";
 		for (assignment a : this.in){
