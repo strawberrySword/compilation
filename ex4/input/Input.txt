@@ -1,4 +1,9 @@
-int x;
-int y := x;
-int z := y;
-int g := z;
+void main(){
+    int x:=10;
+    int y;
+    while(x<8){
+        int y:=1;
+        PrintInt(y);
+    }
+    PrintInt(y);
+}
