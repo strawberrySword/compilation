@@ -1,81 +1,48 @@
 package AST;
-
 import TYPES.*;
 import TEMP.*;
 
-public class AST_STMT_LIST extends AST_Node
-{
-	/****************/
-	/* DATA MEMBERS */
-	/****************/
-	public AST_STMT head;
-	public AST_STMT_LIST tail;
+public class AST_STMT_LIST extends AST_Node {
+	public AST_STMT value;
+	public AST_STMT_LIST next;
 
-	/******************/
-	/* CONSTRUCTOR(S) */
-	/******************/
-	public AST_STMT_LIST(AST_STMT head,AST_STMT_LIST tail)
-	{
-		/******************************/
-		/* SET A UNIQUE SERIAL NUMBER */
-		/******************************/
-		SerialNumber = AST_Node_Serial_Number.getFresh();
-
-		/***************************************/
-		/* PRINT CORRESPONDING DERIVATION RULE */
-		/***************************************/
-		if (tail != null) System.out.print("====================== stmts -> stmt stmts\n");
-		if (tail == null) System.out.print("====================== stmts -> stmt      \n");
-
-		/*******************************/
-		/* COPY INPUT DATA NENBERS ... */
-		/*******************************/
-		this.head = head;
-		this.tail = tail;
-	}
-
-	/******************************************************/
-	/* The printing message for a statement list AST node */
-	/******************************************************/
-	public void PrintMe()
-	{
-		/**************************************/
-		/* AST NODE TYPE = AST STATEMENT LIST */
-		/**************************************/
-		System.out.print("AST NODE STMT LIST\n");
-
-		/*************************************/
-		/* RECURSIVELY PRINT HEAD + TAIL ... */
-		/*************************************/
-		if (head != null) head.PrintMe();
-		if (tail != null) tail.PrintMe();
-
-		/**********************************/
-		/* PRINT to AST GRAPHVIZ DOT file */
-		/**********************************/
-		AST_GRAPHVIZ.getInstance().logNode(
-			SerialNumber,
-			"STMT\nLIST\n");
+	public AST_STMT_LIST(AST_STMT d, AST_STMT_LIST l, int line) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
-		/****************************************/
-		/* PRINT Edges to AST GRAPHVIZ DOT file */
-		/****************************************/
-		if (head != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,head.SerialNumber);
-		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
+		this.value = d;
+		this.next = l;
+		this.lineNum = line;
 	}
+
+	@Override
+	public void PrintMe(){
+		System.out.format("StmtList");
+
+		this.value.PrintMe();
+		if(this.next != null) this.next.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("StmtList"));
 	
-	public TEMP IRme()
-	{
-		if (head != null) head.IRme();
-		if (tail != null) tail.IRme();
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.value.SerialNumber);
+		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
+	}
+
+	public TYPE SemantMe(){
+		value.SemantMe();
+
+		if (this.next != null){
+			next.SemantMe();
+		}
 		
 		return null;
 	}
-	
-	public TYPE SemantMe()
-	{
-		if (head != null) head.SemantMe();
-		if (tail != null) tail.SemantMe();
+
+	public TEMP IRme(){
+		value.IRme();
+
+		if (this.next != null){
+			next.IRme();
+		}
 		
 		return null;
 	}

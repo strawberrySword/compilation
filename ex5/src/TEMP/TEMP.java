@@ -1,15 +1,4 @@
-/***********/
-/* PACKAGE */
-/***********/
 package TEMP;
-
-/*******************/
-/* GENERAL IMPORTS */
-/*******************/
-
-/*******************/
-/* PROJECT IMPORTS */
-/*******************/
 
 public class TEMP
 {
@@ -23,5 +12,10 @@ public class TEMP
 	public int getSerialNumber()
 	{
 		return serial;
+	}
+
+	@Override
+	public String toString(){
+		return ""+this.serial;
 	}
 }

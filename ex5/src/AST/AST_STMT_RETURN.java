@@ -1,50 +1,64 @@
 package AST;
 
-public class AST_STMT_RETURN extends AST_STMT
-{
-	/****************/
-	/* DATA MEMBERS */
-	/****************/
-	public AST_EXP exp;
+import SYMBOL_TABLE.*;
+import TYPES.*;
+import TEMP.*;
+import IR.*;
 
-	/*******************/
-	/*  CONSTRUCTOR(S) */
-	/*******************/
-	public AST_STMT_RETURN(AST_EXP exp)
-	{
-		/******************************/
-		/* SET A UNIQUE SERIAL NUMBER */
-		/******************************/
-		SerialNumber = AST_Node_Serial_Number.getFresh();
+public class AST_STMT_RETURN extends AST_STMT {
+	AST_EXP retVal;
 
-		this.exp = exp;
+	public AST_STMT_RETURN(AST_EXP retVal, int line) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
+		this.retVal = retVal;
+		this.lineNum = line;
 	}
 
-	/************************************************************/
-	/* The printing message for a function declaration AST node */
-	/************************************************************/
-	public void PrintMe()
-	{
-		/*************************************/
-		/* AST NODE TYPE = AST SUBSCRIPT VAR */
-		/*************************************/
-		System.out.print("AST NODE STMT RETURN\n");
+	@Override
+	public void PrintMe(){
+		System.out.format("Stmt_ret");
 
-		/*****************************/
-		/* RECURSIVELY PRINT exp ... */
-		/*****************************/
-		if (exp != null) exp.PrintMe();
+		if (this.retVal != null) {this.retVal.PrintMe();}
+		else {AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Stmt_ret(null)")); return;}
+	
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Stmt_ret"));
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.retVal.SerialNumber);
+	}
 
-		/***************************************/
-		/* PRINT Node to AST GRAPHVIZ DOT file */
-		/***************************************/
-		AST_GRAPHVIZ.getInstance().logNode(
-			SerialNumber,
-			"RETURN");
+	public TYPE SemantMe() {
+		if(!(SYMBOL_TABLE.getInstance().inFunctionDef())) {
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
+			System.out.println("\nSemantic error: return statement outside of function\n");
+			System.exit(0);
+		}
 
-		/****************************************/
-		/* PRINT Edges to AST GRAPHVIZ DOT file */
-		/****************************************/
-		if (exp != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,exp.SerialNumber);
+		TYPE t = SYMBOL_TABLE.getInstance().currentFunctionReturnType();
+
+		if(retVal == null) {
+			if(t != TYPE_VOID.getInstance()) {
+				SYMBOL_TABLE.getInstance().writeError(lineNum);
+				System.out.println("\nSemantic error: this function must return void\n");
+				System.exit(0);
+			}
+			return TYPE_VOID.getInstance();
+		}
+
+		TYPE retType = retVal.SemantMe();
+		if(retType == TYPE_NIL.getInstance() && (t instanceof TYPE_ARRAY || t instanceof TYPE_CLASS)) {
+			return t;
+		}
+		if(!(retType.name.equals(t.name))) {
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
+			System.out.println("\nSemantic error: returned value must of the said type\n");
+			System.exit(0);
+		}
+		return t;
+	}
+
+	public TEMP IRme(){
+		IR.getInstance().Add_IRcommand(new IRcommand_return(this.retVal.IRme()));
+
+		return null;
 	}
 }

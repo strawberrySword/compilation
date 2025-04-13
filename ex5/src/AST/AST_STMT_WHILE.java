@@ -1,71 +1,72 @@
 package AST;
 
-import TEMP.*;
+import SYMBOL_TABLE.SYMBOL_TABLE;
+import TEMP.TEMP;
+import TYPES.*;
 import IR.*;
-import MIPS.*;
 
-public class AST_STMT_WHILE extends AST_STMT
-{
-	public AST_EXP cond;
-	public AST_STMT_LIST body;
+public class AST_STMT_WHILE extends AST_STMT {
+	AST_EXP cond;
+	AST_STMT_LIST body;
 
-	/*******************/
-	/*  CONSTRUCTOR(S) */
-	/*******************/
-	public AST_STMT_WHILE(AST_EXP cond,AST_STMT_LIST body)
-	{
+	public AST_STMT_WHILE(AST_EXP cond, AST_STMT_LIST body, int line) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
+		
 		this.cond = cond;
 		this.body = body;
+		this.lineNum = line;
 	}
-	public TEMP IRme()
-	{
-		/*******************************/
-		/* [1] Allocate 2 fresh labels */
-		/*******************************/
+
+	@Override
+	public void PrintMe(){
+		System.out.format("Stmt_while");
+
+		this.cond.PrintMe();
+		this.body.PrintMe();
+
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("Stmt_while"));
+	
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.cond.SerialNumber);
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.body.SerialNumber);
+	}
+
+	@Override
+	public TYPE SemantMe(){
+		SYMBOL_TABLE.getInstance().beginScope("Loop");
+		
+		TYPE t = cond.SemantMe();
+		if (t != TYPE_INT.getInstance()){
+			SYMBOL_TABLE.getInstance().writeError(lineNum);
+			System.out.format(">> condition inside while statement is not of type int\n");
+			System.exit(0);
+			return null;
+		}
+		
+		body.SemantMe();
+
+		SYMBOL_TABLE.getInstance().endScope();
+		return null;
+	}
+
+
+	public TEMP IRme(){
+		IR ir = IR.getInstance();
+
 		String label_end   = IRcommand.getFreshLabel("end");
 		String label_start = IRcommand.getFreshLabel("start");
 	
-		/*********************************/
-		/* [2] entry label for the while */
-		/*********************************/
-		IR.
-		getInstance().
-		Add_IRcommand(new IRcommand_Label(label_start));
+		ir.Add_IRcommand(new IRcommand_Label(label_start)); // loop:
 
-		/********************/
-		/* [3] cond.IRme(); */
-		/********************/
 		TEMP cond_temp = cond.IRme();
 
-		/******************************************/
-		/* [4] Jump conditionally to the loop end */
-		/******************************************/
-		IR.
-		getInstance().
-		Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(cond_temp,label_end));		
+		ir.Add_IRcommand(new IRcommand_Jump_If_Eq_To_Zero(cond_temp,label_end)); // beq cond,0,end
 
-		/*******************/
-		/* [5] body.IRme() */
-		/*******************/
 		body.IRme();
 
-		/******************************/
-		/* [6] Jump to the loop entry */
-		/******************************/
-		IR.
-		getInstance().
-		Add_IRcommand(new IRcommand_Jump_Label(label_start));		
+		ir.Add_IRcommand(new IRcommand_Jump_Label(label_start)); // jump to loop start
 
-		/**********************/
-		/* [7] Loop end label */
-		/**********************/
-		IR.
-		getInstance().
-		Add_IRcommand(new IRcommand_Label(label_end));
+		ir.Add_IRcommand(new IRcommand_Label(label_end)); // end label
 
-		/*******************/
-		/* [8] return null */
-		/*******************/
 		return null;
 	}
 }

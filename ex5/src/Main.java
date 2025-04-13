@@ -1,10 +1,10 @@
    
 import java.io.*;
-import java.io.PrintWriter;
+import java.util.HashSet;
+
 import java_cup.runtime.Symbol;
 import AST.*;
 import IR.*;
-import MIPS.*;
 
 public class Main
 {
@@ -39,7 +39,7 @@ public class Main
 			/*******************************/
 			/* [4] Initialize a new parser */
 			/*******************************/
-			p = new Parser(l);
+			p = new Parser(l, file_writer);
 
 			/***********************************/
 			/* [5] 3 ... 2 ... 1 ... Parse !!! */
@@ -61,21 +61,41 @@ public class Main
 			/**********************/
 			AST.IRme();
 			
-			/***********************/
-			/* [9] MIPS the IR ... */
-			/***********************/
-			IR.getInstance().MIPSme();
+			/*************************/
+			/* [9] CFG the me        */
+			/*************************/
+			Graph<IRcommand> cfg = IR.getInstance().CFGme();
+			System.out.println("IR: ");
+			/*************************/
+			/* [10] Chaotic Iterate  */
+			/*************************/
+			
+			IR.ChaoticIterate(cfg); // This performs chaotic iterations
+			
+			IRcommand curr = IR.getInstance().head;
+			IRcommandList next = IR.getInstance().tail;
 
-			/**************************************/
-			/* [10] Finalize AST GRAPHIZ DOT file */
-			/**************************************/
-			AST_GRAPHVIZ.getInstance().finalizeFile();			
-
-			/***************************/
-			/* [11] Finalize MIPS file */
-			/***************************/
-			MIPSGenerator.getInstance().finalizeFile();			
-
+			while(curr != null){
+				System.out.print(curr.toString());
+				curr = next != null ? next.head : null;
+				next = next != null ? next.tail : null;
+			}
+			/*******************************/
+			/* [11] Perform goofy analysis */
+			/*******************************/
+			
+			boolean IsTheCodeValidAccordingToExcersiceNuberFour = IR.CheckUsedBeforeAssigned();
+			HashSet<String> unset = IR.getUsedBeforeAssignedVars();
+			String output = "";
+			if(unset.isEmpty()){
+				output = "!OK";
+			}
+			else{
+				for(String var : unset){
+					output += var + "\n";
+				}
+			}
+			file_writer.println(output);
 			/**************************/
 			/* [12] Close output file */
 			/**************************/

@@ -1,59 +1,50 @@
 package AST;
-
+import TYPES.*;
 import TEMP.*;
 
-public class AST_EXP_LIST extends AST_Node
-{
-	/****************/
-	/* DATA MEMBERS */
-	/****************/
-	public AST_EXP head;
-	public AST_EXP_LIST tail;
+public class AST_EXP_LIST extends AST_Node {
 
-	/******************/
-	/* CONSTRUCTOR(S) */
-	/******************/
-	public AST_EXP_LIST(AST_EXP head,AST_EXP_LIST tail)
-	{
-		/******************************/
-		/* SET A UNIQUE SERIAL NUMBER */
-		/******************************/
-		SerialNumber = AST_Node_Serial_Number.getFresh();
-
-		this.head = head;
-		this.tail = tail;
-	}
-	public TEMP IRme()
-	{
-		return head.IRme();
-	}
-	/******************************************************/
-	/* The printing message for a statement list AST node */
-	/******************************************************/
-	public void PrintMe()
-	{
-		/********************************/
-		/* AST NODE TYPE = AST EXP LIST */
-		/********************************/
-		System.out.print("AST NODE EXP LIST\n");
-
-		/*************************************/
-		/* RECURSIVELY PRINT HEAD + TAIL ... */
-		/*************************************/
-		if (head != null) head.PrintMe();
-		if (tail != null) tail.PrintMe();
-
-		/**********************************/
-		/* PRINT to AST GRAPHVIZ DOT file */
-		/**********************************/
-		AST_GRAPHVIZ.getInstance().logNode(
-			SerialNumber,
-			"EXP\nLIST\n");
+	public AST_EXP value;
+	public AST_EXP_LIST next;
+	
+	public AST_EXP_LIST(AST_EXP e, AST_EXP_LIST l, int line) {
+		this.SerialNumber = AST_Node_Serial_Number.getFresh();
 		
-		/****************************************/
-		/* PRINT Edges to AST GRAPHVIZ DOT file */
-		/****************************************/
-		if (head != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,head.SerialNumber);
-		if (tail != null) AST_GRAPHVIZ.getInstance().logEdge(SerialNumber,tail.SerialNumber);
+		this.value = e;
+		this.next = l;
+		this.lineNum = line;
+	}
+
+	@Override
+	public void PrintMe(){
+		System.out.format("ExpList");
+
+		if(this.next != null) this.next.PrintMe();
+
+		this.value.PrintMe();
+		AST_GRAPHVIZ.getInstance().logNode(this.SerialNumber, String.format("ExpList"));
+		AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.value.SerialNumber);
+
+		if (this.next != null) AST_GRAPHVIZ.getInstance().logEdge(this.SerialNumber, this.next.SerialNumber);
+	}
+
+	public TYPE_LIST SemantMe(){		
+		TYPE expType = value.SemantMe();
+		
+		if (this.next == null){
+			return new TYPE_LIST(expType, null);
+		}
+
+		return new TYPE_LIST(expType, this.next.SemantMe());
+	}
+
+	public TEMP IRme(){ // no returns here since we just want to generate the IR 
+		this.value.IRme();
+
+		if (this.next != null){
+			this.next.IRme();
+		}
+
+		return null;
 	}
 }

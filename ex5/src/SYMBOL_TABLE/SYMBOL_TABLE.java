@@ -1,21 +1,8 @@
-/***********/
-/* PACKAGE */
-/***********/
 package SYMBOL_TABLE;
 
-/*******************/
-/* GENERAL IMPORTS */
-/*******************/
+import TYPES.*;
 import java.io.PrintWriter;
 
-/*******************/
-/* PROJECT IMPORTS */
-/*******************/
-import TYPES.*;
-
-/****************/
-/* SYMBOL TABLE */
-/****************/
 public class SYMBOL_TABLE
 {
 	private int hashArraySize = 13;
@@ -26,7 +13,20 @@ public class SYMBOL_TABLE
 	private SYMBOL_TABLE_ENTRY[] table = new SYMBOL_TABLE_ENTRY[hashArraySize];
 	private SYMBOL_TABLE_ENTRY top;
 	private int top_index = 0;
-	
+	private PrintWriter writer;
+
+	public void registerWriter(PrintWriter writer){
+		this.writer = writer;
+	}
+
+	public void writeError(int lineNum){
+		writer.println("ERROR(" + (lineNum+1) + ")");
+		this.closeWriter();
+	}
+
+	public void closeWriter(){
+		writer.close();
+	}
 	/**************************************************************/
 	/* A very primitive hash function for exposition purposes ... */
 	/**************************************************************/
@@ -98,25 +98,87 @@ public class SYMBOL_TABLE
 		return null;
 	}
 
+	public TYPE findInScope(String name)
+	{
+		SYMBOL_TABLE_ENTRY e;
+
+		for(e = top; e != null && !(e.type instanceof TYPE_FOR_SCOPE_BOUNDARIES) ; e = e.prevtop){
+			if(name.equals((e.name)))
+			{
+				return e.type;
+			}
+		}
+
+		return null;
+	}
+
+	public boolean inClassDef(){
+		return isUnderScope("Class");
+	}
+
+	public boolean inFunctionDef(){
+		return isUnderScope("Function");
+	}
+
+	public boolean inLoopDef(){
+		return isUnderScope("Loop");
+	}
+
+	public boolean inIfDef(){
+		return isUnderScope("If");
+	}
+
 	/***************************************************************************/
 	/* begine scope = Enter the <SCOPE-BOUNDARY> element to the data structure */
 	/***************************************************************************/
-	public void beginScope()
+	public void beginScope(String name)
 	{
-		/************************************************************************/
-		/* Though <SCOPE-BOUNDARY> entries are present inside the symbol table, */
-		/* they are not really types. In order to be ablt to debug print them,  */
-		/* a special TYPE_FOR_SCOPE_BOUNDARIES was developed for them. This     */
-		/* class only contain their type name which is the bottom sign: _|_     */
-		/************************************************************************/
 		enter(
-			"SCOPE-BOUNDARY",
-			new TYPE_FOR_SCOPE_BOUNDARIES("NONE"));
+			"@SCOPE-BOUNDARY",
+			new TYPE_FOR_SCOPE_BOUNDARIES(name));
 
-		/*********************************************/
-		/* Print the symbol table after every change */
-		/*********************************************/
 		PrintMe();
+	}
+	public void beginScope(String name, TYPE returnType)
+	{
+		enter(
+			"@SCOPE-BOUNDARY",
+			new TYPE_FOR_SCOPE_BOUNDARIES(name, returnType));
+
+		PrintMe();
+	}
+
+	public boolean isUnderScope(String name){
+		SYMBOL_TABLE_ENTRY e;
+		for(e = top; e != null ; e = e.prevtop){
+			if(e.name.equals("@SCOPE-BOUNDARY") && e.type.name.equals(name))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public TYPE WhichClassAmIIn(){
+		SYMBOL_TABLE_ENTRY e;
+		for(e = top; e.prevtop != null ; e = e.prevtop){
+			if(e.prevtop.name.equals("@SCOPE-BOUNDARY") && e.prevtop.type.name.equals("Class"))
+			{
+				return e.type;
+			}
+		}
+		return null;
+	}
+
+	public TYPE currentFunctionReturnType(){
+		SYMBOL_TABLE_ENTRY e;
+		for(e = top; e != null ; e = e.prevtop){
+			if(e.name.equals("@SCOPE-BOUNDARY") && e.type.name.equals("Function"))
+			{
+				return ((TYPE_FOR_SCOPE_BOUNDARIES)e.type).boundType;
+			}
+		}
+		return null;
 	}
 
 	/********************************************************************************/
@@ -128,7 +190,7 @@ public class SYMBOL_TABLE
 		/**************************************************************************/
 		/* Pop elements from the symbol table stack until a SCOPE-BOUNDARY is hit */		
 		/**************************************************************************/
-		while (top.name != "SCOPE-BOUNDARY")
+		while (top.name != "@SCOPE-BOUNDARY")
 		{
 			table[top.index] = top.next;
 			top_index = top_index-1;
@@ -268,6 +330,15 @@ public class SYMBOL_TABLE
 					new TYPE_LIST(
 						TYPE_INT.getInstance(),
 						null)));
+			instance.enter(
+				"PrintString",
+				new TYPE_FUNCTION(
+					TYPE_VOID.getInstance(),
+					"PrintString",
+					new TYPE_LIST(
+						TYPE_STRING.getInstance(),
+						null)));
+			
 			
 		}
 		return instance;

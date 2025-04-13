@@ -1,0 +1,4 @@
+int x;
+int y = x;
+int z = y;
+int g = z;
