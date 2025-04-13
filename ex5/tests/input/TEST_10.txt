@@ -1,0 +1,9 @@
+void main() {
+    int y:=1;
+    if (y < 10) {
+        int x;
+    } In_6: 1. if true: {(x,UNINITIALIZED,4)} if false: {(x,UNINITIALIZED,0)} -- > {(x,UNINITIALIZED,0)}
+    int x; <-- In_6 = {(x,UNINITIALIZED,0)}, command: alloc(x), Out_6: {(x,UNINITIALIZED)}
+    x := 10;
+    PrintInt(x);
+}
