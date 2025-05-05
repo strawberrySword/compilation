@@ -3,22 +3,21 @@
 /***********/
 package IR;
 
-/*******************/
-/* GENERAL IMPORTS */
-/*******************/
+import TEMP.TEMP;
 
-/*******************/
-/* PROJECT IMPORTS */
-/*******************/
-
-public class IRcommandList
-{
+public class IRcommandList {
 	public IRcommand head;
 	public IRcommandList tail;
 
-	IRcommandList(IRcommand head, IRcommandList tail)
-	{
-		this.head = head;
+	IRcommandList(IRcommand head, IRcommandList tail) {
 		this.tail = tail;
+		this.head = head;
+	}
+
+	public void MIPSme() {
+		head.MIPSme();
+
+		if (tail != null)
+			tail.MIPSme();
 	}
 }

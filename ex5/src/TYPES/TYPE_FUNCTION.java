@@ -1,5 +1,7 @@
 package TYPES;
 
+import IR.IRcommand;
+
 public class TYPE_FUNCTION extends TYPE
 {
 	/***********************************/
@@ -11,6 +13,8 @@ public class TYPE_FUNCTION extends TYPE
 	/* types of input params */
 	/*************************/
 	public TYPE_LIST params;
+
+	public String unique_label;
 	
 	/****************/
 	/* CTROR(S) ... */
@@ -20,5 +24,7 @@ public class TYPE_FUNCTION extends TYPE
 		this.name = name;
 		this.returnType = returnType;
 		this.params = params;
+
+		this.unique_label = IRcommand.getFreshLabel(name);
 	}
 }

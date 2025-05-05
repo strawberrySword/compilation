@@ -3,7 +3,7 @@ import SYMBOL_TABLE.SYMBOL_TABLE;
 import TYPES.*;
 
 public class AST_ARRAY_DEF extends AST_DEC {
-
+	// array AT = int[];
 	public String arrName;
 	public AST_TYPE type;
 	
